@@ -1,0 +1,27 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.52</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug/SNAKE.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>SNAKE.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>SNAKE.map</FILE>
+  <FILE>SNAKE.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>51</LINE></main>
+  <loop><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>58</LINE></loop>
+ </LABELS>
+</ASSEMBLER_INFO>
