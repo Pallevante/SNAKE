@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri Apr 25 10:46:32 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri Apr 25 11:43:44 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -694,4 +694,6 @@ EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
 CSEG main         00000001
-CSEG loop         00000005
+CSEG loop         00000007
+CSEG loop2        00000012
+CSEG loop1        0000000a

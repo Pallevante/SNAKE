@@ -21,7 +21,9 @@
   <FILE>SNAKE.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>51</LINE></main>
-  <loop><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>58</LINE></loop>
+  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>11</LINE></main>
+  <loop><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>21</LINE></loop>
+  <loop2><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>38</LINE></loop2>
+  <loop1><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>27</LINE></loop1>
  </LABELS>
 </ASSEMBLER_INFO>
