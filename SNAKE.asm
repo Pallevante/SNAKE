@@ -19,7 +19,7 @@ main:
 	ldi		r20 , 127
 
 loop:
-
+	//Because fuck addi.
 	subi	r19 , -1
 	cp		r19 , r20
 	brge	loop2
