@@ -10,6 +10,12 @@
       rjmp      main
 main:
 
+	in	r22, TIFR	// Flag register
+	sbrs	r22, TOV0	// Skip shit
+
+	ldi	r23, (1<<CS02)|(1<<CS00)	// Dafuq?!
+	out	TCCR0, r23	// Set to system clock 1024
+
     ldi      r16,0xFF
     out      DDRB,r16
 	out      DDRC,r16
