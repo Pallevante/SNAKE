@@ -15,28 +15,33 @@ main:
 	out      DDRC,r16
 	out      DDRD,r16
 
+	
+	ldi		r21, 255
+
 	ldi		r19 , 0
 	ldi		r20 , 127
 
 loop:
-	//Because fuck addi.
-	subi	r19 , -1
-	cp		r19 , r20
-	brge	loop2
-
-loop1:
 	ldi	r16 , 0b00001000
 	ldi	r17 , 0b00000000
 	ldi r18 , 0b00000001
 
     out     PORTC , r16
     out     PORTD , r17
+	out		PORTB , r18	
+
+	rjmp	swagMaster
+	ldi r21, 255
+
+	ldi	r16 , 0b00000000
+	ldi	r17 , 0b00000000
+	ldi r18 , 0b00000000
+
+    out     PORTC , r16
+    out     PORTD , r17
 	out		PORTB , r18
 
-	jmp loop
 
-loop2:
-	
 	ldi	r16 , 0b00000000
 	ldi	r17 , 0b00100000
 	ldi r18 , 0b00000100
@@ -45,4 +50,23 @@ loop2:
     out     PORTD , r17
 	out		PORTB , r18
 
+	rjmp	swagMaster
+	ldi r21, 255
+
+	ldi	r16 , 0b00000000
+	ldi	r17 , 0b00000000
+	ldi r18 , 0b00000000
+
+    out     PORTC , r16
+    out     PORTD , r17
+	out		PORTB , r18
+
+
 	jmp		loop
+
+
+swagMaster:
+	subi	r21, 1
+	cpi		r21, 254
+	brge	swagMaster
+	ret		

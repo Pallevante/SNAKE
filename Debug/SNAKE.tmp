@@ -1,17 +1,17 @@
 <ASSEMBLER_INFO>
  <VERSION>2.1.52</VERSION>
  <DEVICE>"ATmega328P"</DEVICE>
- <WORKING_DIR>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug</WORKING_DIR>
+ <WORKING_DIR>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</SOURCE_FILE>
+ <SOURCE_FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug/SNAKE.obj</FILE>
+  <FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\Debug/SNAKE.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>SNAKE.hex</FILE>
@@ -21,9 +21,8 @@
   <FILE>SNAKE.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>11</LINE></main>
-  <loop><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>21</LINE></loop>
-  <loop2><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>38</LINE></loop2>
-  <loop1><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>27</LINE></loop1>
+  <main><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>11</LINE></main>
+  <loop><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>24</LINE></loop>
+  <swagMaster><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>68</LINE></swagMaster>
  </LABELS>
 </ASSEMBLER_INFO>
