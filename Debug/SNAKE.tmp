@@ -21,8 +21,16 @@
   <FILE>SNAKE.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <main><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>11</LINE></main>
-  <loop><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>24</LINE></loop>
-  <swagMaster><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>72</LINE></swagMaster>
+  <matrix><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
+  <portArray><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>13</LINE></portArray>
+  <matricCounter><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>15</LINE></matricCounter>
+  <main><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>21</LINE></main>
+  <updateDisplay><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>66</LINE></updateDisplay>
+  <rowloop><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>81</LINE></rowloop>
+  <bitloop><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>82</LINE></bitloop>
+  <PortCnnnn><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>91</LINE></PortCnnnn>
+  <endPort><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>99</LINE></endPort>
+  <PortDnnnn><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>96</LINE></PortDnnnn>
+  <swagMaster><FILE>\\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm</FILE><LINE>108</LINE></swagMaster>
  </LABELS>
 </ASSEMBLER_INFO>

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  \\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm Tue Apr 29 09:19:07 2014
+AVRASM ver. 2.1.52  \\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm Tue Apr 29 11:53:11 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -693,6 +693,14 @@ EQU  ACIaddr      0000002e
 EQU  TWIaddr      00000030
 EQU  SPMRaddr     00000032
 EQU  INT_VECTORS_SIZE 00000034
+DSEG matrix       00000100
+DSEG portArray    00000108
+DSEG matricCounter 00000108
 CSEG main         00000001
-CSEG loop         00000008
-CSEG swagMaster   0000002e
+CSEG updateDisplay 0000001d
+CSEG rowloop      00000026
+CSEG bitloop      00000026
+CSEG PortCnnnn    00000029
+CSEG endPort      0000002b
+CSEG PortDnnnn    0000002b
+CSEG swagMaster   0000002f

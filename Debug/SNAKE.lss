@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  \\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm Tue Apr 29 09:19:07 2014
+AVRASM ver. 2.1.52  \\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.asm Tue Apr 29 11:53:11 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
                  
@@ -986,76 +986,113 @@ AVRASM ver. 2.1.52  \\hsnas3\StudentHome\2013\b13petha\Desktop\ASM\SNAKE\SNAKE.a
                   *
                   *  Created: 2014-04-25 08:02:33
                   *   Author: b13petha
+                  *   Slaves: Simon, Henrik och that (gay retarded) guy...
                   */ 
-                  
-                 .list
+                  .DSEG
+                 	//Fuck all.
+                 	matrix:
+000100           		.byte	8
                  
-000000 c000            rjmp      main
+                 	portArray:
+                 		
+                 	matricCounter:
+                 		//Tar det som det kommer. Like she said.
+                 .CSEG
+                 	.list
+000000 c000      		rjmp      main
+                 
                  main:
+                 	/*
+                     in	r22, TIFR	// Flag register
+                 	sbrs	r22, TOV0	// Skip shit
+                 
+                 	ldi	r23, (1<<CS02)|(1<<CS00)	// Dafuq?!
+                 	out	TCCR0, r23	// Set to system clock 1024
+                 	*/
                  
 000001 ef0f          ldi      r16,0xFF
 000002 b904          out      DDRB,r16
 000003 b907      	out      DDRC,r16
+                 	// #crackbaby
 000004 b90a      	out      DDRD,r16
                  
                  	
 000005 ef5f      	ldi		r21, 255
                  
-000006 e030      	ldi		r19 , 0
-000007 e74f      	ldi		r20 , 127
+000006 e74f      	ldi		r20 , 127
+000007 e030      	ldi		r19 , 0
                  
-                 loop:
-000008 e008      	ldi	r16 , 0b00001000
-000009 e010      	ldi	r17 , 0b00000000
-00000a e021      	ldi r18 , 0b00000001
-                 
-00000b b908          out     PORTC , r16
-00000c b91b          out     PORTD , r17
-00000d b925      	out		PORTB , r18	
-                 
-00000e 940e 002e 	call	swagMaster
-000010 ef5f      	ldi r21, 255
-                 
-000011 e000      	ldi	r16 , 0b00000000
-000012 e010      	ldi	r17 , 0b00000000
-000013 e020      	ldi r18 , 0b00000000
-                 
-000014 b908          out     PORTC , r16
-000015 b91b          out     PORTD , r17
-000016 b925      	out		PORTB , r18
+000008 e0e0      	ldi		ZL , low(matrix)
+000009 e0f1      	ldi		ZH , high(matrix)
                  	
-000017 940e 002e 	call	swagMaster
-000019 ef5f      	ldi r21, 255
+00000a e022      	ldi		r18, 0b00000010
+00000b 9321      	st		Z+, r18
+00000c e020      	ldi		r18, 0b00000000
+00000d 9321      	st		Z+, r18
+00000e e020      	ldi		r18, 0b00000000
+00000f 9321      	st		Z+, r18
+000010 e020      	ldi		r18, 0b00000000
+000011 9321      	st		Z+, r18
+000012 e020      	ldi		r18, 0b00000000
+000013 9321      	st		Z+, r18
+000014 e020      	ldi		r18, 0b00000000
+000015 9321      	st		Z+, r18
+000016 e020      	ldi		r18, 0b00000000
+000017 9321      	st		Z+, r18
+000018 e020      	ldi		r18, 0b00000000
+000019 8320      	st		Z, r18
                  
-00001a e000      	ldi	r16 , 0b00000000
-00001b e210      	ldi	r17 , 0b00100000
-00001c e024      	ldi r18 , 0b00000100
+00001a e0e0      	ldi		ZL , low(matrix)
+00001b e0f1      	ldi		ZH , high(matrix)
+00001c 8170      	ld		r23 , Z
                  
-00001d b908          out     PORTC , r16
-00001e b91b          out     PORTD , r17
-00001f b925      	out		PORTB , r18
+                 updateDisplay:
                  
-000020 940e 002e 	call	swagMaster
-000022 ef5f      	ldi r21, 255
+00001d e001      	ldi	r16 , 0b00000001
+00001e e410      	ldi	r17 , 0b01000000
+00001f e020      	ldi	r18 , 0b00000000
                  
-000023 e000      	ldi	r16 , 0b00000000
-000024 e010      	ldi	r17 , 0b00000000
-000025 e020      	ldi r18 , 0b00000000
+000020 b978      	out PORTC , r23
+000021 b91b      	out PORTD , r17
+000022 b925      	out PORTB , r18
                  
-000026 b908          out     PORTC , r16
-000027 b91b          out     PORTD , r17
-000028 b925      	out		PORTB , r18
                  
-                 	
-000029 940e 002e 	call	swagMaster
-00002b ef5f      	ldi r21, 255
-00002c 940c 0008 	jmp		loop
+000023 940c 001d jmp updateDisplay
+                 
+000025 e080      	ldi	r24 , 0
+                 	//Z+ här ngnstans
+                 	rowloop:
+                 		bitloop:
+                 
+                 
+                 
+000026 cfff      		rjmp bitloop
+                 
+000027 3084      	cpi		r24 , 4
+000028 f714      	brge	portD
+                 
+                 	PortCnnnn:
+                 
+                 
+000029 940c 002b 		jmp endPort
+                 
+                 	PortDnnnn:
+                 
+                 
+                 endPort:
+                 
+00002b 5f6f      	subi	r22 , -1
+00002c 5f8f      	subi	r24 , -1
+00002d cff8      	rjmp rowloop
+                 
+00002e 9508      	ret
                  
                  
                  swagMaster:
-00002e 5051      	subi	r21, 1
-00002f 3051      	cpi		r21, 1
-000030 f7ec      	brge	swagMaster
+00002f 5051      	subi	r21, 1
+000030 3051      	cpi		r21, 1
+000031 f7ec      	brge	swagMaster
+000032 9508      	ret	
 
 
 RESOURCE USE INFORMATION
@@ -1075,38 +1112,38 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  12 r17:   8 r18:   8 r19:   1 r20:   1 r21:   7 r22:   0 r23:   0 
-r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 r29:   0 r30:   0 r31:   0 
-x  :   0 y  :   0 z  :   0 
-Registers used: 6 out of 35 (17.1%)
+r16:   5 r17:   2 r18:  18 r19:   1 r20:   1 r21:   3 r22:   1 r23:   2 
+r24:   3 r25:   0 r26:   0 r27:   0 r28:   0 r29:   0 r30:   2 r31:   2 
+x  :   0 y  :   0 z  :   9 
+Registers used: 12 out of 35 (34.3%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   1 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   2 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   4 cbi   :   0 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   1 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   1 
-ld    :   0 ldd   :   0 ldi   :  20 lds   :   0 lpm   :   0 lsl   :   0 
+cpi   :   2 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   2 
+ld    :   1 ldd   :   0 ldi   :  20 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  15 pop   :   0 
-push  :   0 rcall :   0 ret   :   1 reti  :   0 rjmp  :   1 rol   :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :   6 pop   :   0 
+push  :   0 rcall :   0 ret   :   2 reti  :   0 rjmp  :   3 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
-sub   :   0 subi  :   1 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 9 out of 113 (8.0%)
+sez   :   0 sleep :   0 spm   :   0 st    :   8 std   :   0 sts   :   0 
+sub   :   0 subi  :   3 swap  :   0 tst   :   0 wdr   :   0 
+Instructions used: 10 out of 113 (8.8%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000064    100      0    100   32768   0.3%
-[.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
+[.cseg] 0x000000 0x000066    102      0    102   32768   0.3%
+[.dseg] 0x000100 0x000108      0      8      8    2048   0.4%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
 Assembly complete, 0 errors, 0 warnings
