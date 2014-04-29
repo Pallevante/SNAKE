@@ -30,7 +30,7 @@ loop:
     out     PORTD , r17
 	out		PORTB , r18	
 
-	rjmp	swagMaster
+	call	swagMaster
 	ldi r21, 255
 
 	ldi	r16 , 0b00000000
@@ -40,7 +40,9 @@ loop:
     out     PORTC , r16
     out     PORTD , r17
 	out		PORTB , r18
-
+	
+	call	swagMaster
+	ldi r21, 255
 
 	ldi	r16 , 0b00000000
 	ldi	r17 , 0b00100000
@@ -50,7 +52,7 @@ loop:
     out     PORTD , r17
 	out		PORTB , r18
 
-	rjmp	swagMaster
+	call	swagMaster
 	ldi r21, 255
 
 	ldi	r16 , 0b00000000
@@ -61,12 +63,14 @@ loop:
     out     PORTD , r17
 	out		PORTB , r18
 
-
+	
+	call	swagMaster
+	ldi r21, 255
 	jmp		loop
 
 
 swagMaster:
 	subi	r21, 1
-	cpi		r21, 254
+	cpi		r21, 1
 	brge	swagMaster
-	ret		
+	ret	
