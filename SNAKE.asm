@@ -39,18 +39,18 @@ main:
 	st		Z+, r18
 	ldi		r18, 0b00000001
 	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		r18, 0b00000000
+	ldi		r18, 0b00000001
 	st		Z+, r18
 	ldi		r18, 0b00000001
 	st		Z+, r18
-	ldi		r18, 0b00000000
+	ldi		r18, 0b00000001
 	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z, r18
+	ldi		r18, 0b00000001
+	st		Z+, r18
+	ldi		r18, 0b00000001
+	st		Z+, r18
+	ldi		r18, 0b00000001
+	st		Z+, r18
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
 	ld		r23 , Z		// värdet i matris ligger i r23
@@ -63,7 +63,7 @@ update:
 
 	ld		r23 , Z+	// värdet i matris ligger i r23
 	
-	cpi		ROW , 0b10000000
+	cpi		ROW , 0b00000000
 	breq	reset
 	cpi		r23	, 1
 	brlt	blank
@@ -75,6 +75,9 @@ update:
 	// går förbi gränsen för port D
 	cpi		ROW , 0b00010000
 	brge	printD
+	// skippar denna annars
+	cpi		ROW , 0b10000000
+	breq	printD
 
 		// print c
 			out		PORTC , ROW
@@ -90,22 +93,16 @@ update:
 			out		PORTB , r18
 			lsl		ROW
 			lsl		ROW
+
 	pastD:
-	cpi		ROW , 0b10000000
-	breq	reset
 	lsl		ROW
+	
+	cpi		ROW , 0b00000000
+	breq	reset
 
 	jmp	update
 
 	reset:
-			// fix för att rita sista raden
-		lsr		ROW
-		lsr		ROW
-		or		r17 , ROW
-		out		PORTD , r17
-		out		PORTB , r18
-		lsl		ROW
-		lsl		ROW
 			// återställer
 		ldi		ROW , 0b00000001
 		

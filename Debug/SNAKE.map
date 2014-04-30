@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Wed Apr 30 17:33:18 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Wed Apr 30 20:45:22 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -697,8 +697,8 @@ DSEG matrix       00000100
 DEF  ROW          r16
 CSEG main         00000001
 CSEG update       0000001d
-CSEG reset        00000037
-CSEG blank        00000043
-CSEG printD       0000002b
-CSEG pastD        00000032
-CSEG swagMaster   00000048
+CSEG reset        00000039
+CSEG blank        0000003e
+CSEG printD       0000002d
+CSEG pastD        00000034
+CSEG swagMaster   00000043
