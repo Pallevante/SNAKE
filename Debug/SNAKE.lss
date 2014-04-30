@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Wed Apr 30 20:45:22 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Wed Apr 30 23:24:16 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
                  
@@ -994,6 +994,7 @@ AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Wed Apr 30 
 000100           		.byte	8
                  
                  .def	ROW = r16
+                 .def	COL = r17
                  .CSEG
                  	.list
 000000 c000      		rjmp      main
@@ -1018,91 +1019,131 @@ AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Wed Apr 30 
                  		// matris
 000006 e0e0      	ldi		ZL , low(matrix)
 000007 e0f1      	ldi		ZH , high(matrix)
-000008 e021      	ldi		r18, 0b00000001
+000008 e52d      	ldi		r18, 0b01011101
 000009 9321      	st		Z+, r18
-00000a e021      	ldi		r18, 0b00000001
+00000a e023      	ldi		r18, 0b00000011
 00000b 9321      	st		Z+, r18
-00000c e021      	ldi		r18, 0b00000001
+00000c ee2d      	ldi		r18, 0b11101101
 00000d 9321      	st		Z+, r18
-00000e e021      	ldi		r18, 0b00000001
+00000e ed25      	ldi		r18, 0b11010101
 00000f 9321      	st		Z+, r18
-000010 e021      	ldi		r18, 0b00000001
+000010 e020      	ldi		r18, 0b00000000
 000011 9321      	st		Z+, r18
-000012 e021      	ldi		r18, 0b00000001
+000012 e020      	ldi		r18, 0b00000000
 000013 9321      	st		Z+, r18
-000014 e021      	ldi		r18, 0b00000001
+000014 e020      	ldi		r18, 0b00000000
 000015 9321      	st		Z+, r18
-000016 e021      	ldi		r18, 0b00000001
+000016 e020      	ldi		r18, 0b00000000
 000017 9321      	st		Z+, r18
 000018 e0e0      	ldi		ZL , low(matrix)
 000019 e0f1      	ldi		ZH , high(matrix)
 00001a 8170      	ld		r23 , Z		// värdet i matris ligger i r23
-                 
-00001b e040      	ldi		r20 , 0
                  	
+                 	
+00001b e050      	ldi		r21 , 0b00000000
+                 
+                 		// börjar kolla från första raden
 00001c e001      	ldi		ROW , 0b00000001
+00001d e011      	ldi		COL , 0b00000001
                  
                  update:
                  
-00001d 9171      	ld		r23 , Z+	// värdet i matris ligger i r23
-                 	
-00001e 3000      	cpi		ROW , 0b00000000
-00001f f0c9      	breq	reset
-000020 3071      	cpi		r23	, 1
-000021 f0e4      	brlt	blank
+00001e e011      	ldi		COL , 0b00000001
+00001f 9171      	ld		r23 , Z+	// värdet i matris ligger i r23
+                 // sista raden
+000020 3000      	cpi		ROW , 0b00000000
+000021 f1c1      	breq	reset
+                 // tom rad
+000022 3070      	cpi		r23	, 0
+000023 f199      	breq	blank
                  
                  // fyller hela raden
-000022 ec10      	ldi		r17 , 0b11000000
-000023 e32f      	ldi		r18 , 0b00111111
+000024 ec30      	ldi		r19 , 0b11000000
+000025 e34f      	ldi		r20 , 0b00111111
                  	
                  	// går förbi gränsen för port D
-000024 3100      	cpi		ROW , 0b00010000
-000025 f43c      	brge	printD
-                 	// skippar denna annars
-000026 3800      	cpi		ROW , 0b10000000
-000027 f029      	breq	printD
+000026 3100      	cpi		ROW , 0b00010000
+000027 f52c      	brge	printD
+                 	// fixar bugg, har med signed att göra tror jag
+000028 3800      	cpi		ROW , 0b10000000
+000029 f119      	breq	printD
                  
                  		// print c
-000028 b908      			out		PORTC , ROW
-000029 b91b      			out		PORTD , r17
-00002a b925      			out		PORTB , r18
-00002b 940c 0034 		jmp pastD
+                 
+                 		updateCol:
+00002a 3010      			cpi		COL , 0b00000000
+00002b f141      			breq	pastD
+                 
+00002c 2f21      			mov		r18 , COL
+00002d 2327      			and		r18 , r23
+                 				// r0 verkar bugga
+00002e e050      			ldi		r21 , 0b00000000
+                 
+00002f 3012      			cpi		COL , 0b00000010
+000030 f041      			breq	printColD
+000031 3011      			cpi		COL , 0b00000001
+000032 f031      			breq	printColD
+                 			// printColB
+000033 9526      			lsr		r18
+000034 9526      			lsr		r18
+000035 b908      			out		PORTC , ROW
+000036 b95b      			out		PORTD , r21
+000037 b925      			out		PORTB , r18
+000038 c009      			rjmp	pastColD
+                 
+                 	printColD:
+000039 0f22      			lsl		r18
+00003a 0f22      			lsl		r18
+00003b 0f22      			lsl		r18
+00003c 0f22      			lsl		r18
+00003d 0f22      			lsl		r18
+00003e 0f22      			lsl		r18
+00003f b908      			out		PORTC , ROW
+000040 b92b      			out		PORTD , r18
+000041 b955      			out		PORTB , r21
+                 
+                 	pastColD:
+000042 0f11      			lsl		COL
+                 			//	ju fler swagmasters, destu ljusare
+000043 940e 0062 			call swagmaster
+000045 940e 0062 			call swagmaster
+000047 940e 0062 			call swagmaster
+000049 940e 0062 			call swagmaster
+                 
+00004b 940c 002a 		jmp updateCol
                  
                  		printD:
-00002d 9506      			lsr		ROW
-00002e 9506      			lsr		ROW
-00002f 2b10      			or		r17 , ROW
-000030 b91b      			out		PORTD , r17
-000031 b925      			out		PORTB , r18
-000032 0f00      			lsl		ROW
-000033 0f00      			lsl		ROW
+00004d 9506      			lsr		ROW
+00004e 9506      			lsr		ROW
+00004f 2b30      			or		r19 , ROW
+000050 b93b      			out		PORTD , r19
+000051 b945      			out		PORTB , r20
+000052 0f00      			lsl		ROW
+000053 0f00      			lsl		ROW
                  
                  	pastD:
-000034 0f00      	lsl		ROW
+                 		// byter rad
+000054 0f00      	lsl		ROW
+000055 940c 001e 	jmp	update
                  	
-000035 3000      	cpi		ROW , 0b00000000
-000036 f011      	breq	reset
-                 
-000037 940c 001d 	jmp	update
-                 
+                 	blank:
+000057 0f00      		lsl		ROW
+000058 940c 001e 	jmp update
                  	reset:
                  			// återställer
-000039 e001      		ldi		ROW , 0b00000001
+00005a e001      		ldi		ROW , 0b00000001
+00005b e011      		ldi		COL , 0b00000001
                  		
-00003a e0e0      		ldi		ZL , low(matrix)
-00003b e0f1      		ldi		ZH , high(matrix)
-00003c 940c 001d 	jmp update
-                 	blank:
-00003e 0f00      		lsl		ROW
-00003f 940c 001d 	jmp update
+00005c e0e0      		ldi		ZL , low(matrix)
+00005d e0f1      		ldi		ZH , high(matrix)
+00005e 940c 001e 	jmp update
                  
-000041 940c 0001 jmp main
+000060 940c 0001 jmp main
                  
                  swagMaster:
-000043 5051      	subi	r21, 1
-000044 3051      	cpi		r21, 1
-000045 f7ec      	brge	swagMaster
-000046 9508      	ret	
+000062 5051      	subi	r21, 1
+000063 3051      	cpi		r21, 1
+000064 f7ec      	brge	swagMaster
 
 
 RESOURCE USE INFORMATION
@@ -1122,37 +1163,37 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  18 r17:   4 r18:  19 r19:   0 r20:   1 r21:   3 r22:   0 r23:   3 
+r16:  18 r17:   8 r18:  28 r19:   3 r20:   2 r21:   7 r22:   0 r23:   4 
 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 r29:   0 r30:   3 r31:   3 
 x  :   0 y  :   0 z  :  10 
-Registers used: 9 out of 35 (25.7%)
+Registers used: 10 out of 35 (28.6%)
 
 "ATmega328P" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   1 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :   3 brge  :   2 brhc  :   0 
-brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   1 brmi  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :   6 brge  :   2 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   4 cbi   :   0 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :   6 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :   8 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   5 
-ld    :   2 ldd   :   0 ldi   :  21 lds   :   0 lpm   :   0 lsl   :   4 
-lsr   :   2 mov   :   0 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   1 ori   :   0 out   :   8 pop   :   0 
-push  :   0 rcall :   0 ret   :   1 reti  :   0 rjmp  :   1 rol   :   0 
+ld    :   2 ldd   :   0 ldi   :  25 lds   :   0 lpm   :   0 lsl   :  11 
+lsr   :   4 mov   :   1 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   1 ori   :   0 out   :  11 pop   :   0 
+push  :   0 rcall :   0 ret   :   1 reti  :   0 rjmp  :   2 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   0 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   8 std   :   0 sts   :   0 
 sub   :   0 subi  :   1 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 15 out of 113 (13.3%)
+Instructions used: 17 out of 113 (15.0%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00008e    142      0    142   32768   0.4%
+[.cseg] 0x000000 0x0000cc    204      0    204   32768   0.6%
 [.dseg] 0x000100 0x000108      0      8      8    2048   0.4%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

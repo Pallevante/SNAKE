@@ -22,12 +22,15 @@
  </OUTPUT_FILES>
  <LABELS>
   <matrix><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
-  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>17</LINE></main>
-  <update><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>62</LINE></update>
-  <reset><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>105</LINE></reset>
-  <blank><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>112</LINE></blank>
-  <printD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>88</LINE></printD>
-  <pastD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>97</LINE></pastD>
-  <swagMaster><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>118</LINE></swagMaster>
+  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>18</LINE></main>
+  <update><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>66</LINE></update>
+  <reset><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>149</LINE></reset>
+  <blank><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>146</LINE></blank>
+  <printD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>132</LINE></printD>
+  <updateCol><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>90</LINE></updateCol>
+  <pastD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>141</LINE></pastD>
+  <printColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>111</LINE></printColD>
+  <pastColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>122</LINE></pastColD>
+  <swagmaster><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>160</LINE></swagmaster>
  </LABELS>
 </ASSEMBLER_INFO>
