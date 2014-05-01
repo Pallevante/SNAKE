@@ -36,19 +36,19 @@ main:
 		// matris
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
-	ldi		r18, 0b01011101
-	st		Z+, r18
-	ldi		r18, 0b00000011
-	st		Z+, r18
-	ldi		r18, 0b11101101
-	st		Z+, r18
-	ldi		r18, 0b11010101
-	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00000000
+	ldi		r18, 0b00110110
 	st		Z+, r18
-	ldi		r18, 0b00000000
+	ldi		r18, 0b01111111
+	st		Z+, r18
+	ldi		r18, 0b01111111
+	st		Z+, r18
+	ldi		r18, 0b00111110
+	st		Z+, r18
+	ldi		r18, 0b00011100
+	st		Z+, r18
+	ldi		r18, 0b00001000
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
@@ -56,12 +56,29 @@ main:
 	ldi		ZH , high(matrix)
 	ld		r23 , Z		// värdet i matris ligger i r23
 	
-	
 	ldi		r21 , 0b00000000
 
 		// börjar kolla från första raden
 	ldi		ROW , 0b00000001
 	ldi		COL , 0b00000001
+
+	
+	blank:
+		lsl		ROW
+	jmp update
+	reset:
+			// återställer
+		ldi		ROW , 0b00000001
+		ldi		COL , 0b00000001
+		
+		ldi		ZL , low(matrix)
+		ldi		ZH , high(matrix)
+	jmp update
+	
+	pastD:
+		// byter rad
+	lsl		ROW
+	jmp	update
 
 update:
 
@@ -73,10 +90,6 @@ update:
 // tom rad
 	cpi		r23	, 0
 	breq	blank
-
-// fyller hela raden
-	ldi		r19 , 0b11000000
-	ldi		r20 , 0b00111111
 	
 	// går förbi gränsen för port D
 	cpi		ROW , 0b00010000
@@ -84,9 +97,7 @@ update:
 	// fixar bugg, har med signed att göra tror jag
 	cpi		ROW , 0b10000000
 	breq	printD
-
 		// print c
-
 		updateCol:
 			cpi		COL , 0b00000000
 			breq	pastD
@@ -108,52 +119,94 @@ update:
 			out		PORTB , r18
 			rjmp	pastColD
 
-	printColD:
-			lsl		r18
-			lsl		r18
-			lsl		r18
-			lsl		r18
-			lsl		r18
-			lsl		r18
-			out		PORTC , ROW
-			out		PORTD , r18
-			out		PORTB , r21
+		printColD:
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				out		PORTC , ROW
+				out		PORTD , r18
+				out		PORTB , r21
 
-	pastColD:
-			lsl		COL
-			//	ju fler swagmasters, destu ljusare
-			call swagmaster
-			call swagmaster
-			call swagmaster
-			call swagmaster
+		pastColD:
+				lsl		COL
+				//	ju fler swagmasters, destu ljusare
+				call swagmaster
+				call swagmaster
+				call swagmaster
+				call swagmaster
+				call swagmaster
+				call swagmaster
 
 		jmp updateCol
 
 		printD:
+
+
+
+		updateColD:
+			cpi		COL , 0b00000000
+			breq	pastD
+
+			mov		r18 , COL
+			and		r18 , r23
+				// r0 verkar bugga
+			ldi		r21 , 0b00000000
+
+			cpi		COL , 0b00000010
+			breq	printColDD
+			cpi		COL , 0b00000001
+			breq	printColDD
+			// printColB
+			lsr		r18
+			lsr		r18
+
+			
 			lsr		ROW
 			lsr		ROW
-			or		r19 , ROW
-			out		PORTD , r19
-			out		PORTB , r20
+			out		PORTC , r21
+			out		PORTD , ROW
+			out		PORTB , r18
 			lsl		ROW
 			lsl		ROW
 
-	pastD:
-		// byter rad
-	lsl		ROW
-	jmp	update
-	
-	blank:
-		lsl		ROW
-	jmp update
-	reset:
-			// återställer
-		ldi		ROW , 0b00000001
-		ldi		COL , 0b00000001
-		
-		ldi		ZL , low(matrix)
-		ldi		ZH , high(matrix)
-	jmp update
+
+
+			rjmp	pastColDD
+
+		printColDD:
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				lsl		r18
+				lsl		r18
+
+			lsr		ROW
+			lsr		ROW
+			mov		r19 , ROW
+			or		r19 , r18
+			out		PORTC , r21
+			out		PORTD , r19
+			out		PORTB , r21
+			lsl		ROW
+			lsl		ROW
+
+		pastColDD:
+				lsl		COL
+				//	ju fler swagmasters, destu ljusare
+				call swagmaster
+				call swagmaster
+				call swagmaster
+				call swagmaster
+				call swagmaster
+				call swagmaster
+
+		jmp updateColD
+
+	jmp pastD
 
 jmp main
 
