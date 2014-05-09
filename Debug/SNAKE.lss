@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Thu May 01 20:48:22 2014
+AVRASM ver. 2.1.52  C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm Fri May 09 12:33:53 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
                  
@@ -1021,17 +1021,17 @@ AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Thu May 01 
 000007 e0f1      	ldi		ZH , high(matrix)
 000008 e020      	ldi		r18, 0b00000000
 000009 9321      	st		Z+, r18
-00000a e326      	ldi		r18, 0b00110110
+00000a e422      	ldi		r18, 0b01000010
 00000b 9321      	st		Z+, r18
-00000c e72f      	ldi		r18, 0b01111111
+00000c e020      	ldi		r18, 0b00000000
 00000d 9321      	st		Z+, r18
-00000e e72f      	ldi		r18, 0b01111111
+00000e ef2f      	ldi		r18, 0b11111111
 00000f 9321      	st		Z+, r18
-000010 e32e      	ldi		r18, 0b00111110
+000010 ef2f      	ldi		r18, 0b11111111
 000011 9321      	st		Z+, r18
-000012 e12c      	ldi		r18, 0b00011100
+000012 e72e      	ldi		r18, 0b01111110
 000013 9321      	st		Z+, r18
-000014 e028      	ldi		r18, 0b00001000
+000014 e32c      	ldi		r18, 0b00111100
 000015 9321      	st		Z+, r18
 000016 e020      	ldi		r18, 0b00000000
 000017 9321      	st		Z+, r18

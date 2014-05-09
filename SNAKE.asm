@@ -38,17 +38,17 @@ main:
 	ldi		ZH , high(matrix)
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00110110
+	ldi		r18, 0b01000010
 	st		Z+, r18
-	ldi		r18, 0b01111111
+	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b01111111
+	ldi		r18, 0b11111111
 	st		Z+, r18
-	ldi		r18, 0b00111110
+	ldi		r18, 0b11111111
 	st		Z+, r18
-	ldi		r18, 0b00011100
+	ldi		r18, 0b01111110
 	st		Z+, r18
-	ldi		r18, 0b00001000
+	ldi		r18, 0b00111100
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18

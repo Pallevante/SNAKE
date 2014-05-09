@@ -1,17 +1,17 @@
 <ASSEMBLER_INFO>
  <VERSION>2.1.52</VERSION>
  <DEVICE>"ATmega328P"</DEVICE>
- <WORKING_DIR>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug</WORKING_DIR>
+ <WORKING_DIR>C:\Users\Pallevante\Desktop\SNAKE\Debug</WORKING_DIR>
  <INCLUDE_PATH>
   <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</SOURCE_FILE>
  <INCLUDED_FILES>
   <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug/SNAKE.obj</FILE>
+  <FILE>C:\Users\Pallevante\Desktop\SNAKE\Debug/SNAKE.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>SNAKE.hex</FILE>
@@ -21,19 +21,19 @@
   <FILE>SNAKE.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <matrix><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
-  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>18</LINE></main>
-  <blank><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>66</LINE></blank>
-  <update><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>83</LINE></update>
-  <reset><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>69</LINE></reset>
-  <pastD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>78</LINE></pastD>
-  <printD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>145</LINE></printD>
-  <updateCol><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>101</LINE></updateCol>
-  <printColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>122</LINE></printColD>
-  <pastColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>133</LINE></pastColD>
-  <swagmaster><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>213</LINE></swagmaster>
-  <updateColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>149</LINE></updateColD>
-  <printColDD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>179</LINE></printColDD>
-  <pastColDD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>197</LINE></pastColDD>
+  <matrix><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
+  <main><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>18</LINE></main>
+  <blank><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>66</LINE></blank>
+  <update><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>83</LINE></update>
+  <reset><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>69</LINE></reset>
+  <pastD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>78</LINE></pastD>
+  <printD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>145</LINE></printD>
+  <updateCol><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>101</LINE></updateCol>
+  <printColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>122</LINE></printColD>
+  <pastColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>133</LINE></pastColD>
+  <swagmaster><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>213</LINE></swagmaster>
+  <updateColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>149</LINE></updateColD>
+  <printColDD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>179</LINE></printColDD>
+  <pastColDD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>197</LINE></pastColDD>
  </LABELS>
 </ASSEMBLER_INFO>
