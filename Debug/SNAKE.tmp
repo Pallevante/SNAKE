@@ -22,18 +22,22 @@
  </OUTPUT_FILES>
  <LABELS>
   <matrix><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
-  <main><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>18</LINE></main>
-  <blank><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>66</LINE></blank>
-  <update><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>83</LINE></update>
-  <reset><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>69</LINE></reset>
-  <pastD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>78</LINE></pastD>
-  <printD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>145</LINE></printD>
-  <updateCol><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>101</LINE></updateCol>
-  <printColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>122</LINE></printColD>
-  <pastColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>133</LINE></pastColD>
-  <swagmaster><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>213</LINE></swagmaster>
-  <updateColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>149</LINE></updateColD>
-  <printColDD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>179</LINE></printColDD>
-  <pastColDD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>197</LINE></pastColDD>
+  <main><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>36</LINE></main>
+  <timer><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>24</LINE></timer>
+  <joyXMovement><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>226</LINE></joyXMovement>
+  <blank><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>79</LINE></blank>
+  <update><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>96</LINE></update>
+  <reset><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>82</LINE></reset>
+  <pastD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>91</LINE></pastD>
+  <printD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>158</LINE></printD>
+  <updateCol><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>114</LINE></updateCol>
+  <printColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>135</LINE></printColD>
+  <pastColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>146</LINE></pastColD>
+  <swagMaster><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>248</LINE></swagMaster>
+  <updateColD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>162</LINE></updateColD>
+  <printColDD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>192</LINE></printColDD>
+  <pastColDD><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>210</LINE></pastColDD>
+  <return><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>245</LINE></return>
+  <JoyYMovement><FILE>C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm</FILE><LINE>236</LINE></JoyYMovement>
  </LABELS>
 </ASSEMBLER_INFO>

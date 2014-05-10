@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm Fri May 09 12:33:53 2014
+AVRASM ver. 2.1.52  C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm Sat May 10 20:32:55 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -696,16 +696,23 @@ EQU  INT_VECTORS_SIZE 00000034
 DSEG matrix       00000100
 DEF  ROW          r16
 DEF  COL          r17
-CSEG main         00000001
-CSEG blank        0000001e
-CSEG update       0000002a
-CSEG reset        00000021
-CSEG pastD        00000027
-CSEG printD       0000005b
-CSEG updateCol    00000034
-CSEG printColD    00000043
-CSEG pastColD     0000004c
-CSEG swagmaster   00000090
-CSEG updateColD   0000005b
-CSEG printColDD   0000006e
-CSEG pastColDD    0000007d
+DEF  joystickX    r24
+DEF  joystickY    r25
+DEF  rTemp        r26
+CSEG main         0000002c
+CSEG timer        00000020
+CSEG joyXMovement 000000bb
+CSEG blank        00000049
+CSEG update       00000055
+CSEG reset        0000004c
+CSEG pastD        00000052
+CSEG printD       00000086
+CSEG updateCol    0000005f
+CSEG printColD    0000006e
+CSEG pastColD     00000077
+CSEG swagMaster   000000ce
+CSEG updateColD   00000086
+CSEG printColDD   00000099
+CSEG pastColDD    000000a8
+CSEG return       000000cd
+CSEG JoyYMovement 000000c4

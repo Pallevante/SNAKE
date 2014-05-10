@@ -10,20 +10,32 @@
 	matrix:
 		.byte	8
 
-.def	ROW = r16
-.def	COL = r17
+.def	ROW			= r16
+.def	COL			= r17
+.def	joystickX	= r24
+.def	joystickY	= r25
+.def	rTemp		= r26
+
 .CSEG
 	.list
 		rjmp      main
+
+.ORG 0x0020
+//Trooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooor detta fungerar... kanske
+	timer: 
+		lds  rTemp, TCCR0B     // timer prescaling
+		sbr  rTemp, ((1 << CS02) | (0 << CS01) | (1 << CS00))
+		cbr  rTemp, (1 << CS01)
+		sts  TCCR0B, rTemp
+		lds  rTemp, TIMSK0     // start timer
+		sbr  rTemp, (1 << TOIE0)
+		sts  TIMSK0, rTemp
+		sei
+
+
+
 main:
-	/*
-    in	r22, TIFR	// Flag register
-	sbrs	r22, TOV0	// Skip shit
-
-	ldi	r23, (1<<CS02)|(1<<CS00)	// Dafuq?!
-	out	TCCR0, r23	// Set to system clock 1024
-	*/
-
+	
 		// så att vi kan använda portarna
     ldi		r16,0xFF
     out		DDRB,r16
@@ -36,17 +48,19 @@ main:
 		// matris
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
-	ldi		r18, 0b00000000
-	st		Z+, r18
+
+	//Anroppar joyMovement som kollar om man rör joysticken
+	call	joyXMovement
+
 	ldi		r18, 0b01000010
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
 	ldi		r18, 0b11111111
 	st		Z+, r18
-	ldi		r18, 0b11111111
+	ldi		r18, 0b10000001
 	st		Z+, r18
-	ldi		r18, 0b01111110
+	ldi		r18, 0b01000010
 	st		Z+, r18
 	ldi		r18, 0b00111100
 	st		Z+, r18
@@ -133,12 +147,12 @@ update:
 		pastColD:
 				lsl		COL
 				//	ju fler swagmasters, destu ljusare
-				call swagmaster
-				call swagmaster
-				call swagmaster
-				call swagmaster
-				call swagmaster
-				call swagmaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
 
 		jmp updateCol
 
@@ -197,18 +211,41 @@ update:
 		pastColDD:
 				lsl		COL
 				//	ju fler swagmasters, destu ljusare
-				call swagmaster
-				call swagmaster
-				call swagmaster
-				call swagmaster
-				call swagmaster
-				call swagmaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
 
 		jmp updateColD
 
 	jmp pastD
 
 jmp main
+
+joyXMovement:
+	in		r24, PORTC
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	cpi		r24, 0
+	breq	return
+	ldi		r18, 0b00001101
+	st		Z+, r18
+	jmp		return
+
+JoyYMovement:
+	in		r25, PORTC
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	cpi		r25, 0
+	breq	return
+	ldi		r18, 0b00001101
+	st		Z+, r18
+	jmp		return	
+
+return:
+	ret
 
 swagMaster:
 	subi	r21, 1
