@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Pallevante\Desktop\SNAKE\SNAKE.asm Sat May 10 20:32:55 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 11:24:10 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -701,18 +701,17 @@ DEF  joystickY    r25
 DEF  rTemp        r26
 CSEG main         0000002c
 CSEG timer        00000020
-CSEG joyXMovement 000000bb
-CSEG blank        00000049
-CSEG update       00000055
-CSEG reset        0000004c
-CSEG pastD        00000052
-CSEG printD       00000086
-CSEG updateCol    0000005f
-CSEG printColD    0000006e
-CSEG pastColD     00000077
-CSEG swagMaster   000000ce
-CSEG updateColD   00000086
-CSEG printColDD   00000099
-CSEG pastColDD    000000a8
-CSEG return       000000cd
-CSEG JoyYMovement 000000c4
+CSEG blank        0000004e
+CSEG update       0000005c
+CSEG reset        00000051
+CSEG joyXMovement 000000c2
+CSEG pastD        00000059
+CSEG printD       0000008d
+CSEG updateCol    00000066
+CSEG printColD    00000075
+CSEG pastColD     0000007e
+CSEG swagMaster   000000da
+CSEG updateColD   0000008d
+CSEG printColDD   000000a0
+CSEG pastColDD    000000af
+CSEG return       000000d9

@@ -41,6 +41,16 @@ main:
     out		DDRB,r16
 	out		DDRC,r16
 	out		DDRD,r16
+
+	ldi		r21 , 0x00
+
+	out		REFS0 , r16
+	out		REFS1 , r21
+	out		ADPS0 , r16
+	out		ADPS1 , r16
+	out		ADPS2 , r16
+	out		ADEN , r16
+
 	
 		// till swagmaster
 	ldi		r21, 255
@@ -48,9 +58,6 @@ main:
 		// matris
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
-
-	//Anroppar joyMovement som kollar om man rör joysticken
-	call	joyXMovement
 
 	ldi		r18, 0b01000010
 	st		Z+, r18
@@ -87,6 +94,10 @@ main:
 		
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
+
+		//Anroppar joyMovement som kollar om man rör joysticken
+		call	joyXMovement
+
 	jmp update
 	
 	pastD:
@@ -225,15 +236,26 @@ update:
 jmp main
 
 joyXMovement:
-	in		r24, PORTC
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	cpi		r24, 0
-	breq	return
-	ldi		r18, 0b00001101
-	st		Z+, r18
-	jmp		return
+	lds		r18 , ADMUX
+	andi	r18 , 0xF0
+	ori		r18 , 5		//x
+	sts		ADMUX , r18
 
+	lds		r18 , ADCSRA
+	sbr		r18 , 1<<6
+	sts		ADCSRA , r18
+
+	lds		r18 , ADCSRA
+	sbrc	r18 , 6
+	lds		r19 , ADCL
+	lds		r18 , ADCH
+
+	ldi		r21 , 0b01010101
+	st		Z+ , r19
+	st		Z , r21
+
+	jmp		return
+	/*
 JoyYMovement:
 	in		r25, PORTC
 	ldi		r18, 0b00000000
@@ -242,7 +264,7 @@ JoyYMovement:
 	breq	return
 	ldi		r18, 0b00001101
 	st		Z+, r18
-	jmp		return	
+	jmp		return	*/
 
 return:
 	ret
