@@ -98,6 +98,14 @@ main:
 		//Anroppar joyMovement som kollar om man rör joysticken
 		call	joyXMovement
 
+		
+			// återställer
+		ldi		ROW , 0b00000001
+		ldi		COL , 0b00000001
+		
+		ldi		ZL , low(matrix)
+		ldi		ZH , high(matrix)
+
 	jmp update
 	
 	pastD:
@@ -251,8 +259,7 @@ joyXMovement:
 	lds		r18 , ADCH
 
 	ldi		r21 , 0b01010101
-	st		Z+ , r19
-	st		Z , r21
+	st		Z , r19
 
 	jmp		return
 	/*

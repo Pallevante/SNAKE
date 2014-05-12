@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 11:24:10 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 11:31:22 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
 C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 already defined by the .DEF directive
@@ -1070,7 +1070,7 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alre
                  	
                  	blank:
 00004e 0f00      		lsl		ROW
-00004f 940c 005c 	jmp update
+00004f 940c 0060 	jmp update
                  	reset:
                  			// återställer
 000051 e001      		ldi		ROW , 0b00000001
@@ -1080,165 +1080,172 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alre
 000054 e0f1      		ldi		ZH , high(matrix)
                  
                  		//Anroppar joyMovement som kollar om man rör joysticken
-000055 940e 00c2 		call	joyXMovement
+000055 940e 00c6 		call	joyXMovement
                  
-000057 940c 005c 	jmp update
+                 		
+                 			// återställer
+000057 e001      		ldi		ROW , 0b00000001
+000058 e011      		ldi		COL , 0b00000001
+                 		
+000059 e0e0      		ldi		ZL , low(matrix)
+00005a e0f1      		ldi		ZH , high(matrix)
+                 
+00005b 940c 0060 	jmp update
                  	
                  	pastD:
                  		// byter rad
-000059 0f00      	lsl		ROW
-00005a 940c 005c 	jmp	update
+00005d 0f00      	lsl		ROW
+00005e 940c 0060 	jmp	update
                  
                  update:
                  
-00005c e011      	ldi		COL , 0b00000001
-00005d 9171      	ld		r23 , Z+	// värdet i matris ligger i r23
+000060 e011      	ldi		COL , 0b00000001
+000061 9171      	ld		r23 , Z+	// värdet i matris ligger i r23
                  // sista raden
-00005e 3000      	cpi		ROW , 0b00000000
-00005f f389      	breq	reset
+000062 3000      	cpi		ROW , 0b00000000
+000063 f369      	breq	reset
                  // tom rad
-000060 3070      	cpi		r23	, 0
-000061 f361      	breq	blank
+000064 3070      	cpi		r23	, 0
+000065 f341      	breq	blank
                  	
                  	// går förbi gränsen för port D
-000062 3100      	cpi		ROW , 0b00010000
-000063 f54c      	brge	printD
+000066 3100      	cpi		ROW , 0b00010000
+000067 f54c      	brge	printD
                  	// fixar bugg, har med signed att göra tror jag
-000064 3800      	cpi		ROW , 0b10000000
-000065 f139      	breq	printD
+000068 3800      	cpi		ROW , 0b10000000
+000069 f139      	breq	printD
                  		// print c
                  		updateCol:
-000066 3010      			cpi		COL , 0b00000000
-000067 f389      			breq	pastD
+00006a 3010      			cpi		COL , 0b00000000
+00006b f389      			breq	pastD
                  
-000068 2f21      			mov		r18 , COL
-000069 2327      			and		r18 , r23
+00006c 2f21      			mov		r18 , COL
+00006d 2327      			and		r18 , r23
                  				// r0 verkar bugga
-00006a e050      			ldi		r21 , 0b00000000
+00006e e050      			ldi		r21 , 0b00000000
                  
-00006b 3012      			cpi		COL , 0b00000010
-00006c f041      			breq	printColD
-00006d 3011      			cpi		COL , 0b00000001
-00006e f031      			breq	printColD
+00006f 3012      			cpi		COL , 0b00000010
+000070 f041      			breq	printColD
+000071 3011      			cpi		COL , 0b00000001
+000072 f031      			breq	printColD
                  			// printColB
-00006f 9526      			lsr		r18
-000070 9526      			lsr		r18
-000071 b908      			out		PORTC , ROW
-000072 b95b      			out		PORTD , r21
-000073 b925      			out		PORTB , r18
-000074 c009      			rjmp	pastColD
+000073 9526      			lsr		r18
+000074 9526      			lsr		r18
+000075 b908      			out		PORTC , ROW
+000076 b95b      			out		PORTD , r21
+000077 b925      			out		PORTB , r18
+000078 c009      			rjmp	pastColD
                  
                  		printColD:
-000075 0f22      				lsl		r18
-000076 0f22      				lsl		r18
-000077 0f22      				lsl		r18
-000078 0f22      				lsl		r18
 000079 0f22      				lsl		r18
 00007a 0f22      				lsl		r18
-00007b b908      				out		PORTC , ROW
-00007c b92b      				out		PORTD , r18
-00007d b955      				out		PORTB , r21
+00007b 0f22      				lsl		r18
+00007c 0f22      				lsl		r18
+00007d 0f22      				lsl		r18
+00007e 0f22      				lsl		r18
+00007f b908      				out		PORTC , ROW
+000080 b92b      				out		PORTD , r18
+000081 b955      				out		PORTB , r21
                  
                  		pastColD:
-00007e 0f11      				lsl		COL
+000082 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-00007f 940e 00da 				call swagMaster
-000081 940e 00da 				call swagMaster
-000083 940e 00da 				call swagMaster
-000085 940e 00da 				call swagMaster
-000087 940e 00da 				call swagMaster
-000089 940e 00da 				call swagMaster
+000083 940e 00dd 				call swagMaster
+000085 940e 00dd 				call swagMaster
+000087 940e 00dd 				call swagMaster
+000089 940e 00dd 				call swagMaster
+00008b 940e 00dd 				call swagMaster
+00008d 940e 00dd 				call swagMaster
                  
-00008b 940c 0066 		jmp updateCol
+00008f 940c 006a 		jmp updateCol
                  
                  		printD:
                  
                  
                  
                  		updateColD:
-00008d 3010      			cpi		COL , 0b00000000
-00008e f251      			breq	pastD
+000091 3010      			cpi		COL , 0b00000000
+000092 f251      			breq	pastD
                  
-00008f 2f21      			mov		r18 , COL
-000090 2327      			and		r18 , r23
+000093 2f21      			mov		r18 , COL
+000094 2327      			and		r18 , r23
                  				// r0 verkar bugga
-000091 e050      			ldi		r21 , 0b00000000
+000095 e050      			ldi		r21 , 0b00000000
                  
-000092 3012      			cpi		COL , 0b00000010
-000093 f061      			breq	printColDD
-000094 3011      			cpi		COL , 0b00000001
-000095 f051      			breq	printColDD
+000096 3012      			cpi		COL , 0b00000010
+000097 f061      			breq	printColDD
+000098 3011      			cpi		COL , 0b00000001
+000099 f051      			breq	printColDD
                  			// printColB
-000096 9526      			lsr		r18
-000097 9526      			lsr		r18
+00009a 9526      			lsr		r18
+00009b 9526      			lsr		r18
                  
                  			
-000098 9506      			lsr		ROW
-000099 9506      			lsr		ROW
-00009a b958      			out		PORTC , r21
-00009b b90b      			out		PORTD , ROW
-00009c b925      			out		PORTB , r18
-00009d 0f00      			lsl		ROW
-00009e 0f00      			lsl		ROW
+00009c 9506      			lsr		ROW
+00009d 9506      			lsr		ROW
+00009e b958      			out		PORTC , r21
+00009f b90b      			out		PORTD , ROW
+0000a0 b925      			out		PORTB , r18
+0000a1 0f00      			lsl		ROW
+0000a2 0f00      			lsl		ROW
                  
                  
                  
-00009f c00f      			rjmp	pastColDD
+0000a3 c00f      			rjmp	pastColDD
                  
                  		printColDD:
-0000a0 0f22      				lsl		r18
-0000a1 0f22      				lsl		r18
-0000a2 0f22      				lsl		r18
-0000a3 0f22      				lsl		r18
 0000a4 0f22      				lsl		r18
 0000a5 0f22      				lsl		r18
+0000a6 0f22      				lsl		r18
+0000a7 0f22      				lsl		r18
+0000a8 0f22      				lsl		r18
+0000a9 0f22      				lsl		r18
                  
-0000a6 9506      			lsr		ROW
-0000a7 9506      			lsr		ROW
-0000a8 2f30      			mov		r19 , ROW
-0000a9 2b32      			or		r19 , r18
-0000aa b958      			out		PORTC , r21
-0000ab b93b      			out		PORTD , r19
-0000ac b955      			out		PORTB , r21
-0000ad 0f00      			lsl		ROW
-0000ae 0f00      			lsl		ROW
+0000aa 9506      			lsr		ROW
+0000ab 9506      			lsr		ROW
+0000ac 2f30      			mov		r19 , ROW
+0000ad 2b32      			or		r19 , r18
+0000ae b958      			out		PORTC , r21
+0000af b93b      			out		PORTD , r19
+0000b0 b955      			out		PORTB , r21
+0000b1 0f00      			lsl		ROW
+0000b2 0f00      			lsl		ROW
                  
                  		pastColDD:
-0000af 0f11      				lsl		COL
+0000b3 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-0000b0 940e 00da 				call swagMaster
-0000b2 940e 00da 				call swagMaster
-0000b4 940e 00da 				call swagMaster
-0000b6 940e 00da 				call swagMaster
-0000b8 940e 00da 				call swagMaster
-0000ba 940e 00da 				call swagMaster
+0000b4 940e 00dd 				call swagMaster
+0000b6 940e 00dd 				call swagMaster
+0000b8 940e 00dd 				call swagMaster
+0000ba 940e 00dd 				call swagMaster
+0000bc 940e 00dd 				call swagMaster
+0000be 940e 00dd 				call swagMaster
                  
-0000bc 940c 008d 		jmp updateColD
+0000c0 940c 0091 		jmp updateColD
                  
-0000be 940c 0059 	jmp pastD
+0000c2 940c 005d 	jmp pastD
                  
-0000c0 940c 002c jmp main
+0000c4 940c 002c jmp main
                  
                  joyXMovement:
-0000c2 9120 007c 	lds		r18 , ADMUX
-0000c4 7f20      	andi	r18 , 0xF0
-0000c5 6025      	ori		r18 , 5		//x
-0000c6 9320 007c 	sts		ADMUX , r18
+0000c6 9120 007c 	lds		r18 , ADMUX
+0000c8 7f20      	andi	r18 , 0xF0
+0000c9 6025      	ori		r18 , 5		//x
+0000ca 9320 007c 	sts		ADMUX , r18
                  
-0000c8 9120 007a 	lds		r18 , ADCSRA
-0000ca 6420      	sbr		r18 , 1<<6
-0000cb 9320 007a 	sts		ADCSRA , r18
+0000cc 9120 007a 	lds		r18 , ADCSRA
+0000ce 6420      	sbr		r18 , 1<<6
+0000cf 9320 007a 	sts		ADCSRA , r18
                  
-0000cd 9120 007a 	lds		r18 , ADCSRA
-0000cf fd26      	sbrc	r18 , 6
-0000d0 9130 0078 	lds		r19 , ADCL
-0000d2 9120 0079 	lds		r18 , ADCH
+0000d1 9120 007a 	lds		r18 , ADCSRA
+0000d3 fd26      	sbrc	r18 , 6
+0000d4 9130 0078 	lds		r19 , ADCL
+0000d6 9120 0079 	lds		r18 , ADCH
                  
-0000d4 e555      	ldi		r21 , 0b01010101
-0000d5 9331      	st		Z+ , r19
-0000d6 8350      	st		Z , r21
+0000d8 e555      	ldi		r21 , 0b01010101
+0000d9 8330      	st		Z , r19
                  
-0000d7 940c 00d9 	jmp		return
+0000da 940c 00dc 	jmp		return
                  	/*
                  JoyYMovement:
                  	in		r25, PORTC
@@ -1251,12 +1258,12 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alre
                  	jmp		return	*/
                  
                  return:
-0000d9 9508      	ret
+0000dc 9508      	ret
                  
                  swagMaster:
-0000da 5051      	subi	r21, 1
-0000db 3051      	cpi		r21, 1
-0000dc f7ec      	brge	swagMaster
+0000dd 5051      	subi	r21, 1
+0000de 3051      	cpi		r21, 1
+0000df f7ec      	brge	swagMaster
 
 
 RESOURCE USE INFORMATION
@@ -1276,9 +1283,9 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  28 r17:  13 r18:  48 r19:   5 r20:   0 r21:  15 r22:   0 r23:   5 
-r24:   0 r25:   0 r26:   7 r27:   0 r28:   0 r29:   0 r30:   3 r31:   3 
-x  :   0 y  :   0 z  :  11 
+r16:  29 r17:  14 r18:  48 r19:   5 r20:   0 r21:  14 r22:   0 r23:   5 
+r24:   0 r25:   0 r26:   7 r27:   0 r28:   0 r29:   0 r30:   4 r31:   4 
+x  :   0 y  :   0 z  :  10 
 Registers used: 10 out of 35 (28.6%)
 
 "ATmega328P" instruction use summary:
@@ -1292,21 +1299,21 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :  11 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   8 
-ld    :   2 ldd   :   0 ldi   :  25 lds   :   7 lpm   :   0 lsl   :  20 
+ld    :   2 ldd   :   0 ldi   :  29 lds   :   7 lpm   :   0 lsl   :  20 
 lsr   :   8 mov   :   3 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   1 ori   :   1 out   :  21 pop   :   0 
 push  :   0 rcall :   0 ret   :   2 reti  :   0 rjmp  :   3 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   3 sbrc  :   1 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
-sez   :   0 sleep :   0 spm   :   0 st    :   9 std   :   0 sts   :   4 
+sez   :   0 sleep :   0 spm   :   0 st    :   8 std   :   0 sts   :   4 
 sub   :   0 subi  :   1 swap  :   0 tst   :   0 wdr   :   0 
 Instructions used: 25 out of 113 (22.1%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0001bc    382      0    382   32768   1.2%
+[.cseg] 0x000000 0x0001c2    388      0    388   32768   1.2%
 [.dseg] 0x000100 0x000108      0      8      8    2048   0.4%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

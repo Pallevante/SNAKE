@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 11:24:10 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 11:31:22 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -702,16 +702,16 @@ DEF  rTemp        r26
 CSEG main         0000002c
 CSEG timer        00000020
 CSEG blank        0000004e
-CSEG update       0000005c
+CSEG update       00000060
 CSEG reset        00000051
-CSEG joyXMovement 000000c2
-CSEG pastD        00000059
-CSEG printD       0000008d
-CSEG updateCol    00000066
-CSEG printColD    00000075
-CSEG pastColD     0000007e
-CSEG swagMaster   000000da
-CSEG updateColD   0000008d
-CSEG printColDD   000000a0
-CSEG pastColDD    000000af
-CSEG return       000000d9
+CSEG joyXMovement 000000c6
+CSEG pastD        0000005d
+CSEG printD       00000091
+CSEG updateCol    0000006a
+CSEG printColD    00000079
+CSEG pastColD     00000082
+CSEG swagMaster   000000dd
+CSEG updateColD   00000091
+CSEG printColDD   000000a4
+CSEG pastColDD    000000b3
+CSEG return       000000dc
