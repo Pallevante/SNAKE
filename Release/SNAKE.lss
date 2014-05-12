@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 17:05:39 2014
+AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 13:00:45 2014
 
 [builtin](2): Including file 'D:\Program\Mjukvara\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
 C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 already defined by the .DEF directive
@@ -1150,12 +1150,12 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alr
                  		pastColD:
 000082 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-000083 940e 00dc 				call swagMaster
-000085 940e 00dc 				call swagMaster
-000087 940e 00dc 				call swagMaster
-000089 940e 00dc 				call swagMaster
-00008b 940e 00dc 				call swagMaster
-00008d 940e 00dc 				call swagMaster
+000083 940e 00dd 				call swagMaster
+000085 940e 00dd 				call swagMaster
+000087 940e 00dd 				call swagMaster
+000089 940e 00dd 				call swagMaster
+00008b 940e 00dd 				call swagMaster
+00008d 940e 00dd 				call swagMaster
                  
 00008f 940c 006a 		jmp updateCol
                  
@@ -1214,12 +1214,12 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alr
                  		pastColDD:
 0000b3 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-0000b4 940e 00dc 				call swagMaster
-0000b6 940e 00dc 				call swagMaster
-0000b8 940e 00dc 				call swagMaster
-0000ba 940e 00dc 				call swagMaster
-0000bc 940e 00dc 				call swagMaster
-0000be 940e 00dc 				call swagMaster
+0000b4 940e 00dd 				call swagMaster
+0000b6 940e 00dd 				call swagMaster
+0000b8 940e 00dd 				call swagMaster
+0000ba 940e 00dd 				call swagMaster
+0000bc 940e 00dd 				call swagMaster
+0000be 940e 00dd 				call swagMaster
                  
 0000c0 940c 0091 		jmp updateColD
                  
@@ -1229,35 +1229,22 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alr
                  
                  joyXMovement:
                  
-                 	// Set source
-0000c6 9120 007c 	lds		r18, ADMUX
+0000c6 9120 007c 	lds		r18 , ADMUX
+0000c8 7f20      	andi	r18 , 0xF0
+0000c9 6025      	ori		r18 , 5		//x
+0000ca 9320 007c 	sts		ADMUX , r18
                  
-0000c8 6120      	sbr		r18, 1<<4
-0000c9 6220      	sbr		r18, 1<<5
-0000ca 6820      	sbr		r18, 1<<7
+0000cc 9120 007a 	lds		r18 , ADCSRA
+0000ce 6420      	sbr		r18 , 1<<6
+0000cf 9320 007a 	sts		ADCSRA , r18
                  
-0000cb 9320 007c 	sts		ADMUX, r18
+0000d1 9120 007a 	lds		r18 , ADCSRA
+0000d3 fd26      	sbrc	r18 , 6
+0000d4 9130 0078 	lds		r19 , ADCL
+0000d6 9120 0079 	lds		r18 , ADCH
                  
-                 	// Start conversion
-0000cd 9130 007a 	lds		r19, ADCSRA
-                 
-0000cf 6430      	sbr		r19, 1<<6
-0000d0 6830      	sbr		r19, 1<<7
-                 
-0000d1 9330 007a 	sts		ADCSRA, r19
-                 
-                 	// Wait for convertion
-                 	// I dont even kow if this bit works
-0000d3 fd36      	sbrc	r19, 6
-0000d4 9130 007a 	lds		r19, ADCSRA
-                 
-                 	// Output result
-0000d6 9140 0079 	lds		r20, ADCH
-0000d8 8340      	st		Z, r20
-                 
-                 	// Cry because you are incompetent
-                 	// Contemplate life choices
-                 	// Cry some more
+0000d8 e555      	ldi		r21 , 0b01010101
+0000d9 8330      	st		Z , r19
                  
                  /*
                  	lds		r18 , ADMUX
@@ -1278,7 +1265,7 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alr
                  	st		Z , r19
                  	*/
                  	
-0000d9 940c 00db 	jmp		return
+0000da 940c 00dc 	jmp		return
                  	/*
                  JoyYMovement:
                  	in		r25, PORTC
@@ -1291,12 +1278,12 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(17): warning: Register r26 alr
                  	jmp		return	*/
                  
                  return:
-0000db 9508      	ret
+0000dc 9508      	ret
                  
                  swagMaster:
-0000dc 5051      	subi	r21, 1
-0000dd 3051      	cpi		r21, 1
-0000de f7ec      	brge	swagMaster
+0000dd 5051      	subi	r21, 1
+0000de 3051      	cpi		r21, 1
+0000df f7ec      	brge	swagMaster
 
 
 RESOURCE USE INFORMATION
@@ -1316,14 +1303,14 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  29 r17:  14 r18:  43 r19:   9 r20:   2 r21:  13 r22:   0 r23:   5 
+r16:  29 r17:  14 r18:  48 r19:   5 r20:   0 r21:  14 r22:   0 r23:   5 
 r24:   0 r25:   0 r26:   7 r27:   0 r28:   0 r29:   0 r30:   4 r31:   4 
 x  :   0 y  :   0 z  :  10 
-Registers used: 11 out of 35 (31.4%)
+Registers used: 10 out of 35 (28.6%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   2 
-andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+andi  :   1 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :   9 brge  :   2 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
@@ -1332,21 +1319,21 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :  11 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :   8 
-ld    :   2 ldd   :   0 ldi   :  28 lds   :   6 lpm   :   0 lsl   :  20 
+ld    :   2 ldd   :   0 ldi   :  29 lds   :   7 lpm   :   0 lsl   :  20 
 lsr   :   8 mov   :   3 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   1 ori   :   0 out   :  21 pop   :   0 
+neg   :   0 nop   :   0 or    :   1 ori   :   1 out   :  21 pop   :   0 
 push  :   0 rcall :   0 ret   :   2 reti  :   0 rjmp  :   3 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
-sbiw  :   0 sbr   :   7 sbrc  :   1 sbrs  :   0 sec   :   0 seh   :   0 
+sbiw  :   0 sbr   :   3 sbrc  :   1 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   8 std   :   0 sts   :   4 
 sub   :   0 subi  :   1 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 23 out of 113 (20.4%)
+Instructions used: 25 out of 113 (22.1%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0001c0    386      0    386   32768   1.2%
+[.cseg] 0x000000 0x0001c2    388      0    388   32768   1.2%
 [.dseg] 0x000100 0x000108      0      8      8    2048   0.4%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

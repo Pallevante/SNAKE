@@ -59,17 +59,17 @@ main:
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
 
-	ldi		r18, 0b01000010
+	ldi		r18, 0b00000000
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b11111111
+	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b10000001
+	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b01000010
+	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00111100
+	ldi		r18, 0b00000000
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
@@ -244,6 +244,38 @@ update:
 jmp main
 
 joyXMovement:
+
+	// Set source
+	lds		r18, ADMUX
+
+	sbr		r18, 1<<4
+	sbr		r18, 1<<5
+	sbr		r18, 1<<7
+
+	sts		ADMUX, r18
+
+	// Start conversion
+	lds		r19, ADCSRA
+
+	sbr		r19, 1<<6
+	sbr		r19, 1<<7
+
+	sts		ADCSRA, r19
+
+	// Wait for convertion
+	// I dont even kow if this bit works
+	sbrc	r19, 6
+	lds		r19, ADCSRA
+
+	// Output result
+	lds		r20, ADCH
+	st		Z, r20
+
+	// Cry because you are incompetent
+	// Contemplate life choices
+	// Cry some more
+
+/*
 	lds		r18 , ADMUX
 	andi	r18 , 0xF0
 	ori		r18 , 5		//x
@@ -260,7 +292,8 @@ joyXMovement:
 
 	ldi		r21 , 0b01010101
 	st		Z , r19
-
+	*/
+	
 	jmp		return
 	/*
 JoyYMovement:

@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 17:05:39 2014
+AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Mon May 12 13:00:45 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -710,8 +710,8 @@ CSEG printD       00000091
 CSEG updateCol    0000006a
 CSEG printColD    00000079
 CSEG pastColD     00000082
-CSEG swagMaster   000000dc
+CSEG swagMaster   000000dd
 CSEG updateColD   00000091
 CSEG printColDD   000000a4
 CSEG pastColDD    000000b3
-CSEG return       000000db
+CSEG return       000000dc
