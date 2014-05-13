@@ -14,7 +14,7 @@
 .def	COL			= r17
 .def	joystickX	= r24
 .def	joystickY	= r25
-.def	rTemp		= r26
+.def	DIR			= r26
 
 .CSEG
 	.list
@@ -22,7 +22,7 @@
 
 .ORG 0x0020
 //Trooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooor detta fungerar... kanske
-	timer: 
+	/*timer: 
 		lds  rTemp, TCCR0B     // timer prescaling
 		sbr  rTemp, ((1 << CS02) | (0 << CS01) | (1 << CS00))
 		cbr  rTemp, (1 << CS01)
@@ -32,7 +32,7 @@
 		sts  TIMSK0, rTemp
 		sei
 
-
+*/
 
 main:
 	
@@ -43,14 +43,20 @@ main:
 	out		DDRD,r16
 
 	ldi		r21 , 0x00
+	//ldi		rtemp , 0
 
-	out		REFS0 , r16
-	out		REFS1 , r21
-	out		ADPS0 , r16
-	out		ADPS1 , r16
-	out		ADPS2 , r16
-	out		ADEN , r16
-
+	
+	lds		r16 , ADMUX
+	sbr		r16 , 1<<6
+	sbr		r16 , 0<<7
+	sts		ADMUX , r16
+	lds		r16 , ADCSRA
+	sbr		r16 , 1<<0
+	sbr		r16 , 1<<1
+	sbr		r16 , 1<<2
+	sbr		r16 , 1<<7
+	sts		ADCSRA , r16
+	
 	
 		// till swagmaster
 	ldi		r21, 255
@@ -59,6 +65,8 @@ main:
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
 
+	ldi		r18, 0b00000000
+	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
 	ldi		r18, 0b00000000
@@ -82,7 +90,6 @@ main:
 		// börjar kolla från första raden
 	ldi		ROW , 0b00000001
 	ldi		COL , 0b00000001
-
 	
 	blank:
 		lsl		ROW
@@ -97,11 +104,6 @@ main:
 
 		//Anroppar joyMovement som kollar om man rör joysticken
 		call	joyXMovement
-
-		
-			// återställer
-		ldi		ROW , 0b00000001
-		ldi		COL , 0b00000001
 		
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
@@ -150,7 +152,7 @@ update:
 			out		PORTC , ROW
 			out		PORTD , r21
 			out		PORTB , r18
-			rjmp	pastColD
+			jmp	pastColD
 
 		printColD:
 				lsl		r18
@@ -172,12 +174,13 @@ update:
 				call swagMaster
 				call swagMaster
 				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
 
 		jmp updateCol
 
 		printD:
-
-
 
 		updateColD:
 			cpi		COL , 0b00000000
@@ -196,7 +199,6 @@ update:
 			lsr		r18
 			lsr		r18
 
-			
 			lsr		ROW
 			lsr		ROW
 			out		PORTC , r21
@@ -205,9 +207,7 @@ update:
 			lsl		ROW
 			lsl		ROW
 
-
-
-			rjmp	pastColDD
+			jmp	pastColDD
 
 		printColDD:
 				lsl		r18
@@ -236,24 +236,24 @@ update:
 				call swagMaster
 				call swagMaster
 				call swagMaster
+				call swagMaster
+				call swagMaster
+				call swagMaster
 
 		jmp updateColD
-
-	jmp pastD
-
-jmp main
 
 joyXMovement:
 
 	// Set source
 	lds		r18, ADMUX
-
-	sbr		r18, 1<<4
+	
+	cbr		r18 , 0b00001111
+	sbr		r18 , 0b00000101
 	sbr		r18, 1<<5
 	sbr		r18, 1<<7
 
 	sts		ADMUX, r18
-
+	
 	// Start conversion
 	lds		r19, ADCSRA
 
@@ -262,55 +262,241 @@ joyXMovement:
 
 	sts		ADCSRA, r19
 
+	tempX:
 	// Wait for convertion
-	// I dont even kow if this bit works
-	sbrc	r19, 6
 	lds		r19, ADCSRA
+	sbrc	r19, 6
+	jmp		tempX
+
 
 	// Output result
-	lds		r20, ADCH
-	st		Z, r20
-
-	// Cry because you are incompetent
-	// Contemplate life choices
-	// Cry some more
-
-/*
-	lds		r18 , ADMUX
-	andi	r18 , 0xF0
-	ori		r18 , 5		//x
-	sts		ADMUX , r18
-
-	lds		r18 , ADCSRA
-	sbr		r18 , 1<<6
-	sts		ADCSRA , r18
-
-	lds		r18 , ADCSRA
-	sbrc	r18 , 6
 	lds		r19 , ADCL
-	lds		r18 , ADCH
+	lds		r20, ADCH
+	st		Z+ , r20
 
-	ldi		r21 , 0b01010101
-	st		Z , r19
-	*/
-	
-	jmp		return
-	/*
+
+
 JoyYMovement:
-	in		r25, PORTC
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	cpi		r25, 0
-	breq	return
-	ldi		r18, 0b00001101
-	st		Z+, r18
-	jmp		return	*/
+	// Set source
+	lds		r18, ADMUX
+	
+	cbr		r18 , 0b00001111
+	sbr		r18 , 0b00000100
+	//sbr		r18, 1<<5
+	sbr		r18, 1<<6
+
+	sts		ADMUX, r18
+	
+	// Start conversion
+	lds		r19, ADCSRA
+
+	sbr		r19, 1<<6
+	sbr		r19, 1<<7
+
+	sts		ADCSRA, r19
+
+	tempY:
+	// Wait for convertion
+	lds		r19, ADCSRA
+	sbrc	r19, 6
+	jmp		tempY
+	// Output result
+	lds		r19 , ADCL
+	lds		r20, ADCH
+	st		Z+ , r20
 
 return:
 	ret
+	
+	swagMaster:
 
-swagMaster:
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	ret
+
+
+	swagmaster2:
+	
 	subi	r21, 1
 	cpi		r21, 1
-	brge	swagMaster
-	ret	
+	breq	swagMaster2
+
+	ret
