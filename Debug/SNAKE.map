@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Tue May 13 15:43:48 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Tue May 13 16:55:09 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -696,25 +696,35 @@ EQU  INT_VECTORS_SIZE 00000034
 DSEG matrix       00000100
 DEF  ROW          r16
 DEF  COL          r17
-DEF  joystickX    r24
-DEF  joystickY    r25
-DEF  DIR          r26
-CSEG main         00000020
-CSEG blank        0000004c
-CSEG update       0000005c
-CSEG reset        0000004f
-CSEG joyXMovement 000000cc
-CSEG pastD        00000059
-CSEG printD       00000094
-CSEG updateCol    00000066
-CSEG printColD    00000076
-CSEG pastColD     0000007f
-CSEG swagMaster   000000fc
-CSEG updateColD   00000094
-CSEG printColDD   000000a8
-CSEG pastColDD    000000b7
-CSEG tempX        000000da
-CSEG JoyYMovement 000000e4
-CSEG tempY        000000f1
-CSEG return       000000fb
-CSEG swagmaster2  00000265
+DEF  DIR          r24
+DEF  LASTDIR      r25
+CSEG main         00000038
+CSEG test         00000023
+CSEG update       00000088
+CSEG timer        00000038
+CSEG joyupdate    00000072
+CSEG joyXMovement 000000f8
+CSEG reset        0000007b
+CSEG blank        00000078
+CSEG pastD        00000085
+CSEG printD       000000c0
+CSEG updateCol    00000092
+CSEG printColD    000000a2
+CSEG pastColD     000000ab
+CSEG swagMaster   00000142
+CSEG updateColD   000000c0
+CSEG printColDD   000000d4
+CSEG pastColDD    000000e3
+CSEG tempX        00000106
+CSEG right        00000116
+CSEG left         00000119
+CSEG pastleft     0000011a
+CSEG JoyYMovement 0000011a
+CSEG tempY        00000127
+CSEG down         00000136
+CSEG up           00000139
+CSEG pastup       0000013a
+CSEG last         0000013e
+CSEG pastlast     0000013f
+CSEG return       00000141
+CSEG swagmaster2  00000147

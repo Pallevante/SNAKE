@@ -12,30 +12,55 @@
 
 .def	ROW			= r16
 .def	COL			= r17
-.def	joystickX	= r24
-.def	joystickY	= r25
-.def	DIR			= r26
+.def	DIR			= r24
+.def	LASTDIR		= r25
 
 .CSEG
+	
 	.list
 		rjmp      main
 
+		
 .ORG 0x0020
 //Trooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooor detta fungerar... kanske
-	/*timer: 
-		lds  rTemp, TCCR0B     // timer prescaling
-		sbr  rTemp, ((1 << CS02) | (0 << CS01) | (1 << CS00))
-		cbr  rTemp, (1 << CS01)
-		sts  TCCR0B, rTemp
-		lds  rTemp, TIMSK0     // start timer
-		sbr  rTemp, (1 << TOIE0)
-		sts  TIMSK0, rTemp
+	jmp test
+	nop
+
+	test:
+	
+	ldi		r18, 0b01111000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		r18, 0b00011000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		r18, 0b11111000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		ZL , low(matrix)
+	ldi		ZH , high(matrix)
+	ld		r23 , Z		// värdet i matris ligger i r23
+	jmp update
+main:
+	timer: 
+		lds  r21, TCCR0B     // timer prescaling
+		sbr  r21, ((1 << CS02) | (1 << CS00))
+		cbr  r21, (1 << CS01)
+		sts  TCCR0B, r21
+		lds  r21, TIMSK0     // start timer
+		sbr  r21, (1 << TOIE0)
+		
+		ori	 r21 , 0b00000001
+		sts  TIMSK0, r21
 		sei
 
-*/
-
-main:
-	
 		// så att vi kan använda portarna
     ldi		r16,0xFF
     out		DDRB,r16
@@ -60,6 +85,8 @@ main:
 	
 		// till swagmaster
 	ldi		r21, 255
+
+	ldi		LASTDIR , 0b00000001
 
 		// matris
 	ldi		ZL , low(matrix)
@@ -90,6 +117,13 @@ main:
 		// börjar kolla från första raden
 	ldi		ROW , 0b00000001
 	ldi		COL , 0b00000001
+	joyupdate:
+	ldi		ZL , low(matrix)
+	ldi		ZH , high(matrix)
+
+	//Anroppar joyMovement som kollar om man rör joysticken
+	call	joyXMovement
+	jmp		reset
 	
 	blank:
 		lsl		ROW
@@ -98,13 +132,11 @@ main:
 			// återställer
 		ldi		ROW , 0b00000001
 		ldi		COL , 0b00000001
-		
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
 		//Anroppar joyMovement som kollar om man rör joysticken
-		call	joyXMovement
-		
+		call	joyXMovement	
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
@@ -272,9 +304,21 @@ joyXMovement:
 	// Output result
 	lds		r19 , ADCL
 	lds		r20, ADCH
-	st		Z+ , r20
 
+	cpi		r20, 0b00000010
+	brlo	right
+	cpi		r20, 0b00001000
+	brsh	left
 
+	ldi		DIR, 0b00000000
+	jmp		pastleft
+
+	right:
+	ldi		DIR , 0b0000001
+	jmp		pastleft
+	left:
+	ldi		DIR , 0b0000010
+	pastleft:
 
 JoyYMovement:
 	// Set source
@@ -303,191 +347,38 @@ JoyYMovement:
 	// Output result
 	lds		r19 , ADCL
 	lds		r20, ADCH
-	st		Z+ , r20
+
+
+	cpi		r20, 0b00000100
+	brlo	down
+	cpi		r20, 0b00010000
+	brsh	up
+
+	jmp		pastup
+
+	down:
+	ldi		DIR , 0b0000100
+	jmp		pastup
+	up:
+	ldi		DIR , 0b0001000
+	pastup:
+
+	cpi		DIR , 0b00000000
+	breq	last
+	jmp	pastlast
+	last:
+	mov		DIR , LASTDIR
+	pastlast:
+	
+	mov		LASTDIR , DIR
+
+	st		Z , DIR
 
 return:
 	ret
 	
 	swagMaster:
 
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
-	call swagmaster2
 	call swagmaster2
 	call swagmaster2
 	ret
