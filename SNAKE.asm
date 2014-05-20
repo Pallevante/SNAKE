@@ -14,52 +14,58 @@
 .def	COL			= r17
 .def	DIR			= r24
 .def	LASTDIR		= r25
+.def	SNAKEX		= r22
+.def	SNAKEY		= r27
 
 .CSEG
 	
 	.list
 		rjmp      main
-
 		
 .ORG 0x0020
-//Trooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooor detta fungerar... kanske
-	jmp test
+	jmp supermegatimer
 	nop
 
-	test:
+	supermegatimer:
+	call swagmaster
+	call swagmaster
+	call swagmaster
+	call swagmaster
+	call swagmaster
+	subi	r26 , -1
 	
-	ldi		r18, 0b01111000
-	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		r18, 0b00011000
-	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		r18, 0b11111000
-	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		r18, 0b00000000
-	st		Z+, r18
-	ldi		ZL , low(matrix)
-	ldi		ZH , high(matrix)
-	ld		r23 , Z		// värdet i matris ligger i r23
-	jmp update
+	lds  r21, TIMSK0     // start timer
+	ldi	 r21 , 0b00000001
+	sts  TIMSK0, r21
+
+	cpi		r26 , 0b00111110
+	breq	mklmkl
+
+	reti
+
+	mklmkl:
+		call joyXMovement
+		ldi	r26 , 0b00000000
+
+		cp	DIR, 0b00000001
+		breq moveRight
+
+
+		moveRight:
+
+
+	
+	reti
+
 main:
 	timer: 
 		lds  r21, TCCR0B     // timer prescaling
-		sbr  r21, ((1 << CS02) | (1 << CS00))
-		cbr  r21, (1 << CS01)
-		sts  TCCR0B, r21
-		lds  r21, TIMSK0     // start timer
-		sbr  r21, (1 << TOIE0)
-		
-		ori	 r21 , 0b00000001
-		sts  TIMSK0, r21
+		ori	 r21, 0b00000101
+		out  TCCR0B, r21
 		sei
+		lds  r21, TIMSK0     // start timer
+		ldi	 r21, 0b00000001
+		sts  TIMSK0, r21
 
 		// så att vi kan använda portarna
     ldi		r16,0xFF
@@ -82,17 +88,20 @@ main:
 	sbr		r16 , 1<<7
 	sts		ADCSRA , r16
 	
+	ldi		SNAKEX, 0b00001000
+	ldi		SNAKEY, 0b00001000
 	
 		// till swagmaster
 	ldi		r21, 255
 
 	ldi		LASTDIR , 0b00000001
+	ldi		r26 , 2
 
 		// matris
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
 
-	ldi		r18, 0b00000000
+	mov	    r18, r26
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
@@ -120,14 +129,13 @@ main:
 	joyupdate:
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
-
-	//Anroppar joyMovement som kollar om man rör joysticken
-	call	joyXMovement
+	
 	jmp		reset
 	
 	blank:
 		lsl		ROW
 	jmp update
+
 	reset:
 			// återställer
 		ldi		ROW , 0b00000001
@@ -136,7 +144,7 @@ main:
 		ldi		ZH , high(matrix)
 
 		//Anroppar joyMovement som kollar om man rör joysticken
-		call	joyXMovement	
+		//call	joyXMovement	
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
@@ -276,6 +284,9 @@ update:
 
 joyXMovement:
 
+		ldi		ZL , low(matrix)
+		ldi		ZH , high(matrix)
+
 	// Set source
 	lds		r18, ADMUX
 	
@@ -305,7 +316,7 @@ joyXMovement:
 	lds		r19 , ADCL
 	lds		r20, ADCH
 
-	cpi		r20, 0b00000010
+	cpi		r20, 0b00000110
 	brlo	right
 	cpi		r20, 0b00001000
 	brsh	left
@@ -379,6 +390,12 @@ return:
 	
 	swagMaster:
 
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
 	call swagmaster2
 	call swagmaster2
 	ret

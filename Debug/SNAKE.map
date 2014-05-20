@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Tue May 13 16:55:09 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Tue May 20 15:27:24 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -698,33 +698,34 @@ DEF  ROW          r16
 DEF  COL          r17
 DEF  DIR          r24
 DEF  LASTDIR      r25
-CSEG main         00000038
-CSEG test         00000023
-CSEG update       00000088
-CSEG timer        00000038
+CSEG main         0000003a
+CSEG supermegatimer 00000023
+CSEG swagmaster   00000140
+CSEG mklmkl       00000036
+CSEG joyXMovement 000000f4
+CSEG timer        0000003a
 CSEG joyupdate    00000072
-CSEG joyXMovement 000000f8
-CSEG reset        0000007b
-CSEG blank        00000078
-CSEG pastD        00000085
-CSEG printD       000000c0
-CSEG updateCol    00000092
-CSEG printColD    000000a2
-CSEG pastColD     000000ab
-CSEG swagMaster   00000142
-CSEG updateColD   000000c0
-CSEG printColDD   000000d4
-CSEG pastColDD    000000e3
-CSEG tempX        00000106
-CSEG right        00000116
-CSEG left         00000119
-CSEG pastleft     0000011a
-CSEG JoyYMovement 0000011a
-CSEG tempY        00000127
-CSEG down         00000136
-CSEG up           00000139
-CSEG pastup       0000013a
-CSEG last         0000013e
-CSEG pastlast     0000013f
-CSEG return       00000141
-CSEG swagmaster2  00000147
+CSEG reset        00000079
+CSEG blank        00000076
+CSEG update       00000084
+CSEG pastD        00000081
+CSEG printD       000000bc
+CSEG updateCol    0000008e
+CSEG printColD    0000009e
+CSEG pastColD     000000a7
+CSEG updateColD   000000bc
+CSEG printColDD   000000d0
+CSEG pastColDD    000000df
+CSEG tempX        00000104
+CSEG right        00000114
+CSEG left         00000117
+CSEG pastleft     00000118
+CSEG JoyYMovement 00000118
+CSEG tempY        00000125
+CSEG down         00000134
+CSEG up           00000137
+CSEG pastup       00000138
+CSEG last         0000013c
+CSEG pastlast     0000013d
+CSEG return       0000013f
+CSEG swagmaster2  00000151
