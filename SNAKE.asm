@@ -38,6 +38,8 @@
 	ldi	 r21 , 0b00000001
 	sts  TIMSK0, r21
 
+	call	moveDot
+
 	cpi		r26 , 0b00111110
 	breq	mklmkl
 
@@ -48,15 +50,19 @@
 		ldi		r26 , 0b00000000
 
 		// Check last direction
+		
 		cpi		DIR, 0b00000001
 		breq	moveRight
 
+		
 		cpi		DIR, 0b00000010
 		breq	moveLeft
 
+		
 		cpi		DIR, 0b00001000
 		breq	moveUp
 
+	
 		cpi		DIR, 0b00000100
 		breq	moveDown
 
@@ -70,16 +76,47 @@
 			jmp		moveComplete
 
 		moveUp:
-			lsl		SNAKEY
-			jmp		moveComplete
-
-		moveDown:
 			lsr		SNAKEY
 			jmp		moveComplete
 
+		moveDown:
+			lsl		SNAKEY
+			jmp		moveComplete
+
 		moveComplete:
-			st		Z , SNAKEX
 			reti
+
+	moveDot:
+		ldi		r18, 0b00000001
+		ldi		ZL , low(matrix)
+		ldi		ZH , high(matrix)
+
+
+		moveDotUpdate:
+			mov		r16 , SNAKEY
+			and		r16 , r18
+
+			cpi		r16 , 0b00000000
+			brne	enterthematrix	
+
+			jmp pastenter
+			enterthematrix:
+
+				st		Z+, SNAKEX
+
+			jmp pastpast
+			pastenter:
+			
+				ldi		r16, 0b00000000
+				st		Z+, r16
+
+			pastpast:
+
+			lsl		r18
+			cpi		r18, 0b00000000
+			brne	moveDotUpdate
+
+		ret
 
 main:
 	timer: 
@@ -349,9 +386,14 @@ joyXMovement:
 	jmp		pastleft
 
 	right:
+	cpi		DIR	, 0b0000010
+	breq	pastleft
 	ldi		DIR , 0b0000001
 	jmp		pastleft
+
 	left:
+	cpi		DIR , 0b0000001
+	breq	pastleft
 	ldi		DIR , 0b0000010
 	pastleft:
 
@@ -383,10 +425,11 @@ JoyYMovement:
 	lds		r19 , ADCL
 	lds		r20, ADCH
 
-
 	cpi		r20, 0b00000100
+	sbrs	LASTDIR , 3
 	brlo	down
 	cpi		r20, 0b00010000
+	sbrs	LASTDIR , 2
 	brsh	up
 
 	jmp		pastup
