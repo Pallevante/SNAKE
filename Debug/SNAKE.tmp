@@ -1,17 +1,17 @@
 <ASSEMBLER_INFO>
  <VERSION>2.1.52</VERSION>
  <DEVICE>"ATmega328P"</DEVICE>
- <WORKING_DIR>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug</WORKING_DIR>
+ <WORKING_DIR>C:\Users\Mattias\Documents\GitHub\SNAKE\Debug</WORKING_DIR>
  <INCLUDE_PATH>
-  <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include</DIR>
+  <DIR>D:\Program\Mjukvara\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</SOURCE_FILE>
  <INCLUDED_FILES>
-  <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc</FILE>
+  <FILE>D:\Program\Mjukvara\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\Debug/SNAKE.obj</FILE>
+  <FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\Debug/SNAKE.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>SNAKE.hex</FILE>
@@ -21,37 +21,42 @@
   <FILE>SNAKE.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <matrix><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
-  <main><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>51</LINE></main>
-  <supermegatimer><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>28</LINE></supermegatimer>
-  <swagmaster><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>380</LINE></swagmaster>
-  <mklmkl><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>45</LINE></mklmkl>
-  <joyXMovement><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>274</LINE></joyXMovement>
-  <timer><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>52</LINE></timer>
-  <joyupdate><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>118</LINE></joyupdate>
-  <reset><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>128</LINE></reset>
-  <blank><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>124</LINE></blank>
-  <update><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>147</LINE></update>
-  <pastD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>142</LINE></pastD>
-  <printD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>212</LINE></printD>
-  <updateCol><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>165</LINE></updateCol>
-  <printColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>186</LINE></printColD>
-  <pastColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>197</LINE></pastColD>
-  <updateColD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>214</LINE></updateColD>
-  <printColDD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>241</LINE></printColDD>
-  <pastColDD><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>259</LINE></pastColDD>
-  <tempX><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>297</LINE></tempX>
-  <right><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>316</LINE></right>
-  <left><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>319</LINE></left>
-  <pastleft><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>321</LINE></pastleft>
-  <JoyYMovement><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>323</LINE></JoyYMovement>
-  <tempY><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>342</LINE></tempY>
-  <down><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>359</LINE></down>
-  <up><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>362</LINE></up>
-  <pastup><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>364</LINE></pastup>
-  <last><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>369</LINE></last>
-  <pastlast><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>371</LINE></pastlast>
-  <return><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>377</LINE></return>
-  <swagmaster2><FILE>C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>393</LINE></swagmaster2>
+  <matrix><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>10</LINE></matrix>
+  <main><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>84</LINE></main>
+  <supermegatimer><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>29</LINE></supermegatimer>
+  <swagmaster><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>415</LINE></swagmaster>
+  <mklmkl><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>46</LINE></mklmkl>
+  <joyXMovement><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>309</LINE></joyXMovement>
+  <moveRight><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>64</LINE></moveRight>
+  <moveLeft><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>68</LINE></moveLeft>
+  <moveUp><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>72</LINE></moveUp>
+  <moveDown><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>76</LINE></moveDown>
+  <moveComplete><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>80</LINE></moveComplete>
+  <timer><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>85</LINE></timer>
+  <joyupdate><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>153</LINE></joyupdate>
+  <reset><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>163</LINE></reset>
+  <blank><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>159</LINE></blank>
+  <update><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>182</LINE></update>
+  <pastD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>177</LINE></pastD>
+  <printD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>247</LINE></printD>
+  <updateCol><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>200</LINE></updateCol>
+  <printColD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>221</LINE></printColD>
+  <pastColD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>232</LINE></pastColD>
+  <updateColD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>249</LINE></updateColD>
+  <printColDD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>276</LINE></printColDD>
+  <pastColDD><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>294</LINE></pastColDD>
+  <tempX><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>332</LINE></tempX>
+  <right><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>351</LINE></right>
+  <left><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>354</LINE></left>
+  <pastleft><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>356</LINE></pastleft>
+  <JoyYMovement><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>358</LINE></JoyYMovement>
+  <tempY><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>377</LINE></tempY>
+  <down><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>394</LINE></down>
+  <up><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>397</LINE></up>
+  <pastup><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>399</LINE></pastup>
+  <last><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>404</LINE></last>
+  <pastlast><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>406</LINE></pastlast>
+  <return><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>412</LINE></return>
+  <swagmaster2><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>428</LINE></swagmaster2>
  </LABELS>
 </ASSEMBLER_INFO>

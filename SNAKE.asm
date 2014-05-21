@@ -3,7 +3,7 @@
  *
  *  Created: 2014-04-25 08:02:33
  *   Author: b13petha
- *   Slaves: Simon, Henrik och that (gay retarded) guy...
+ *   Slaves: Simon, Henrik och Von Thundercunt af Twatsylvania
  */ 
  .DSEG
 	//Fuck all.
@@ -44,18 +44,42 @@
 	reti
 
 	mklmkl:
-		call joyXMovement
-		ldi	r26 , 0b00000000
+		call	joyXMovement
+		ldi		r26 , 0b00000000
 
-		cp	DIR, 0b00000001
-		breq moveRight
+		// Check last direction
+		cpi		DIR, 0b00000001
+		breq	moveRight
 
+		cpi		DIR, 0b00000010
+		breq	moveLeft
 
+		cpi		DIR, 0b00001000
+		breq	moveUp
+
+		cpi		DIR, 0b00000100
+		breq	moveDown
+
+		// Move snake head
 		moveRight:
+			lsl		SNAKEX
+			jmp		moveComplete
 
+		moveLeft:
+			lsr		SNAKEX
+			jmp		moveComplete
 
-	
-	reti
+		moveUp:
+			lsl		SNAKEY
+			jmp		moveComplete
+
+		moveDown:
+			lsr		SNAKEY
+			jmp		moveComplete
+
+		moveComplete:
+			st		Z , SNAKEX
+			reti
 
 main:
 	timer: 
@@ -383,7 +407,7 @@ JoyYMovement:
 	
 	mov		LASTDIR , DIR
 
-	st		Z , DIR
+	//st		Z , DIR
 
 return:
 	ret
