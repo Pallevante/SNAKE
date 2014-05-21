@@ -44,6 +44,7 @@
 	sts  TIMSK0, r16
 
 	call	moveDot
+	call	movebody
 
 	cpi		r26 , 0b00111110
 	breq	mklmkl
@@ -59,15 +60,12 @@
 		cpi		DIR, 0b00000001
 		breq	moveRight
 
-		
 		cpi		DIR, 0b00000010
 		breq	moveLeft
 
-		
 		cpi		DIR, 0b00001000
 		breq	moveUp
 
-	
 		cpi		DIR, 0b00000100
 		breq	moveDown
 
@@ -87,6 +85,8 @@
 		moveDown:
 			lsl		SNAKEY
 			jmp		moveComplete
+
+			jmp moveBodyDir
 
 		moveComplete:
 			reti
@@ -123,6 +123,46 @@
 
 		ret
 
+	movebody:
+		
+		ldi		r18, 0b00000001
+		ldi		ZL , low(matrix)
+		ldi		ZH , high(matrix)
+
+
+		superdupermega:
+			mov		r16 , BODYY
+			and		r16 , r18
+
+			cpi		r16 , 0b00000000
+			brne	enterthebodymatrix	
+
+			jmp pastbodyenter
+			enterthebodymatrix:
+				ld		r16 , Z
+				or		r16 , BODYX
+				st		Z+, r16
+
+			jmp pastbodypast
+			pastbodyenter:
+			
+				ld		r16 , Z
+				st		Z+, r16
+
+			pastbodypast:
+
+			lsl		r18
+			cpi		r18, 0b00000000
+			brne	superdupermega
+
+	ret
+
+	moveBodyDir:
+
+
+	jmp moveComplete
+
+
 main:
 	timer: 
 		lds  r16, TCCR0B     // timer prescaling
@@ -156,6 +196,8 @@ main:
 	ldi		SNAKEX, 0b00001000
 	ldi		SNAKEY, 0b00001000
 	
+	ldi		BODYX, 0b00001000
+	ldi		BODYY, 0b00001000
 
 	ldi		LASTDIR , 0b00000001
 	ldi		r26 , 2
@@ -386,6 +428,12 @@ joyXMovement:
 	ldi		DIR, 0b00000000
 	jmp		pastleft
 
+	/*
+		Comparen innan ldi i dessa subrutiner kollar
+		ifall snakey redan går åt motsatta håll. 
+		Detta för att man inte ska kunna gå igenom
+		ormen igen och direkt förlora.
+	*/
 	right:
 	cpi		DIR	, 0b0000010
 	breq	pastleft
@@ -425,7 +473,12 @@ JoyYMovement:
 	// Output result
 	lds		r28 , ADCL
 	lds		r20, ADCH
-
+	/*
+		Comparen nedan i dessa subrutiner kollar
+		ifall snakey redan går åt något av dessa håll. 
+		Detta för att man inte ska kunna gå igenom
+		ormen igen och direkt förlora.
+	*/
 	cpi		r20, 0b00000100
 	sbrs	LASTDIR , 3
 	brlo	down
