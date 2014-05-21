@@ -10,12 +10,17 @@
 	matrix:
 		.byte	8
 
+	wormbodydir:
+		.byte	63
+
 .def	ROW			= r16
 .def	COL			= r17
 .def	DIR			= r24
 .def	LASTDIR		= r25
 .def	SNAKEX		= r22
 .def	SNAKEY		= r27
+.def	BODYX		= r1
+.def	BODYY		= r1
 
 .CSEG
 	
@@ -33,16 +38,16 @@
 	call swagmaster
 	call swagmaster
 	subi	r26 , -1
-	
-	lds  r21, TIMSK0     // start timer
-	ldi	 r21 , 0b00000001
-	sts  TIMSK0, r21
+	/*
+	lds  r16, TIMSK0     // start timer
+	ldi	 r16 , 0b00000001
+	sts  TIMSK0, r16
 
 	call	moveDot
 
 	cpi		r26 , 0b00111110
 	breq	mklmkl
-
+	*/
 	reti
 
 	mklmkl:
@@ -120,21 +125,20 @@
 
 main:
 	timer: 
-		lds  r21, TCCR0B     // timer prescaling
-		ori	 r21, 0b00000101
-		out  TCCR0B, r21
+		lds  r16, TCCR0B     // timer prescaling
+		ori	 r16, 0b00000101
+		out  TCCR0B, r16
 		sei
-		lds  r21, TIMSK0     // start timer
-		ldi	 r21, 0b00000001
-		sts  TIMSK0, r21
-
+	/*	lds  r16, TIMSK0     // start timer
+		ldi	 r16, 0b00000001
+		sts  TIMSK0, r16
+		*/
 		// så att vi kan använda portarna
     ldi		r16,0xFF
     out		DDRB,r16
 	out		DDRC,r16
 	out		DDRD,r16
 
-	ldi		r21 , 0x00
 	//ldi		rtemp , 0
 
 	
@@ -152,8 +156,6 @@ main:
 	ldi		SNAKEX, 0b00001000
 	ldi		SNAKEY, 0b00001000
 	
-		// till swagmaster
-	ldi		r21, 255
 
 	ldi		LASTDIR , 0b00000001
 	ldi		r26 , 2
@@ -168,11 +170,11 @@ main:
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00000000
+	ldi		r18, 0b00111111
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00000000
+	ldi		r18, 0b00011111
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
@@ -182,7 +184,6 @@ main:
 	ldi		ZH , high(matrix)
 	ld		r23 , Z		// värdet i matris ligger i r23
 	
-	ldi		r21 , 0b00000000
 
 		// börjar kolla från första raden
 	ldi		ROW , 0b00000001
@@ -241,7 +242,7 @@ update:
 			mov		r18 , COL
 			and		r18 , r23
 				// r0 verkar bugga
-			ldi		r21 , 0b00000000
+			ldi		r16 , 0b00000000
 
 			cpi		COL , 0b00000010
 			breq	printColD
@@ -251,7 +252,7 @@ update:
 			lsr		r18
 			lsr		r18
 			out		PORTC , ROW
-			out		PORTD , r21
+			out		PORTD , r16
 			out		PORTB , r18
 			jmp	pastColD
 
@@ -264,7 +265,7 @@ update:
 				lsl		r18
 				out		PORTC , ROW
 				out		PORTD , r18
-				out		PORTB , r21
+				out		PORTB , r16
 
 		pastColD:
 				lsl		COL
@@ -290,7 +291,7 @@ update:
 			mov		r18 , COL
 			and		r18 , r23
 				// r0 verkar bugga
-			ldi		r21 , 0b00000000
+			ldi		r16 , 0b00000000
 
 			cpi		COL , 0b00000010
 			breq	printColDD
@@ -302,7 +303,7 @@ update:
 
 			lsr		ROW
 			lsr		ROW
-			out		PORTC , r21
+			out		PORTC , r16
 			out		PORTD , ROW
 			out		PORTB , r18
 			lsl		ROW
@@ -322,9 +323,9 @@ update:
 			lsr		ROW
 			mov		r19 , ROW
 			or		r19 , r18
-			out		PORTC , r21
+			out		PORTC , r16
 			out		PORTD , r19
-			out		PORTB , r21
+			out		PORTB , r16
 			lsl		ROW
 			lsl		ROW
 
@@ -470,8 +471,8 @@ return:
 
 	swagmaster2:
 	
-	subi	r21, 1
-	cpi		r21, 1
+	subi	r16, 1
+	cpi		r16, 1
 	breq	swagMaster2
 
 	ret
