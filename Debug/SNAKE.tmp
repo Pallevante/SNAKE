@@ -26,6 +26,7 @@
   <main><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>126</LINE></main>
   <supermegatimer><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>34</LINE></supermegatimer>
   <swagmaster><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>459</LINE></swagmaster>
+  <moveDot><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>94</LINE></moveDot>
   <mklmkl><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>53</LINE></mklmkl>
   <joyXMovement><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>347</LINE></joyXMovement>
   <moveRight><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>75</LINE></moveRight>
@@ -33,7 +34,6 @@
   <moveUp><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>83</LINE></moveUp>
   <moveDown><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>87</LINE></moveDown>
   <moveComplete><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>91</LINE></moveComplete>
-  <moveDot><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>94</LINE></moveDot>
   <moveDotUpdate><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>100</LINE></moveDotUpdate>
   <enterthematrix><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>108</LINE></enterthematrix>
   <pastenter><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>113</LINE></pastenter>

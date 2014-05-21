@@ -19,8 +19,8 @@
 .def	LASTDIR		= r25
 .def	SNAKEX		= r22
 .def	SNAKEY		= r27
-.def	BODYX		= r1
-.def	BODYY		= r1
+.def	BODYX		= r21
+.def	BODYY		= r19
 
 .CSEG
 	
@@ -38,7 +38,7 @@
 	call swagmaster
 	call swagmaster
 	subi	r26 , -1
-	/*
+	
 	lds  r16, TIMSK0     // start timer
 	ldi	 r16 , 0b00000001
 	sts  TIMSK0, r16
@@ -47,7 +47,7 @@
 
 	cpi		r26 , 0b00111110
 	breq	mklmkl
-	*/
+
 	reti
 
 	mklmkl:
@@ -129,10 +129,10 @@ main:
 		ori	 r16, 0b00000101
 		out  TCCR0B, r16
 		sei
-	/*	lds  r16, TIMSK0     // start timer
+		lds  r16, TIMSK0     // start timer
 		ldi	 r16, 0b00000001
 		sts  TIMSK0, r16
-		*/
+
 		// så att vi kan använda portarna
     ldi		r16,0xFF
     out		DDRB,r16
@@ -170,11 +170,11 @@ main:
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00111111
+	ldi		r18, 0b00000000
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
-	ldi		r18, 0b00011111
+	ldi		r18, 0b00000000
 	st		Z+, r18
 	ldi		r18, 0b00000000
 	st		Z+, r18
@@ -242,7 +242,7 @@ update:
 			mov		r18 , COL
 			and		r18 , r23
 				// r0 verkar bugga
-			ldi		r16 , 0b00000000
+			ldi		r29 , 0b00000000
 
 			cpi		COL , 0b00000010
 			breq	printColD
@@ -252,7 +252,7 @@ update:
 			lsr		r18
 			lsr		r18
 			out		PORTC , ROW
-			out		PORTD , r16
+			out		PORTD , r29
 			out		PORTB , r18
 			jmp	pastColD
 
@@ -265,7 +265,7 @@ update:
 				lsl		r18
 				out		PORTC , ROW
 				out		PORTD , r18
-				out		PORTB , r16
+				out		PORTB , r29
 
 		pastColD:
 				lsl		COL
@@ -291,7 +291,7 @@ update:
 			mov		r18 , COL
 			and		r18 , r23
 				// r0 verkar bugga
-			ldi		r16 , 0b00000000
+			ldi		r29 , 0b00000000
 
 			cpi		COL , 0b00000010
 			breq	printColDD
@@ -303,7 +303,7 @@ update:
 
 			lsr		ROW
 			lsr		ROW
-			out		PORTC , r16
+			out		PORTC , r29
 			out		PORTD , ROW
 			out		PORTB , r18
 			lsl		ROW
@@ -321,11 +321,11 @@ update:
 
 			lsr		ROW
 			lsr		ROW
-			mov		r19 , ROW
-			or		r19 , r18
-			out		PORTC , r16
-			out		PORTD , r19
-			out		PORTB , r16
+			mov		r28 , ROW
+			or		r28 , r18
+			out		PORTC , r29
+			out		PORTD , r28
+			out		PORTB , r29
 			lsl		ROW
 			lsl		ROW
 
@@ -360,22 +360,22 @@ joyXMovement:
 	sts		ADMUX, r18
 	
 	// Start conversion
-	lds		r19, ADCSRA
+	lds		r28, ADCSRA
 
-	sbr		r19, 1<<6
-	sbr		r19, 1<<7
+	sbr		r28, 1<<6
+	sbr		r28, 1<<7
 
-	sts		ADCSRA, r19
+	sts		ADCSRA, r28
 
 	tempX:
 	// Wait for convertion
-	lds		r19, ADCSRA
-	sbrc	r19, 6
+	lds		r28, ADCSRA
+	sbrc	r28, 6
 	jmp		tempX
 
 
 	// Output result
-	lds		r19 , ADCL
+	lds		r28 , ADCL
 	lds		r20, ADCH
 
 	cpi		r20, 0b00000110
@@ -410,20 +410,20 @@ JoyYMovement:
 	sts		ADMUX, r18
 	
 	// Start conversion
-	lds		r19, ADCSRA
+	lds		r28, ADCSRA
 
-	sbr		r19, 1<<6
-	sbr		r19, 1<<7
+	sbr		r28, 1<<6
+	sbr		r28, 1<<7
 
-	sts		ADCSRA, r19
+	sts		ADCSRA, r28
 
 	tempY:
 	// Wait for convertion
-	lds		r19, ADCSRA
-	sbrc	r19, 6
+	lds		r28, ADCSRA
+	sbrc	r28, 6
 	jmp		tempY
 	// Output result
-	lds		r19 , ADCL
+	lds		r28 , ADCL
 	lds		r20, ADCH
 
 	cpi		r20, 0b00000100
@@ -471,8 +471,8 @@ return:
 
 	swagmaster2:
 	
-	subi	r16, 1
-	cpi		r16, 1
+	subi	r18, 1
+	cpi		r18, 1
 	breq	swagMaster2
 
 	ret
