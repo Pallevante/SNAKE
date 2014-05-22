@@ -18,7 +18,7 @@
 .def	ROW			= r16
 .def	COL			= r17
 .def	DIR			= r24
-.def	LASTDIR		= r25
+.def	LASTDIR		= r5
 .def	SNAKEX		= r22
 .def	SNAKEY		= r27
 .def	BODYX		= r21
@@ -57,8 +57,6 @@
 		call	joyXMovement
 		ldi		r26 , 0b00000000
 		ldi		r16 , 0
-		ldi		YL , low(matrix)
-		ldi		YH , high(matrix)
 
 
 		// Check last direction
@@ -92,20 +90,8 @@
 			lsl		SNAKEY
 			jmp		moveComplete
 
-			//call moveBodyDir
-
 		moveComplete:
-		ldi		YL , low(matrix)
-		ldi		YH , high(matrix)
-
-		call moveBodyDir
-		ld		r18 , Y
-		st		Y+ , r18
-
-		subi	r16 , -1
-		cpi		r16 , 1
-		brne	moveComplete
-		ende:
+		call	moveBodyDir
 			reti
 
 	moveDot:
@@ -137,19 +123,26 @@
 			lsl		r18
 			cpi		r18, 0b00000000
 			brne	moveDotUpdate
-
 		ret
 
 	movebody:
+		ldi		r25 , 0
 		
-		ldi		r18, 0b00000001
+		ldi		YL , low(wormbodydir)
+		ldi		YH , high(wormbodydir)
+		ld		r18, Y+
+
+		mov		r6 , BODYX
+		mov		r7 , BODYY
+
+		uuu:
+		ldi		r23, 0b00000001
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
-
 		superdupermega:
 			mov		r16 , BODYY
-			and		r16 , r18
+			and		r16 , r23
 
 			cpi		r16 , 0b00000000
 			brne	enterthebodymatrix	
@@ -168,16 +161,26 @@
 
 			pastbodypast:
 
-			lsl		r18
-			cpi		r18, 0b00000000
+			lsl		r23
+			cpi		r23, 0b00000000
 			brne	superdupermega
+			
+			call drawBodyDir
 
+
+			subi	r25 , -1
+			cpi		r25 , 4
+
+			brne	uuu
+			
+		mov		BODYX , r6
+		mov		BODYY , r7
 	ret
 
-	moveBodyDir:
-		
-		ld		r18, Y
 
+	drawBodyDir:
+		
+		ld		r18 , Y+
 		// Check last direction		
 		cpi		r18, 0b00000001
 		breq	moveBodyRight
@@ -193,22 +196,58 @@
 
 		// Move snake head
 		moveBodyRight:
-			lsl		BODYX
-			jmp		moveBodyComplete
-
-		moveBodyLeft:
 			lsr		BODYX
 			jmp		moveBodyComplete
 
-		moveBodyUp:
-			lsr		BODYY
+		moveBodyLeft:
+			lsl		BODYX
 			jmp		moveBodyComplete
 
-		moveBodyDown:
+		moveBodyUp:
 			lsl		BODYY
 			jmp		moveBodyComplete
 
-	jmp moveBodyComplete
+		moveBodyDown:
+			lsr		BODYY
+			jmp		moveBodyComplete
+
+	ret
+
+	moveBodyDir:
+		ldi		YL , low(wormbodydir)
+		ldi		YH , high(wormbodydir)
+		ld		r18, Y+
+		ld		r18, Y+
+
+		// Check last direction		
+		cpi		r18, 0b00000001
+		breq	moveBodyRight2
+
+		cpi		r18, 0b00000010
+		breq	moveBodyLeft2
+
+		cpi		r18, 0b00001000
+		breq	moveBodyUp2
+
+		cpi		r18, 0b00000100
+		breq	moveBodyDown2
+
+		// Move snake head
+		moveBodyRight2:
+			lsl		BODYX
+			ret
+
+		moveBodyLeft2:
+			lsr		BODYX
+			ret
+
+		moveBodyUp2:
+			lsr		BODYY
+			ret
+
+		moveBodyDown2:
+			lsl		BODYY
+			ret
 
 	moveBodyComplete:
 	ret
@@ -256,7 +295,6 @@ main:
 	ldi		BODYX, 0b00000100
 	ldi		BODYY, 0b00001000
 
-	ldi		LASTDIR , 0b00000100
 	ldi		r26 , 2
 
 		// matris
@@ -282,16 +320,35 @@ main:
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
 	ld		r23 , Z		// värdet i matris ligger i r23
-	
+
+
+
+
+
+	ldi		ZL , low(wormbodydir)
+	ldi		ZH , high(wormbodydir)
+
+	mov	    r18, r26
+	st		Z+, r18
+	ldi		r18, 0b00000100
+	st		Z+, r18
+	ldi		r18, 0b00000001
+	st		Z+, r18
+	ldi		r18, 0b00000010
+	st		Z+, r18
+	ldi		r18, 0b00000100
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+	ldi		r18, 0b00000000
+	st		Z+, r18
+
 
 		// börjar kolla från första raden
 	ldi		ROW , 0b00000001
 	ldi		COL , 0b00000001
-	joyupdate:
-	ldi		ZL , low(matrix)
-	ldi		ZH , high(matrix)
-	
-	jmp		reset
 	
 	blank:
 		lsl		ROW
@@ -301,11 +358,6 @@ main:
 			// återställer
 		ldi		ROW , 0b00000001
 		ldi		COL , 0b00000001
-		ldi		ZL , low(matrix)
-		ldi		ZH , high(matrix)
-
-		//Anroppar joyMovement som kollar om man rör joysticken
-		//call	joyXMovement	
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
@@ -446,10 +498,25 @@ update:
 joyXMovement:
 	mov		LASTDIR , DIR
 
-	ldi		YL , low(matrix)
-	ldi		YH , high(matrix)
+	ldi		YL , low(wormbodydir)
+	ldi		YH , high(wormbodydir)
 	
 	st		Y, DIR
+	/*
+	looploopsuperloop:
+
+
+	push	r28
+	ld		r28 , Y
+	pop		r16
+	st		Y+, r16
+
+
+	subi	r18 , -1
+	cpi		r18 , 4
+	brne	looploopsuperloop*/
+	
+	
 
 	ldi		r18, 0
 	iteratePositionLoop:
@@ -457,33 +524,26 @@ joyXMovement:
 		ld		r16, Y+
 
 		push	r16
-		
-
 		subi	r18, -1
 
-		cpi		r18, 4
+		cpi		r18, 5
 	brne	iteratePositionLoop
-
+	
 		pop		r18
 		ldi		r18, 0
 
-		pop		r16
-		st		Y, r16
-
 	iteratePositionLoop2:
+		
 		pop		r16
 		st		-Y, r16
+		
 
 		subi	r18, -1
 		
-		cpi		r18, 2
+		cpi		r18, 4
 		brne	iteratePositionLoop2
-
-		/*
-	ldi		YL , low(matrix)
-	ldi		YH , high(matrix)
-	st		Y, DIR*/
-		llllll:
+	
+	st		Y, DIR
 
 
 	// Set source
