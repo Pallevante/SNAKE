@@ -4,7 +4,9 @@
  *  Created: 2014-04-25 08:02:33
  *   Author: b13petha
  *   Slaves: Simon, Henrik och Von Thundercunt af Twatsylvania
- */ 
+ */
+ .include "m328Pdef.inc"
+
  .DSEG
 	//Fuck all.
 	matrix:
@@ -86,9 +88,10 @@
 			lsl		SNAKEY
 			jmp		moveComplete
 
-			jmp moveBodyDir
+			//call moveBodyDir
 
 		moveComplete:
+		call moveBodyDir
 			reti
 
 	moveDot:
@@ -158,12 +161,49 @@
 	ret
 
 	moveBodyDir:
+		// Check last direction		
+		cpi		LASTDIR, 0b00000001
+		breq	moveBodyRight
 
+		cpi		LASTDIR, 0b00000010
+		breq	moveBodyLeft
 
-	jmp moveComplete
+		cpi		LASTDIR, 0b00001000
+		breq	moveBodyUp
+
+		cpi		LASTDIR, 0b00000100
+		breq	moveBodyDown
+
+		// Move snake head
+		moveBodyRight:
+			lsl		BODYX
+			jmp		moveBodyComplete
+
+		moveBodyLeft:
+			lsr		BODYX
+			jmp		moveBodyComplete
+
+		moveBodyUp:
+			lsr		BODYY
+			jmp		moveBodyComplete
+
+		moveBodyDown:
+			lsl		BODYY
+			jmp		moveBodyComplete
+
+	jmp moveBodyComplete
+
+	moveBodyComplete:
+	ret
 
 
 main:
+	
+	ldi		r16, HIGH(RAMEND)
+	out		SPH, r16
+	ldi		r16, LOW(RAMMEND)
+	out		SPL, r16
+
 	timer: 
 		lds  r16, TCCR0B     // timer prescaling
 		ori	 r16, 0b00000101
@@ -196,10 +236,10 @@ main:
 	ldi		SNAKEX, 0b00001000
 	ldi		SNAKEY, 0b00001000
 	
-	ldi		BODYX, 0b00001000
+	ldi		BODYX, 0b00000100
 	ldi		BODYY, 0b00001000
 
-	ldi		LASTDIR , 0b00000001
+	ldi		LASTDIR , 0b00000100
 	ldi		r26 , 2
 
 		// matris
@@ -387,6 +427,7 @@ update:
 		jmp updateColD
 
 joyXMovement:
+mov		LASTDIR , DIR
 
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
@@ -420,7 +461,7 @@ joyXMovement:
 	lds		r28 , ADCL
 	lds		r20, ADCH
 
-	cpi		r20, 0b00000110
+	cpi		r20, 0b00000100
 	brlo	right
 	cpi		r20, 0b00001000
 	brsh	left
@@ -480,10 +521,10 @@ JoyYMovement:
 		ormen igen och direkt förlora.
 	*/
 	cpi		r20, 0b00000100
-	sbrs	LASTDIR , 3
+	sbrs	DIR , 3
 	brlo	down
 	cpi		r20, 0b00010000
-	sbrs	LASTDIR , 2
+	sbrs	DIR , 2
 	brsh	up
 
 	jmp		pastup
@@ -502,8 +543,7 @@ JoyYMovement:
 	mov		DIR , LASTDIR
 	pastlast:
 	
-	mov		LASTDIR , DIR
-
+	
 	//st		Z , DIR
 
 return:
