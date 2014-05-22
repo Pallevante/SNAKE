@@ -56,6 +56,10 @@
 	mklmkl:
 		call	joyXMovement
 		ldi		r26 , 0b00000000
+		ldi		r16 , 0
+		ldi		YL , low(matrix)
+		ldi		YH , high(matrix)
+
 
 		// Check last direction
 		
@@ -91,7 +95,17 @@
 			//call moveBodyDir
 
 		moveComplete:
+		ldi		YL , low(matrix)
+		ldi		YH , high(matrix)
+
 		call moveBodyDir
+		ld		r18 , Y
+		st		Y+ , r18
+
+		subi	r16 , -1
+		cpi		r16 , 1
+		brne	moveComplete
+		ende:
 			reti
 
 	moveDot:
@@ -161,17 +175,20 @@
 	ret
 
 	moveBodyDir:
+		
+		ld		r18, Y
+
 		// Check last direction		
-		cpi		LASTDIR, 0b00000001
+		cpi		r18, 0b00000001
 		breq	moveBodyRight
 
-		cpi		LASTDIR, 0b00000010
+		cpi		r18, 0b00000010
 		breq	moveBodyLeft
 
-		cpi		LASTDIR, 0b00001000
+		cpi		r18, 0b00001000
 		breq	moveBodyUp
 
-		cpi		LASTDIR, 0b00000100
+		cpi		r18, 0b00000100
 		breq	moveBodyDown
 
 		// Move snake head
@@ -201,10 +218,10 @@ main:
 	
 	ldi		r16, HIGH(RAMEND)
 	out		SPH, r16
-	ldi		r16, LOW(RAMMEND)
+	ldi		r16, LOW(RAMEND)
 	out		SPL, r16
 
-	timer: 
+	timer:
 		lds  r16, TCCR0B     // timer prescaling
 		ori	 r16, 0b00000101
 		out  TCCR0B, r16
@@ -427,10 +444,47 @@ update:
 		jmp updateColD
 
 joyXMovement:
-mov		LASTDIR , DIR
+	mov		LASTDIR , DIR
 
-		ldi		ZL , low(matrix)
-		ldi		ZH , high(matrix)
+	ldi		YL , low(matrix)
+	ldi		YH , high(matrix)
+	
+	st		Y, DIR
+
+	ldi		r18, 0
+	iteratePositionLoop:
+		
+		ld		r16, Y+
+
+		push	r16
+		
+
+		subi	r18, -1
+
+		cpi		r18, 4
+	brne	iteratePositionLoop
+
+		pop		r18
+		ldi		r18, 0
+
+		pop		r16
+		st		Y, r16
+
+	iteratePositionLoop2:
+		pop		r16
+		st		-Y, r16
+
+		subi	r18, -1
+		
+		cpi		r18, 2
+		brne	iteratePositionLoop2
+
+		/*
+	ldi		YL , low(matrix)
+	ldi		YH , high(matrix)
+	st		Y, DIR*/
+		llllll:
+
 
 	// Set source
 	lds		r18, ADMUX
