@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Thu May 22 14:51:14 2014
+AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Thu May 22 15:08:51 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -706,7 +706,7 @@ DEF  BODYY        r19
 DEF  LENGTH       r10
 CSEG main         000000b9
 CSEG supermegatimer 00000023
-CSEG swagmaster   000001e7
+CSEG swagmaster   000001ea
 CSEG moveDot      00000055
 CSEG movebody     00000067
 CSEG mklmkl       0000003a
@@ -728,7 +728,7 @@ CSEG pastbodyenter 0000007b
 CSEG pastbodypast 0000007d
 CSEG drawBodyDir  00000088
 CSEG cleared      0000008e
-CSEG ded          000001fc
+CSEG ded          000001ff
 CSEG moveBodyRight 00000097
 CSEG moveBodyLeft 0000009a
 CSEG moveBodyUp   0000009d
@@ -753,15 +753,15 @@ CSEG pastColDD    00000170
 CSEG iteratePositionLoop 0000018a
 CSEG iteratePositionLoop2 00000193
 CSEG tempX        000001a7
-CSEG right        000001b7
-CSEG left         000001bc
-CSEG pastleft     000001bf
-CSEG JoyYMovement 000001bf
-CSEG tempY        000001cc
-CSEG down         000001dd
-CSEG up           000001e0
-CSEG pastup       000001e1
-CSEG last         000001e5
-CSEG pastlast     000001e6
-CSEG return       000001e6
-CSEG swagmaster2  000001f8
+CSEG right        000001b6
+CSEG left         000001bb
+CSEG pastleft     000001be
+CSEG JoyYMovement 000001be
+CSEG tempY        000001cb
+CSEG down         000001dc
+CSEG up           000001e1
+CSEG pastup       000001e4
+CSEG last         000001e8
+CSEG pastlast     000001e9
+CSEG return       000001e9
+CSEG swagmaster2  000001fb

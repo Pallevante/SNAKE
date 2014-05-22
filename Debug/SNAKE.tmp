@@ -25,7 +25,7 @@
   <wormbodydir><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>15</LINE></wormbodydir>
   <main><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>266</LINE></main>
   <supermegatimer><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>37</LINE></supermegatimer>
-  <swagmaster><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>666</LINE></swagmaster>
+  <swagmaster><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>670</LINE></swagmaster>
   <moveDot><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>98</LINE></moveDot>
   <movebody><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>129</LINE></movebody>
   <mklmkl><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>57</LINE></mklmkl>
@@ -47,7 +47,7 @@
   <pastbodypast><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>163</LINE></pastbodypast>
   <drawBodyDir><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>182</LINE></drawBodyDir>
   <cleared><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>192</LINE></cleared>
-  <ded><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>687</LINE></ded>
+  <ded><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>691</LINE></ded>
   <moveBodyRight><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>209</LINE></moveBodyRight>
   <moveBodyLeft><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>213</LINE></moveBodyLeft>
   <moveBodyUp><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>217</LINE></moveBodyUp>
@@ -78,11 +78,11 @@
   <JoyYMovement><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>604</LINE></JoyYMovement>
   <tempY><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>623</LINE></tempY>
   <down><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>646</LINE></down>
-  <up><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>649</LINE></up>
-  <pastup><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>651</LINE></pastup>
-  <last><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>656</LINE></last>
-  <pastlast><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>658</LINE></pastlast>
-  <return><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>663</LINE></return>
-  <swagmaster2><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>679</LINE></swagmaster2>
+  <up><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>651</LINE></up>
+  <pastup><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>655</LINE></pastup>
+  <last><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>660</LINE></last>
+  <pastlast><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>662</LINE></pastlast>
+  <return><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>667</LINE></return>
+  <swagmaster2><FILE>C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm</FILE><LINE>683</LINE></swagmaster2>
  </LABELS>
 </ASSEMBLER_INFO>

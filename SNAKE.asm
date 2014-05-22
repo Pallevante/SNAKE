@@ -580,7 +580,7 @@ joyXMovement:
 	cpi		r20, 0b00001000
 	brsh	left
 
-	ldi		DIR, 0b00000000
+	//ldi		DIR, 0b00000000
 	jmp		pastleft
 
 	/*
@@ -644,9 +644,13 @@ JoyYMovement:
 	jmp		pastup
 
 	down:
+	cpi		DIR , 0b0001000
+	breq	pastup
 	ldi		DIR , 0b0000100
 	jmp		pastup
 	up:
+	cpi		DIR , 0b0000100
+	breq	pastup
 	ldi		DIR , 0b0001000
 	pastup:
 

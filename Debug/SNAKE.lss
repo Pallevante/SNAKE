@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Thu May 22 14:51:14 2014
+AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Thu May 22 15:08:51 2014
 
 [builtin](2): Including file 'D:\Program\Mjukvara\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
 C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(8): Including file 'D:\Program\Mjukvara\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
@@ -1063,11 +1063,11 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alr
 000022 0000      	nop
                  
                  	supermegatimer:
-000023 940e 01e7 	call swagmaster
-000025 940e 01e7 	call swagmaster
-000027 940e 01e7 	call swagmaster
-000029 940e 01e7 	call swagmaster
-00002b 940e 01e7 	call swagmaster
+000023 940e 01ea 	call swagmaster
+000025 940e 01ea 	call swagmaster
+000027 940e 01ea 	call swagmaster
+000029 940e 01ea 	call swagmaster
+00002b 940e 01ea 	call swagmaster
 00002d 5faf      	subi	r26 , -1
                  	
 00002e 9100 006e 	lds  r16, TIMSK0     // start timer
@@ -1215,7 +1215,7 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alr
 00008a 173b      	cp		BODYY , SNAKEY
 00008b f411      	brne	cleared
                  
-00008c 940e 01fc 	call ded
+00008c 940e 01ff 	call ded
                  
                  	cleared:
                  
@@ -1460,15 +1460,15 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alr
                  		pastColD:
 000138 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-000139 940e 01e7 				call swagMaster
-00013b 940e 01e7 				call swagMaster
-00013d 940e 01e7 				call swagMaster
-00013f 940e 01e7 				call swagMaster
-000141 940e 01e7 				call swagMaster
-000143 940e 01e7 				call swagMaster
-000145 940e 01e7 				call swagMaster
-000147 940e 01e7 				call swagMaster
-000149 940e 01e7 				call swagMaster
+000139 940e 01ea 				call swagMaster
+00013b 940e 01ea 				call swagMaster
+00013d 940e 01ea 				call swagMaster
+00013f 940e 01ea 				call swagMaster
+000141 940e 01ea 				call swagMaster
+000143 940e 01ea 				call swagMaster
+000145 940e 01ea 				call swagMaster
+000147 940e 01ea 				call swagMaster
+000149 940e 01ea 				call swagMaster
                  
 00014b 940c 011f 		jmp updateCol
                  
@@ -1522,15 +1522,15 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alr
                  		pastColDD:
 000170 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-000171 940e 01e7 				call swagMaster
-000173 940e 01e7 				call swagMaster
-000175 940e 01e7 				call swagMaster
-000177 940e 01e7 				call swagMaster
-000179 940e 01e7 				call swagMaster
-00017b 940e 01e7 				call swagMaster
-00017d 940e 01e7 				call swagMaster
-00017f 940e 01e7 				call swagMaster
-000181 940e 01e7 				call swagMaster
+000171 940e 01ea 				call swagMaster
+000173 940e 01ea 				call swagMaster
+000175 940e 01ea 				call swagMaster
+000177 940e 01ea 				call swagMaster
+000179 940e 01ea 				call swagMaster
+00017b 940e 01ea 				call swagMaster
+00017d 940e 01ea 				call swagMaster
+00017f 940e 01ea 				call swagMaster
+000181 940e 01ea 				call swagMaster
                  
 000183 940c 014d 		jmp updateColD
                  
@@ -1604,12 +1604,12 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alr
 0001ae 9140 0079 	lds		r20, ADCH
                  
 0001b0 3044      	cpi		r20, 0b00000100
-0001b1 f028      	brlo	right
+0001b1 f020      	brlo	right
 0001b2 3048      	cpi		r20, 0b00001000
-0001b3 f440      	brsh	left
+0001b3 f438      	brsh	left
                  
-0001b4 e080      	ldi		DIR, 0b00000000
-0001b5 940c 01bf 	jmp		pastleft
+                 	//ldi		DIR, 0b00000000
+0001b4 940c 01be 	jmp		pastleft
                  
                  	/*
                  		Comparen innan ldi i dessa subrutiner kollar
@@ -1618,105 +1618,109 @@ C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alr
                  		ormen igen och direkt förlora.
                  	*/
                  	right:
-0001b7 3082      	cpi		DIR	, 0b0000010
-0001b8 f031      	breq	pastleft
-0001b9 e081      	ldi		DIR , 0b0000001
-0001ba 940c 01bf 	jmp		pastleft
+0001b6 3082      	cpi		DIR	, 0b0000010
+0001b7 f031      	breq	pastleft
+0001b8 e081      	ldi		DIR , 0b0000001
+0001b9 940c 01be 	jmp		pastleft
                  
                  	left:
-0001bc 3081      	cpi		DIR , 0b0000001
-0001bd f009      	breq	pastleft
-0001be e082      	ldi		DIR , 0b0000010
+0001bb 3081      	cpi		DIR , 0b0000001
+0001bc f009      	breq	pastleft
+0001bd e082      	ldi		DIR , 0b0000010
                  	pastleft:
                  
                  JoyYMovement:
                  	// Set source
-0001bf 9120 007c 	lds		r18, ADMUX
+0001be 9120 007c 	lds		r18, ADMUX
                  	
-0001c1 7f20      	cbr		r18 , 0b00001111
-0001c2 6024      	sbr		r18 , 0b00000100
+0001c0 7f20      	cbr		r18 , 0b00001111
+0001c1 6024      	sbr		r18 , 0b00000100
                  	//sbr		r18, 1<<5
-0001c3 6420      	sbr		r18, 1<<6
+0001c2 6420      	sbr		r18, 1<<6
                  
-0001c4 9320 007c 	sts		ADMUX, r18
+0001c3 9320 007c 	sts		ADMUX, r18
                  	
                  	// Start conversion
-0001c6 91c0 007a 	lds		r28, ADCSRA
+0001c5 91c0 007a 	lds		r28, ADCSRA
                  
-0001c8 64c0      	sbr		r28, 1<<6
-0001c9 68c0      	sbr		r28, 1<<7
+0001c7 64c0      	sbr		r28, 1<<6
+0001c8 68c0      	sbr		r28, 1<<7
                  
-0001ca 93c0 007a 	sts		ADCSRA, r28
+0001c9 93c0 007a 	sts		ADCSRA, r28
                  
                  	tempY:
                  	// Wait for convertion
-0001cc 91c0 007a 	lds		r28, ADCSRA
-0001ce fdc6      	sbrc	r28, 6
-0001cf 940c 01cc 	jmp		tempY
+0001cb 91c0 007a 	lds		r28, ADCSRA
+0001cd fdc6      	sbrc	r28, 6
+0001ce 940c 01cb 	jmp		tempY
                  	// Output result
-0001d1 91c0 0078 	lds		r28 , ADCL
-0001d3 9140 0079 	lds		r20, ADCH
+0001d0 91c0 0078 	lds		r28 , ADCL
+0001d2 9140 0079 	lds		r20, ADCH
                  	/*
                  		Comparen nedan i dessa subrutiner kollar
                  		ifall snakey redan går åt något av dessa håll. 
                  		Detta för att man inte ska kunna gå igenom
                  		ormen igen och direkt förlora.
                  	*/
-0001d5 3044      	cpi		r20, 0b00000100
-0001d6 ff83      	sbrs	DIR , 3
-0001d7 f028      	brlo	down
-0001d8 3140      	cpi		r20, 0b00010000
-0001d9 ff82      	sbrs	DIR , 2
-0001da f428      	brsh	up
+0001d4 3044      	cpi		r20, 0b00000100
+0001d5 ff83      	sbrs	DIR , 3
+0001d6 f028      	brlo	down
+0001d7 3140      	cpi		r20, 0b00010000
+0001d8 ff82      	sbrs	DIR , 2
+0001d9 f438      	brsh	up
                  
-0001db 940c 01e1 	jmp		pastup
+0001da 940c 01e4 	jmp		pastup
                  
                  	down:
-0001dd e084      	ldi		DIR , 0b0000100
-0001de 940c 01e1 	jmp		pastup
+0001dc 3088      	cpi		DIR , 0b0001000
+0001dd f031      	breq	pastup
+0001de e084      	ldi		DIR , 0b0000100
+0001df 940c 01e4 	jmp		pastup
                  	up:
-0001e0 e088      	ldi		DIR , 0b0001000
+0001e1 3084      	cpi		DIR , 0b0000100
+0001e2 f009      	breq	pastup
+0001e3 e088      	ldi		DIR , 0b0001000
                  	pastup:
                  
-0001e1 3080      	cpi		DIR , 0b00000000
-0001e2 f011      	breq	last
-0001e3 940c 01e6 	jmp	pastlast
+0001e4 3080      	cpi		DIR , 0b00000000
+0001e5 f011      	breq	last
+0001e6 940c 01e9 	jmp	pastlast
                  	last:
-0001e5 2d85      	mov		DIR , LASTDIR
+0001e8 2d85      	mov		DIR , LASTDIR
                  	pastlast:
                  	
                  	
                  	//st		Z , DIR
                  
                  return:
-0001e6 9508      	ret
+0001e9 9508      	ret
                  	
                  	swagMaster:
                  
-0001e7 940e 01f8 	call swagmaster2
-0001e9 940e 01f8 	call swagmaster2
-0001eb 940e 01f8 	call swagmaster2
-0001ed 940e 01f8 	call swagmaster2
-0001ef 940e 01f8 	call swagmaster2
-0001f1 940e 01f8 	call swagmaster2
-0001f3 940e 01f8 	call swagmaster2
-0001f5 940e 01f8 	call swagmaster2
-0001f7 9508      	ret
+0001ea 940e 01fb 	call swagmaster2
+0001ec 940e 01fb 	call swagmaster2
+0001ee 940e 01fb 	call swagmaster2
+0001f0 940e 01fb 	call swagmaster2
+0001f2 940e 01fb 	call swagmaster2
+0001f4 940e 01fb 	call swagmaster2
+0001f6 940e 01fb 	call swagmaster2
+0001f8 940e 01fb 	call swagmaster2
+0001fa 9508      	ret
                  
                  
                  	swagmaster2:
                  	
-0001f8 5021      	subi	r18, 1
-0001f9 3021      	cpi		r18, 1
-0001fa f3e9      	breq	swagMaster2
+0001fb 5021      	subi	r18, 1
+0001fc 3021      	cpi		r18, 1
+0001fd f3e9      	breq	swagMaster2
                  
-0001fb 9508      	ret
+0001fe 9508      	ret
                  
                  ded:
-0001fc e060      	ldi	SNAKEX , 0
+0001ff e060      	ldi	SNAKEX , 0
                  	
-0001fd e0b0      	ldi	SNAKEY , 0
-0001fe 940c 01fc jmp ded
+000200 e0b0      	ldi	SNAKEY , 0
+000201 940c 01ff jmp ded
 
 
 RESOURCE USE INFORMATION
@@ -1737,22 +1741,22 @@ counted separately from r26..r31 here.
 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   2 r6 :   2 r7 :   2 
 r8 :   0 r9 :   0 r10:   4 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
 r16:  69 r17:  13 r18:  92 r19:   9 r20:   6 r21:   9 r22:   6 r23:   9 
-r24:  18 r25:   3 r26:   6 r27:   6 r28:  20 r29:  10 r30:   6 r31:   6 
+r24:  19 r25:   3 r26:   6 r27:   6 r28:  20 r29:  10 r30:   6 r31:   6 
 x  :   0 y  :   8 z  :  24 
 Registers used: 22 out of 35 (62.9%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   4 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :  26 brge  :   1 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :  28 brge  :   1 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
 brne  :   9 brpl  :   0 brsh  :   2 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :  37 cbi   :   0 cbr   :   2 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   5 cpc   :   0 
-cpi   :  35 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :  37 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :  28 
-ld    :   9 ldd   :   0 ldi   :  65 lds   :  15 lpm   :   0 lsl   :  28 
+ld    :   9 ldd   :   0 ldi   :  64 lds   :  15 lpm   :   0 lsl   :  28 
 lsr   :  14 mov   :  15 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   1 or    :   2 ori   :   1 out   :  18 pop   :   2 
 push  :   1 rcall :   0 ret   :  12 reti  :   2 rjmp  :   1 rol   :   0 
@@ -1766,7 +1770,7 @@ Instructions used: 33 out of 113 (29.2%)
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000402    964      0    964   32768   2.9%
+[.cseg] 0x000000 0x000408    970      0    970   32768   3.0%
 [.dseg] 0x000100 0x000147      0     71     71    2048   3.5%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
