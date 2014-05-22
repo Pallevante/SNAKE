@@ -180,7 +180,17 @@
 
 
 	drawBodyDir:
-		
+
+	cp		BODYX , SNAKEX
+	brne	cleared
+
+	cp		BODYY , SNAKEY
+	brne	cleared
+
+	call ded
+
+	cleared:
+
 		ld		r18 , Y+
 		// Check last direction		
 		cpi		r18, 0b00000001
@@ -211,7 +221,6 @@
 		moveBodyDown:
 			lsr		BODYY
 			jmp		moveBodyComplete
-
 	ret
 
 	moveBodyDir:
@@ -276,9 +285,6 @@ main:
 	out		DDRC,r16
 	out		DDRD,r16
 
-	//ldi		rtemp , 0
-
-	
 	lds		r16 , ADMUX
 	sbr		r16 , 1<<6
 	sbr		r16 , 0<<7
@@ -290,7 +296,7 @@ main:
 	sbr		r16 , 1<<7
 	sts		ADCSRA , r16
 
-	ldi		r16 , 10
+	ldi		r16 , 3
 	mov		LENGTH , r16
 
 	
@@ -677,3 +683,10 @@ return:
 	breq	swagMaster2
 
 	ret
+
+ded:
+	ldi	SNAKEX , 0
+	
+	ldi	SNAKEY , 0
+jmp ded
+ret
