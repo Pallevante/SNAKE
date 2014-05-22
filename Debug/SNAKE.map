@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Thu May 22 14:14:50 2014
+AVRASM ver. 2.1.52  C:\Users\Mattias\Documents\GitHub\SNAKE\SNAKE.asm Thu May 22 14:36:44 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -703,13 +703,14 @@ DEF  SNAKEX       r22
 DEF  SNAKEY       r27
 DEF  BODYX        r21
 DEF  BODYY        r19
+DEF  LENGTH       r10
 CSEG main         000000b3
 CSEG supermegatimer 00000023
-CSEG swagmaster   000001dd
+CSEG swagmaster   000001e1
 CSEG moveDot      00000055
 CSEG movebody     00000067
 CSEG mklmkl       0000003a
-CSEG joyXMovement 0000017d
+CSEG joyXMovement 0000017f
 CSEG moveRight    00000046
 CSEG moveLeft     00000049
 CSEG moveUp       0000004c
@@ -736,29 +737,29 @@ CSEG moveBodyLeft2 000000ac
 CSEG moveBodyUp2  000000ae
 CSEG moveBodyDown2 000000b0
 CSEG timer        000000b7
-CSEG blank        00000101
-CSEG update       0000010d
-CSEG reset        00000104
-CSEG pastD        0000010a
-CSEG printD       00000145
-CSEG updateCol    00000117
-CSEG printColD    00000127
-CSEG pastColD     00000130
-CSEG updateColD   00000145
-CSEG printColDD   00000159
-CSEG pastColDD    00000168
-CSEG iteratePositionLoop 00000182
-CSEG iteratePositionLoop2 00000189
-CSEG tempX        0000019d
-CSEG right        000001ad
-CSEG left         000001b2
-CSEG pastleft     000001b5
-CSEG JoyYMovement 000001b5
-CSEG tempY        000001c2
-CSEG down         000001d3
-CSEG up           000001d6
-CSEG pastup       000001d7
-CSEG last         000001db
-CSEG pastlast     000001dc
-CSEG return       000001dc
-CSEG swagmaster2  000001ee
+CSEG blank        00000103
+CSEG update       0000010f
+CSEG reset        00000106
+CSEG pastD        0000010c
+CSEG printD       00000147
+CSEG updateCol    00000119
+CSEG printColD    00000129
+CSEG pastColD     00000132
+CSEG updateColD   00000147
+CSEG printColDD   0000015b
+CSEG pastColDD    0000016a
+CSEG iteratePositionLoop 00000184
+CSEG iteratePositionLoop2 0000018d
+CSEG tempX        000001a1
+CSEG right        000001b1
+CSEG left         000001b6
+CSEG pastleft     000001b9
+CSEG JoyYMovement 000001b9
+CSEG tempY        000001c6
+CSEG down         000001d7
+CSEG up           000001da
+CSEG pastup       000001db
+CSEG last         000001df
+CSEG pastlast     000001e0
+CSEG return       000001e0
+CSEG swagmaster2  000001f2

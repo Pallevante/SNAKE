@@ -23,6 +23,7 @@
 .def	SNAKEY		= r27
 .def	BODYX		= r21
 .def	BODYY		= r19
+.def	LENGTH		= r10
 
 .CSEG
 	
@@ -169,7 +170,7 @@
 
 
 			subi	r25 , -1
-			cpi		r25 , 4
+			cp		r25 , LENGTH
 
 			brne	uuu
 			
@@ -288,6 +289,10 @@ main:
 	sbr		r16 , 1<<2
 	sbr		r16 , 1<<7
 	sts		ADCSRA , r16
+
+	ldi		r16 , 10
+	mov		LENGTH , r16
+
 	
 	ldi		SNAKEX, 0b00001000
 	ldi		SNAKEY, 0b00001000
@@ -502,22 +507,7 @@ joyXMovement:
 	ldi		YH , high(wormbodydir)
 	
 	st		Y, DIR
-	/*
-	looploopsuperloop:
-
-
-	push	r28
-	ld		r28 , Y
-	pop		r16
-	st		Y+, r16
-
-
-	subi	r18 , -1
-	cpi		r18 , 4
-	brne	looploopsuperloop*/
 	
-	
-
 	ldi		r18, 0
 	iteratePositionLoop:
 		
@@ -526,7 +516,10 @@ joyXMovement:
 		push	r16
 		subi	r18, -1
 
-		cpi		r18, 5
+		mov		r16 , LENGTH
+		subi	r16 , -1
+		cp		r18, r16
+
 	brne	iteratePositionLoop
 	
 		pop		r18
@@ -540,7 +533,8 @@ joyXMovement:
 
 		subi	r18, -1
 		
-		cpi		r18, 4
+		cp		r18, LENGTH
+
 		brne	iteratePositionLoop2
 	
 	st		Y, DIR
