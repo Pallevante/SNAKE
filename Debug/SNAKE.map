@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri May 23 11:06:43 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri May 23 11:50:05 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -709,9 +709,9 @@ DEF  APPLEY       r9
 DEF  RAND         r11
 CSEG main         0000013d
 CSEG supermegatimer 00000023
-CSEG moveDot      00000050
-CSEG movebody     00000062
+CSEG moveDot      0000004e
 CSEG moveApple    00000117
+CSEG movebody     00000064
 CSEG mklmkl       00000033
 CSEG joyXMovement 0000020d
 CSEG moveRight    0000003f
@@ -725,21 +725,21 @@ CSEG moveDotUpdate 00000053
 CSEG enterthematrix 00000059
 CSEG pastenter    0000005c
 CSEG pastpast     0000005e
-CSEG uuu          00000068
-CSEG superdupermega 0000006b
-CSEG enterthebodymatrix 00000071
-CSEG pastbodyenter 00000076
-CSEG pastbodypast 00000078
-CSEG drawBodyDir  00000083
-CSEG cleared      0000008f
+CSEG uuu          0000006a
+CSEG superdupermega 0000006d
+CSEG enterthebodymatrix 00000073
+CSEG pastbodyenter 00000078
+CSEG pastbodypast 0000007a
+CSEG drawBodyDir  00000085
+CSEG cleared      00000091
 CSEG ded          00000289
 CSEG getApple     000000c2
-CSEG moveBodyRight 00000098
-CSEG moveBodyLeft 0000009b
-CSEG moveBodyUp   0000009e
-CSEG moveBodyDown 000000a1
+CSEG moveBodyRight 0000009a
+CSEG moveBodyLeft 0000009d
+CSEG moveBodyUp   000000a0
+CSEG moveBodyDown 000000a3
 CSEG moveBodyComplete 000000c1
-CSEG aplleloop    000000a4
+CSEG aplleloop    000000a6
 CSEG endchek      000000ac
 CSEG moveBodyRight2 000000b9
 CSEG moveBodyLeft2 000000bb
@@ -779,10 +779,10 @@ CSEG left         00000244
 CSEG pastleft     00000247
 CSEG JoyYMovement 00000247
 CSEG tempY        00000254
-CSEG down         00000266
-CSEG up           0000026b
-CSEG pastup       0000026e
-CSEG last         00000272
-CSEG pastlast     00000273
+CSEG down         00000264
+CSEG up           00000269
+CSEG pastup       0000026d
+CSEG last         00000271
+CSEG pastlast     00000272
 CSEG return       00000273
 CSEG swagmaster2  00000285

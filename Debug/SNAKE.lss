@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri May 23 11:06:43 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri May 23 11:50:05 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
 C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(8): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
@@ -1072,10 +1072,11 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 000025 9100 006e 	lds  r16, TIMSK0     // start timer
 000027 e001      	ldi	 r16 , 0b00000001
 000028 9300 006e 	sts  TIMSK0, r16
-                 
-00002a 940e 0050 	call	moveDot
-00002c 940e 0062 	call	movebody
-00002e 940e 0117 	call	moveApple
+                 	
+00002a 940e 004e 	call	moveDot
+00002c 940e 0117 	call	moveApple
+00002e 940e 0064 	call	movebody
+                 	//call getapple
                  
 000030 31ae      	cpi		r26 , 0b00011110
 000031 f009      	breq	mklmkl
@@ -1120,13 +1121,15 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
                  
                  		moveComplete:
 00004b 940e 00ad 		call	moveBodyDir
-00004d 940e 012b 		call	checkApple
-00004f 9518      			reti
+00004d 9518      			reti
                  
                  	moveDot:
-000050 e021      		ldi		r18, 0b00000001
-000051 e0e0      		ldi		ZL , low(matrix)
-000052 e0f1      		ldi		ZH , high(matrix)
+00004e e021      		ldi		r18, 0b00000001
+00004f e0e0      		ldi		ZL , low(matrix)
+000050 e0f1      		ldi		ZH , high(matrix)
+                 
+                 		
+000051 940e 012b 	call	checkApple
                  
                  
                  		moveDotUpdate:
@@ -1152,125 +1155,128 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 00005e 0f22      			lsl		r18
 00005f 3020      			cpi		r18, 0b00000000
 000060 f791      			brne	moveDotUpdate
-000061 9508      		ret
+                 
+                 			
+000061 940e 012b 	call	checkApple
+000063 9508      		ret
                  
                  	movebody:
-000062 e090      		ldi		r25 , 0
+000064 e090      		ldi		r25 , 0
                  		
-000063 e0c8      		ldi		YL , low(wormbodydir)
-000064 e0d1      		ldi		YH , high(wormbodydir)
-000065 9129      		ld		r18, Y+
+000065 e0c8      		ldi		YL , low(wormbodydir)
+000066 e0d1      		ldi		YH , high(wormbodydir)
+000067 9129      		ld		r18, Y+
                  
-000066 2e65      		mov		r6 , BODYX
-000067 2e73      		mov		r7 , BODYY
+000068 2e65      		mov		r6 , BODYX
+000069 2e73      		mov		r7 , BODYY
                  
                  		uuu:
-000068 e071      		ldi		r23, 0b00000001
-000069 e0e0      		ldi		ZL , low(matrix)
-00006a e0f1      		ldi		ZH , high(matrix)
+00006a e071      		ldi		r23, 0b00000001
+00006b e0e0      		ldi		ZL , low(matrix)
+00006c e0f1      		ldi		ZH , high(matrix)
                  
                  		superdupermega:
-00006b 2f03      			mov		r16 , BODYY
-00006c 2307      			and		r16 , r23
+00006d 2f03      			mov		r16 , BODYY
+00006e 2307      			and		r16 , r23
                  
-00006d 3000      			cpi		r16 , 0b00000000
-00006e f411      			brne	enterthebodymatrix	
+00006f 3000      			cpi		r16 , 0b00000000
+000070 f411      			brne	enterthebodymatrix	
                  
-00006f 940c 0076 			jmp pastbodyenter
+000071 940c 0078 			jmp pastbodyenter
                  			enterthebodymatrix:
-000071 8100      				ld		r16 , Z
-000072 2b05      				or		r16 , BODYX
-000073 9301      				st		Z+, r16
+000073 8100      				ld		r16 , Z
+000074 2b05      				or		r16 , BODYX
+000075 9301      				st		Z+, r16
                  
-000074 940c 0078 			jmp pastbodypast
+000076 940c 007a 			jmp pastbodypast
                  			pastbodyenter:
                  			
-000076 8100      				ld		r16 , Z
-000077 9301      				st		Z+, r16
+000078 8100      				ld		r16 , Z
+000079 9301      				st		Z+, r16
                  
                  			pastbodypast:
                  
-000078 0f77      			lsl		r23
-000079 3070      			cpi		r23, 0b00000000
-00007a f781      			brne	superdupermega
+00007a 0f77      			lsl		r23
+00007b 3070      			cpi		r23, 0b00000000
+00007c f781      			brne	superdupermega
                  			
-00007b 940e 0083 			call drawBodyDir
+00007d 940e 0085 			call drawBodyDir
                  
                  
-00007d 5f9f      			subi	r25 , -1
-00007e 159a      			cp		r25 , LENGTH
+00007f 5f9f      			subi	r25 , -1
+000080 159a      			cp		r25 , LENGTH
                  
-00007f f741      			brne	uuu
+000081 f741      			brne	uuu
                  			
-000080 2d56      		mov		BODYX , r6
-000081 2d37      		mov		BODYY , r7
-000082 9508      	ret
+000082 2d56      		mov		BODYX , r6
+000083 2d37      		mov		BODYY , r7
+000084 9508      	ret
                  
                  
                  	drawBodyDir:
                  
-000083 1756      	cp		BODYX , SNAKEX
-000084 f451      	brne	cleared
+000085 1756      	cp		BODYX , SNAKEX
+000086 f451      	brne	cleared
                  
-000085 173b      	cp		BODYY , SNAKEY
-000086 f441      	brne	cleared
+000087 173b      	cp		BODYY , SNAKEY
+000088 f441      	brne	cleared
                  
-000087 940e 0289 	call ded
+000089 940e 0289 	call ded
                  
                  	
-000089 1558      	cp		BODYX , APPLEX
-00008a f421      	brne	cleared
+00008b 1558      	cp		BODYX , APPLEX
+00008c f421      	brne	cleared
                  
-00008b 1539      	cp		BODYY , APPLEY
-00008c f411      	brne	cleared
+00008d 1539      	cp		BODYY , APPLEY
+00008e f411      	brne	cleared
                  	
-00008d 940e 00c2 		call	getApple
+00008f 940e 00c2 		call	getApple
                  
                  	cleared:
                  
-00008f 9129      		ld		r18 , Y+
+000091 9129      		ld		r18 , Y+
                  		// Check last direction		
-000090 3021      		cpi		r18, 0b00000001
-000091 f031      		breq	moveBodyRight
+000092 3021      		cpi		r18, 0b00000001
+000093 f031      		breq	moveBodyRight
                  
-000092 3022      		cpi		r18, 0b00000010
-000093 f039      		breq	moveBodyLeft
+000094 3022      		cpi		r18, 0b00000010
+000095 f039      		breq	moveBodyLeft
                  
-000094 3028      		cpi		r18, 0b00001000
-000095 f041      		breq	moveBodyUp
+000096 3028      		cpi		r18, 0b00001000
+000097 f041      		breq	moveBodyUp
                  
-000096 3024      		cpi		r18, 0b00000100
-000097 f049      		breq	moveBodyDown
+000098 3024      		cpi		r18, 0b00000100
+000099 f049      		breq	moveBodyDown
                  
                  		// Move snake head
                  		moveBodyRight:
-000098 9556      			lsr		BODYX
-000099 940c 00c1 			jmp		moveBodyComplete
+00009a 9556      			lsr		BODYX
+00009b 940c 00c1 			jmp		moveBodyComplete
                  
                  		moveBodyLeft:
-00009b 0f55      			lsl		BODYX
-00009c 940c 00c1 			jmp		moveBodyComplete
+00009d 0f55      			lsl		BODYX
+00009e 940c 00c1 			jmp		moveBodyComplete
                  
                  		moveBodyUp:
-00009e 0f33      			lsl		BODYY
-00009f 940c 00c1 			jmp		moveBodyComplete
+0000a0 0f33      			lsl		BODYY
+0000a1 940c 00c1 			jmp		moveBodyComplete
                  
                  		moveBodyDown:
-0000a1 9536      			lsr		BODYY
-0000a2 940c 00c1 			jmp		moveBodyComplete
+0000a3 9536      			lsr		BODYY
+0000a4 940c 00c1 			jmp		moveBodyComplete
                  
                  
                  
                  		aplleloop:
                  			
-0000a4 1558      		cp		BODYX , APPLEX
-0000a5 f431      		brne	endchek
-                 
-0000a6 1539      		cp		BODYY , APPLEY
+0000a6 1558      		cp		BODYX , APPLEX
 0000a7 f421      		brne	endchek
+                 
+0000a8 1539      		cp		BODYY , APPLEY
+0000a9 f411      		brne	endchek
                  	
-0000a8 940e 00c2 		call	getApple
-0000aa 940c 00a4 		jmp		aplleloop
+0000aa 940e 00c2 		call	getApple
+                 		//jmp		aplleloop
                  
                  		endchek:
                  
@@ -1359,13 +1365,17 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 0000e1 30c0      		cpi		r28 , 0
 0000e2 f409      		brne	valuetobit
 0000e3 e0c1      		ldi		r28 , 1
+                 
                  		valuetobit:
-0000e4 0f22      		lsl		r18
-0000e5 5f4f      		subi	r20 , -1
-0000e6 174c      		cp		r20 , r28
-0000e7 f7e1      		brne	valuetobit
-0000e8 3020      		cpi		r18 , 0
+                 
+0000e4 0f22      			lsl		r18
+0000e5 5f4f      			subi	r20 , -1
+0000e6 174c      			cp		r20 , r28
+0000e7 f7e1      			brne	valuetobit
+0000e8 3020      			cpi		r18 , 0
+                 
 0000e9 f409      		brne	skipnoll
+                 
 0000ea e021      		ldi		r18 , 1
                  
                  		skipnoll:
@@ -1874,31 +1884,32 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 00025d 0eb4      	add		RAND , r20
                  
 00025e 3044      	cpi		r20, 0b00000100
-00025f ff83      	sbrs	DIR , 3
-000260 f028      	brlo	down
-000261 3140      	cpi		r20, 0b00010000
-000262 ff82      	sbrs	DIR , 2
-000263 f438      	brsh	up
+00025f f020      	brlo	down
+000260 3140      	cpi		r20, 0b00010000
+000261 f438      	brsh	up
                  
-000264 940c 026e 	jmp		pastup
+000262 940c 026d 	jmp		pastup
                  
                  	down:
-000266 3088      	cpi		DIR , 0b0001000
-000267 f031      	breq	pastup
-000268 e084      	ldi		DIR , 0b0000100
-000269 940c 026e 	jmp		pastup
+000264 3088      	cpi		DIR , 0b00001000
+000265 f039      	breq	pastup
+000266 e084      	ldi		DIR , 0b00000100
+000267 940c 026d 	jmp		pastup
                  	up:
-00026b 3084      	cpi		DIR , 0b0000100
-00026c f009      	breq	pastup
-00026d e088      	ldi		DIR , 0b0001000
+000269 2d85      	mov		DIR , LASTDIR
+00026a 3084      	cpi		DIR , 0b00000100
+00026b f009      	breq	pastup
+00026c e088      	ldi		DIR , 0b00001000
                  	pastup:
                  
-00026e 3080      	cpi		DIR , 0b00000000
-00026f f011      	breq	last
-000270 940c 0273 	jmp	pastlast
+00026d 3080      	cpi		DIR , 0b000000000
+00026e f011      	breq	last
+00026f 940c 0272 	jmp	pastlast
                  	last:
-000272 2d85      	mov		DIR , LASTDIR
+000271 2d85      	mov		DIR , LASTDIR
                  	pastlast:
+                 
+000272 2e58      	mov		LASTDIR , DIR
                  	
                  	
                  	//st		Z , DIR
@@ -1949,7 +1960,7 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   2 r6 :   2 r7 :   2 
+r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   4 r6 :   2 r7 :   2 
 r8 :   7 r9 :   7 r10:   6 r11:  12 r12:   0 r13:   0 r14:   0 r15:   0 
 r16:  81 r17:  13 r18: 119 r19:  11 r20:  16 r21:  11 r22:   8 r23:   9 
 r24:  19 r25:   3 r26:   7 r27:   8 r28:  53 r29:  10 r30:   7 r31:   7 
@@ -1962,21 +1973,21 @@ andi  :   2 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0
 brcc  :   0 brcs  :   0 break :   0 breq  :  29 brge  :   1 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
 brne  :  24 brpl  :   0 brsh  :   2 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  39 cbi   :   0 cbr   :   4 
+brvs  :   0 bset  :   0 bst   :   0 call  :  40 cbi   :   0 cbr   :   4 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :  15 cpc   :   0 
 cpi   :  43 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :  33 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :  32 
 ld    :  11 ldd   :   0 ldi   :  77 lds   :  25 lpm   :   0 lsl   :  31 
-lsr   :  16 mov   :  28 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+lsr   :  16 mov   :  30 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   1 or    :   3 ori   :   1 out   :  18 pop   :   2 
 push  :   1 rcall :   0 ret   :  15 reti  :   2 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
-sbiw  :   0 sbr   :  23 sbrc  :   4 sbrs  :   2 sec   :   0 seh   :   0 
+sbiw  :   0 sbr   :  23 sbrc  :   4 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :  25 std   :   0 sts   :  12 
 sub   :   0 subi  :  11 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 35 out of 113 (31.0%)
+Instructions used: 34 out of 113 (30.1%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%

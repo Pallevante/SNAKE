@@ -44,10 +44,11 @@
 	lds  r16, TIMSK0     // start timer
 	ldi	 r16 , 0b00000001
 	sts  TIMSK0, r16
-
+	
 	call	moveDot
-	call	movebody
 	call	moveApple
+	call	movebody
+	//call getapple
 
 	cpi		r26 , 0b00011110
 	breq	mklmkl
@@ -92,13 +93,15 @@
 
 		moveComplete:
 		call	moveBodyDir
-		call	checkApple
 			reti
 
 	moveDot:
 		ldi		r18, 0b00000001
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
+
+		
+	call	checkApple
 
 
 		moveDotUpdate:
@@ -124,6 +127,9 @@
 			lsl		r18
 			cpi		r18, 0b00000000
 			brne	moveDotUpdate
+
+			
+	call	checkApple
 		ret
 
 	movebody:
@@ -242,7 +248,7 @@
 		brne	endchek
 	
 		call	getApple
-		jmp		aplleloop
+		//jmp		aplleloop
 
 		endchek:
 
@@ -331,13 +337,17 @@
 		cpi		r28 , 0
 		brne	valuetobit
 		ldi		r28 , 1
+
 		valuetobit:
-		lsl		r18
-		subi	r20 , -1
-		cp		r20 , r28
-		brne	valuetobit
-		cpi		r18 , 0
+
+			lsl		r18
+			subi	r20 , -1
+			cp		r20 , r28
+			brne	valuetobit
+			cpi		r18 , 0
+
 		brne	skipnoll
+
 		ldi		r18 , 1
 
 		skipnoll:
@@ -846,31 +856,32 @@ JoyYMovement:
 	add		RAND , r20
 
 	cpi		r20, 0b00000100
-	sbrs	DIR , 3
 	brlo	down
 	cpi		r20, 0b00010000
-	sbrs	DIR , 2
 	brsh	up
 
 	jmp		pastup
 
 	down:
-	cpi		DIR , 0b0001000
+	cpi		DIR , 0b00001000
 	breq	pastup
-	ldi		DIR , 0b0000100
+	ldi		DIR , 0b00000100
 	jmp		pastup
 	up:
-	cpi		DIR , 0b0000100
+	mov		DIR , LASTDIR
+	cpi		DIR , 0b00000100
 	breq	pastup
-	ldi		DIR , 0b0001000
+	ldi		DIR , 0b00001000
 	pastup:
 
-	cpi		DIR , 0b00000000
+	cpi		DIR , 0b000000000
 	breq	last
 	jmp	pastlast
 	last:
 	mov		DIR , LASTDIR
 	pastlast:
+
+	mov		LASTDIR , DIR
 	
 	
 	//st		Z , DIR
