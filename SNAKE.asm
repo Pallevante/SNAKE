@@ -24,6 +24,9 @@
 .def	BODYX		= r21
 .def	BODYY		= r19
 .def	LENGTH		= r10
+.def	APPLEX		= r8
+.def	APPLEY		= r9
+.def	RAND		= r11
 
 .CSEG
 	
@@ -35,12 +38,8 @@
 	nop
 
 	supermegatimer:
-	call swagmaster
-	call swagmaster
-	call swagmaster
-	call swagmaster
-	call swagmaster
 	subi	r26 , -1
+	add		RAND , r26
 	
 	lds  r16, TIMSK0     // start timer
 	ldi	 r16 , 0b00000001
@@ -48,8 +47,9 @@
 
 	call	moveDot
 	call	movebody
+	call	moveApple
 
-	cpi		r26 , 0b00111110
+	cpi		r26 , 0b00011110
 	breq	mklmkl
 
 	reti
@@ -58,7 +58,6 @@
 		call	joyXMovement
 		ldi		r26 , 0b00000000
 		ldi		r16 , 0
-
 
 		// Check last direction
 		
@@ -93,6 +92,7 @@
 
 		moveComplete:
 		call	moveBodyDir
+		call	checkApple
 			reti
 
 	moveDot:
@@ -189,6 +189,15 @@
 
 	call ded
 
+	
+	cp		BODYX , APPLEX
+	brne	cleared
+
+	cp		BODYY , APPLEY
+	brne	cleared
+	
+		call	getApple
+
 	cleared:
 
 		ld		r18 , Y+
@@ -221,6 +230,22 @@
 		moveBodyDown:
 			lsr		BODYY
 			jmp		moveBodyComplete
+
+
+
+		aplleloop:
+			
+		cp		BODYX , APPLEX
+		brne	endchek
+
+		cp		BODYY , APPLEY
+		brne	endchek
+	
+		call	getApple
+		jmp		aplleloop
+
+		endchek:
+
 	ret
 
 	moveBodyDir:
@@ -262,6 +287,185 @@
 	moveBodyComplete:
 	ret
 
+	getApple:
+
+		lds		r18, ADMUX
+	
+		cbr		r18 , 0b00001111
+		sbr		r18 , 0b00000100
+		//sbr		r18, 1<<5
+		sbr		r18, 1<<7
+
+		sts		ADMUX, r18
+	
+		// Start conversion
+		lds		r28, ADCSRA
+
+		sbr		r28, 1<<6
+		sbr		r28, 1<<7
+
+		sts		ADCSRA, r28
+
+		tempY5:
+		// Wait for convertion
+		lds		r28, ADCSRA
+		sbrc	r28, 6
+		jmp		tempY5
+		// Output result
+		lds		r28 , ADCL
+		lds		r20, ADCH
+
+		add		RAND , r28
+		lsr		RAND
+
+		mov		r28 , RAND
+		andi	r28 , 0b00001111
+		//or		r28 , r20
+		mov		RAND , r28
+
+		// gör om till bit
+		ldi		r20 , 0
+		ldi		r18 , 1
+		mov		r28 , RAND
+		subi	r28 , -1
+		cpi		r28 , 0
+		brne	valuetobit
+		ldi		r28 , 1
+		valuetobit:
+		lsl		r18
+		subi	r20 , -1
+		cp		r20 , r28
+		brne	valuetobit
+		cpi		r18 , 0
+		brne	skipnoll
+		ldi		r18 , 1
+
+		skipnoll:
+
+		mov		APPLEX , r18
+
+
+		starty:
+		lds		r18, ADMUX
+	
+		cbr		r18 , 0b00001111
+		sbr		r18 , 0b00000100
+		//sbr		r18, 1<<5
+		sbr		r18, 1<<7
+
+		sts		ADMUX, r18
+	
+		// Start conversion
+		lds		r28, ADCSRA
+
+		sbr		r28, 1<<6
+		sbr		r28, 1<<7
+
+		sts		ADCSRA, r28
+
+		tempY55:
+		// Wait for convertion
+		lds		r28, ADCSRA
+		sbrc	r28, 6
+		jmp		tempY55
+		// Output result
+		lds		r28 , ADCL
+		lds		r20, ADCH
+
+		add		RAND , r28
+		lsr		r28
+
+		mov		r28 , RAND
+		andi	r28 , 0b00001111
+		//or		r28 , r20
+		mov		RAND , r28
+
+		ldi		r20 , 0
+		ldi		r18 , 1
+
+		mov		r28 , RAND
+		subi	r28 , -1
+		
+		cpi		r28 , 0
+		brne	valuetobit5
+		ldi		r28 , 1
+
+		valuetobit5:
+
+		lsl		r18
+
+		subi	r20 , -1
+		cp		r20 , r28
+		brne	valuetobit5
+
+		cpi		r18 , 0
+		brne	skipnoll5
+
+		ldi		r18 , 1
+
+		skipnoll5:
+		mov		APPLEY , r18
+
+	ret
+
+	moveApple:
+
+		ldi		r18, 0b00000001
+		ldi		ZL , low(matrix)
+		ldi		ZH , high(matrix)
+
+
+		moveAppleUpdate:
+			mov		r16 , APPLEY
+			and		r16 , r18
+
+			cpi		r16 , 0b00000000
+			brne	entertheapplematrix	
+
+			jmp pastappleenter
+			entertheapplematrix:
+
+				ld		r16 , Z
+				or		r16 , APPLEX
+				st		Z+, r16
+
+			jmp pastapplepast
+			pastappleenter:
+			
+				ld		r16, Z
+				st		Z+, r16
+				
+			pastapplepast:
+
+			lsl		r18
+			cpi		r18, 0b00000000
+			brne	moveAppleUpdate
+	ret
+
+	checkApple:
+		
+		cp		APPLEX , SNAKEX
+		brne	noapple
+		cp		APPLEY , SNAKEY
+		brne	noapple
+
+		mov		r18 , LENGTH
+		subi	r18 , -1
+		mov		LENGTH , r18
+		
+		appleloop:
+
+		call	getApple
+		call	getApple
+		call	getApple
+		
+		cp		APPLEX , SNAKEX
+		brne	noapple
+		cp		APPLEY , SNAKEY
+		breq	appleloop
+
+		noapple:
+	ret
 
 main:
 	
@@ -299,6 +503,12 @@ main:
 	ldi		r16 , 3
 	mov		LENGTH , r16
 
+	// äpple
+	ldi		r16 , 0b01000000
+	mov		APPLEX , r16
+	ldi		r16 , 0b01000000
+	mov		APPLEY , r16
+
 	
 	ldi		SNAKEX, 0b00001000
 	ldi		SNAKEY, 0b00001000
@@ -331,10 +541,6 @@ main:
 	ldi		ZL , low(matrix)
 	ldi		ZH , high(matrix)
 	ld		r23 , Z		// värdet i matris ligger i r23
-
-
-
-
 
 	ldi		ZL , low(wormbodydir)
 	ldi		ZH , high(wormbodydir)
@@ -575,6 +781,8 @@ joyXMovement:
 	lds		r28 , ADCL
 	lds		r20, ADCH
 
+	add		RAND , r20
+
 	cpi		r20, 0b00000100
 	brlo	right
 	cpi		r20, 0b00001000
@@ -634,6 +842,9 @@ JoyYMovement:
 		Detta för att man inte ska kunna gå igenom
 		ormen igen och direkt förlora.
 	*/
+	
+	add		RAND , r20
+
 	cpi		r20, 0b00000100
 	sbrs	DIR , 3
 	brlo	down
