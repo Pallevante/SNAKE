@@ -58,12 +58,11 @@
 	reti
 
 	supermove:
-		call	joyXMovement
+		call	joyXMovement	// uppdaterar riktningen
 		ldi		r26 , 0b00000000
 		ldi		r16 , 0
 
-		// Check last direction
-		
+// hoppar till att flytta huvudet åt rätt håll 
 		cpi		DIR, 0b00000001
 		breq	moveRight
 
@@ -76,7 +75,7 @@
 		cpi		DIR, 0b00000100
 		breq	moveDown
 
-		// Move snake head
+// flyttar huvudet
 		moveRight:
 			lsl		SNAKEX
 			jmp		moveComplete
@@ -94,49 +93,52 @@
 			jmp		moveComplete
 
 		moveComplete:
-		call	moveBodyDir
+		call	moveBodyDir	// flyttar kroppen
 			reti
 
+// flyttar huvudet till utritningsmatrisen
 	moveDot:
-		ldi		r18, 0b00000001
+		ldi		r18, 0b00000001	// räknar upp genom matrisen
+			// återställer pekaren
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
-		
-	call	checkApple
+	call	checkApple	// kollar kollision mellan äpplet och huvudet
 
-
+	// går igenom matrisen i y-led
 		moveDotUpdate:
 			mov		r16 , SNAKEY
 			and		r16 , r18
-
+		// om huvudet har hittats ska det flyttas till matrisen
 			cpi		r16 , 0b00000000
 			brne	enterthematrix	
 
-			jmp pastenter
+			jmp pastenter	// hoppar över
 			enterthematrix:
 
-				st		Z+, SNAKEX
+				st		Z+, SNAKEX	// skriver ut huvudet i matrisen
 
-			jmp pastpast
+			jmp pastpast	// hoppar över
+
+		// rensar matrisen
 			pastenter:
-			
 				ldi		r16, 0b00000000
 				st		Z+, r16
 
 			pastpast:
-
+		// räknar upp räknaren, ifall den räknat förbi 8 (räknat igenom matrisen) är loopen klar
 			lsl		r18
 			cpi		r18, 0b00000000
 			brne	moveDotUpdate
 
-			
-	call	checkApple
+		call	checkApple	// kollar ifall äpplet har plockats upp
 		ret
 
+// flyttar över kroppen till matrisen
 	movebody:
 		ldi		r25 , 0
-		
+
+	// pekare till riktningsmatrisen
 		ldi		YL , low(wormbodydir)
 		ldi		YH , high(wormbodydir)
 		ld		r18, Y+
@@ -144,15 +146,18 @@
 		mov		r6 , BODYX
 		mov		r7 , BODYY
 
-		uuu:
-		ldi		r23, 0b00000001
+		bodyloop:
+		ldi		r23, 0b00000001	// räknare
+	// pekare till utritningsmatrisen
 		ldi		ZL , low(matrix)
 		ldi		ZH , high(matrix)
 
-		superdupermega:
+		supermovebodyloop:
+		// kollar nuvarande kroppsdelsrad mot utritningsmatrisen
 			mov		r16 , BODYY
 			and		r16 , r23
 
+		// om det finns något där, lägg det i matrisen 
 			cpi		r16 , 0b00000000
 			brne	enterthebodymatrix	
 
@@ -172,7 +177,7 @@
 
 			lsl		r23
 			cpi		r23, 0b00000000
-			brne	superdupermega
+			brne	supermovebodyloop
 			
 			call drawBodyDir
 
@@ -180,7 +185,7 @@
 			subi	r25 , -1
 			cp		r25 , LENGTH
 
-			brne	uuu
+			brne	bodyloop
 			
 		mov		BODYX , r6
 		mov		BODYY , r7

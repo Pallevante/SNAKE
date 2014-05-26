@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 26 14:43:33 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 26 15:08:13 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
 C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(8): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
@@ -1086,12 +1086,11 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 000030 9518      	reti
                  
                  	supermove:
-000031 940e 01fc 		call	joyXMovement
+000031 940e 01fc 		call	joyXMovement	// uppdaterar riktningen
 000033 e0a0      		ldi		r26 , 0b00000000
 000034 e000      		ldi		r16 , 0
                  
-                 		// Check last direction
-                 		
+                 // hoppar till att flytta huvudet åt rätt håll 
 000035 3081      		cpi		DIR, 0b00000001
 000036 f031      		breq	moveRight
                  
@@ -1104,7 +1103,7 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 00003b 3084      		cpi		DIR, 0b00000100
 00003c f049      		breq	moveDown
                  
-                 		// Move snake head
+                 // flyttar huvudet
                  		moveRight:
 00003d 0f66      			lsl		SNAKEX
 00003e 940c 0049 			jmp		moveComplete
@@ -1122,49 +1121,52 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 000047 940c 0049 			jmp		moveComplete
                  
                  		moveComplete:
-000049 940e 00a7 		call	moveBodyDir
+000049 940e 00a7 		call	moveBodyDir	// flyttar kroppen
 00004b 9518      			reti
                  
+                 // flyttar huvudet till utritningsmatrisen
                  	moveDot:
-00004c e021      		ldi		r18, 0b00000001
+00004c e021      		ldi		r18, 0b00000001	// räknar upp genom matrisen
+                 			// återställer pekaren
 00004d e0e0      		ldi		ZL , low(matrix)
 00004e e0f1      		ldi		ZH , high(matrix)
                  
-                 		
-00004f 940e 012a 	call	checkApple
+00004f 940e 012a 	call	checkApple	// kollar kollision mellan äpplet och huvudet
                  
-                 
+                 	// går igenom matrisen i y-led
                  		moveDotUpdate:
 000051 2f0b      			mov		r16 , SNAKEY
 000052 2302      			and		r16 , r18
-                 
+                 		// om huvudet har hittats ska det flyttas till matrisen
 000053 3000      			cpi		r16 , 0b00000000
 000054 f411      			brne	enterthematrix	
                  
-000055 940c 005a 			jmp pastenter
+000055 940c 005a 			jmp pastenter	// hoppar över
                  			enterthematrix:
                  
-000057 9361      				st		Z+, SNAKEX
+000057 9361      				st		Z+, SNAKEX	// skriver ut huvudet i matrisen
                  
-000058 940c 005c 			jmp pastpast
+000058 940c 005c 			jmp pastpast	// hoppar över
+                 
+                 		// rensar matrisen
                  			pastenter:
-                 			
 00005a e000      				ldi		r16, 0b00000000
 00005b 9301      				st		Z+, r16
                  
                  			pastpast:
-                 
+                 		// räknar upp räknaren, ifall den räknat förbi 8 (räknat igenom matrisen) är loopen klar
 00005c 0f22      			lsl		r18
 00005d 3020      			cpi		r18, 0b00000000
 00005e f791      			brne	moveDotUpdate
                  
-                 			
-00005f 940e 012a 	call	checkApple
+00005f 940e 012a 		call	checkApple	// kollar ifall äpplet har plockats upp
 000061 9508      		ret
                  
+                 // flyttar över kroppen till matrisen
                  	movebody:
 000062 e090      		ldi		r25 , 0
-                 		
+                 
+                 	// pekare till riktningsmatrisen
 000063 e0c8      		ldi		YL , low(wormbodydir)
 000064 e0d1      		ldi		YH , high(wormbodydir)
 000065 9129      		ld		r18, Y+
@@ -1172,15 +1174,18 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 000066 2e65      		mov		r6 , BODYX
 000067 2e73      		mov		r7 , BODYY
                  
-                 		uuu:
-000068 e071      		ldi		r23, 0b00000001
+                 		bodyloop:
+000068 e071      		ldi		r23, 0b00000001	// räknare
+                 	// pekare till utritningsmatrisen
 000069 e0e0      		ldi		ZL , low(matrix)
 00006a e0f1      		ldi		ZH , high(matrix)
                  
-                 		superdupermega:
+                 		supermovebodyloop:
+                 		// kollar nuvarande kroppsdelsrad mot utritningsmatrisen
 00006b 2f03      			mov		r16 , BODYY
 00006c 2307      			and		r16 , r23
                  
+                 		// om det finns något där, lägg det i matrisen 
 00006d 3000      			cpi		r16 , 0b00000000
 00006e f411      			brne	enterthebodymatrix	
                  
@@ -1200,7 +1205,7 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
                  
 000078 0f77      			lsl		r23
 000079 3070      			cpi		r23, 0b00000000
-00007a f781      			brne	superdupermega
+00007a f781      			brne	supermovebodyloop
                  			
 00007b 940e 0083 			call drawBodyDir
                  
@@ -1208,7 +1213,7 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
 00007d 5f9f      			subi	r25 , -1
 00007e 159a      			cp		r25 , LENGTH
                  
-00007f f741      			brne	uuu
+00007f f741      			brne	bodyloop
                  			
 000080 2d56      		mov		BODYX , r6
 000081 2d37      		mov		BODYY , r7

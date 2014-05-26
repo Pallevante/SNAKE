@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 26 14:43:33 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 26 15:08:13 2014
 
 
 EQU  SIGNATURE_000 0000001e
@@ -725,8 +725,8 @@ CSEG moveDotUpdate 00000051
 CSEG enterthematrix 00000057
 CSEG pastenter    0000005a
 CSEG pastpast     0000005c
-CSEG uuu          00000068
-CSEG superdupermega 0000006b
+CSEG bodyloop     00000068
+CSEG supermovebodyloop 0000006b
 CSEG enterthebodymatrix 00000071
 CSEG pastbodyenter 00000076
 CSEG pastbodypast 00000078
