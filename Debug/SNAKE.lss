@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Fri May 23 11:50:05 2014
+AVRASM ver. 2.1.52  C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm Mon May 26 14:43:33 2014
 
 [builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
 C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(8): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.39.1005\avrassembler\Include\m328Pdef.inc'
@@ -1043,197 +1043,203 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
                  	wormbodydir:
 000108           		.byte	63
                  
-                 .def	ROW			= r16
-                 .def	COL			= r17
-                 .def	DIR			= r24
-                 .def	LASTDIR		= r5
-                 .def	SNAKEX		= r22
-                 .def	SNAKEY		= r27
-                 .def	BODYX		= r21
-                 .def	BODYY		= r19
-                 .def	LENGTH		= r10
-                 .def	APPLEX		= r8
-                 .def	APPLEY		= r9
-                 .def	RAND		= r11
+                 .def	ROW			= r16	// rad för rita ut matrisen
+                 .def	COL			= r17	// kollumn för rita ut matrisen
+                 .def	DIR			= r24	// maskens huvuds riktning
+                 .def	LASTDIR		= r5	// senaste riktningen
+                 .def	SNAKEX		= r22	// maskens huvuds x-kordinat
+                 .def	SNAKEY		= r27	// maskens huvuds y-kordinat
+                 .def	BODYX		= r21	// kroppens x-kordinat
+                 .def	BODYY		= r19	// kroppens y-kordinat
+                 .def	LENGTH		= r10	// maskens längd
+                 .def	APPLEX		= r8	// äpplets x-kordinat
+                 .def	APPLEY		= r9	// äpplets y-kordinat
+                 .def	RAND		= r11	// slump
                  
                  .CSEG
                  	
                  	.list
-000000 c13c      		rjmp      main
-                 		
+000000 c139      		rjmp      main
+                 	// timer 1 avbrottsvektor
                  .ORG 0x0020
 000020 940c 0023 	jmp supermegatimer
 000022 0000      	nop
                  
                  	supermegatimer:
+                 // räknare för positionsuppdatering
 000023 5faf      	subi	r26 , -1
-000024 0eba      	add		RAND , r26
+000024 0eba      	add		RAND , r26	// ändrar slumpen
                  	
-000025 9100 006e 	lds  r16, TIMSK0     // start timer
-000027 e001      	ldi	 r16 , 0b00000001
-000028 9300 006e 	sts  TIMSK0, r16
-                 	
-00002a 940e 004e 	call	moveDot
-00002c 940e 0117 	call	moveApple
-00002e 940e 0064 	call	movebody
-                 	//call getapple
+                 // återställer timer
+000025 e001      	ldi	 r16 , 0b00000001
+000026 9300 006e 	sts  TIMSK0, r16
                  
-000030 31ae      	cpi		r26 , 0b00011110
-000031 f009      	breq	mklmkl
+                 // fyller utritningsmatrisen
+000028 940e 004c 	call	moveDot
+00002a 940e 0116 	call	moveApple
+00002c 940e 0062 	call	movebody
                  
-000032 9518      	reti
+                 // kollar räknaren
+00002e 31ae      	cpi		r26 , 0b00011110
+00002f f009      	breq	supermove	// uppdaterar position
                  
-                 	mklmkl:
-000033 940e 020d 		call	joyXMovement
-000035 e0a0      		ldi		r26 , 0b00000000
-000036 e000      		ldi		r16 , 0
+000030 9518      	reti
+                 
+                 	supermove:
+000031 940e 01fc 		call	joyXMovement
+000033 e0a0      		ldi		r26 , 0b00000000
+000034 e000      		ldi		r16 , 0
                  
                  		// Check last direction
                  		
-000037 3081      		cpi		DIR, 0b00000001
-000038 f031      		breq	moveRight
+000035 3081      		cpi		DIR, 0b00000001
+000036 f031      		breq	moveRight
                  
-000039 3082      		cpi		DIR, 0b00000010
-00003a f039      		breq	moveLeft
+000037 3082      		cpi		DIR, 0b00000010
+000038 f039      		breq	moveLeft
                  
-00003b 3088      		cpi		DIR, 0b00001000
-00003c f041      		breq	moveUp
+000039 3088      		cpi		DIR, 0b00001000
+00003a f041      		breq	moveUp
                  
-00003d 3084      		cpi		DIR, 0b00000100
-00003e f049      		breq	moveDown
+00003b 3084      		cpi		DIR, 0b00000100
+00003c f049      		breq	moveDown
                  
                  		// Move snake head
                  		moveRight:
-00003f 0f66      			lsl		SNAKEX
-000040 940c 004b 			jmp		moveComplete
+00003d 0f66      			lsl		SNAKEX
+00003e 940c 0049 			jmp		moveComplete
                  
                  		moveLeft:
-000042 9566      			lsr		SNAKEX
-000043 940c 004b 			jmp		moveComplete
+000040 9566      			lsr		SNAKEX
+000041 940c 0049 			jmp		moveComplete
                  
                  		moveUp:
-000045 95b6      			lsr		SNAKEY
-000046 940c 004b 			jmp		moveComplete
+000043 95b6      			lsr		SNAKEY
+000044 940c 0049 			jmp		moveComplete
                  
                  		moveDown:
-000048 0fbb      			lsl		SNAKEY
-000049 940c 004b 			jmp		moveComplete
+000046 0fbb      			lsl		SNAKEY
+000047 940c 0049 			jmp		moveComplete
                  
                  		moveComplete:
-00004b 940e 00ad 		call	moveBodyDir
-00004d 9518      			reti
+000049 940e 00a7 		call	moveBodyDir
+00004b 9518      			reti
                  
                  	moveDot:
-00004e e021      		ldi		r18, 0b00000001
-00004f e0e0      		ldi		ZL , low(matrix)
-000050 e0f1      		ldi		ZH , high(matrix)
+00004c e021      		ldi		r18, 0b00000001
+00004d e0e0      		ldi		ZL , low(matrix)
+00004e e0f1      		ldi		ZH , high(matrix)
                  
                  		
-000051 940e 012b 	call	checkApple
+00004f 940e 012a 	call	checkApple
                  
                  
                  		moveDotUpdate:
-000053 2f0b      			mov		r16 , SNAKEY
-000054 2302      			and		r16 , r18
+000051 2f0b      			mov		r16 , SNAKEY
+000052 2302      			and		r16 , r18
                  
-000055 3000      			cpi		r16 , 0b00000000
-000056 f411      			brne	enterthematrix	
+000053 3000      			cpi		r16 , 0b00000000
+000054 f411      			brne	enterthematrix	
                  
-000057 940c 005c 			jmp pastenter
+000055 940c 005a 			jmp pastenter
                  			enterthematrix:
                  
-000059 9361      				st		Z+, SNAKEX
+000057 9361      				st		Z+, SNAKEX
                  
-00005a 940c 005e 			jmp pastpast
+000058 940c 005c 			jmp pastpast
                  			pastenter:
                  			
-00005c e000      				ldi		r16, 0b00000000
-00005d 9301      				st		Z+, r16
+00005a e000      				ldi		r16, 0b00000000
+00005b 9301      				st		Z+, r16
                  
                  			pastpast:
                  
-00005e 0f22      			lsl		r18
-00005f 3020      			cpi		r18, 0b00000000
-000060 f791      			brne	moveDotUpdate
+00005c 0f22      			lsl		r18
+00005d 3020      			cpi		r18, 0b00000000
+00005e f791      			brne	moveDotUpdate
                  
                  			
-000061 940e 012b 	call	checkApple
-000063 9508      		ret
+00005f 940e 012a 	call	checkApple
+000061 9508      		ret
                  
                  	movebody:
-000064 e090      		ldi		r25 , 0
+000062 e090      		ldi		r25 , 0
                  		
-000065 e0c8      		ldi		YL , low(wormbodydir)
-000066 e0d1      		ldi		YH , high(wormbodydir)
-000067 9129      		ld		r18, Y+
+000063 e0c8      		ldi		YL , low(wormbodydir)
+000064 e0d1      		ldi		YH , high(wormbodydir)
+000065 9129      		ld		r18, Y+
                  
-000068 2e65      		mov		r6 , BODYX
-000069 2e73      		mov		r7 , BODYY
+000066 2e65      		mov		r6 , BODYX
+000067 2e73      		mov		r7 , BODYY
                  
                  		uuu:
-00006a e071      		ldi		r23, 0b00000001
-00006b e0e0      		ldi		ZL , low(matrix)
-00006c e0f1      		ldi		ZH , high(matrix)
+000068 e071      		ldi		r23, 0b00000001
+000069 e0e0      		ldi		ZL , low(matrix)
+00006a e0f1      		ldi		ZH , high(matrix)
                  
                  		superdupermega:
-00006d 2f03      			mov		r16 , BODYY
-00006e 2307      			and		r16 , r23
+00006b 2f03      			mov		r16 , BODYY
+00006c 2307      			and		r16 , r23
                  
-00006f 3000      			cpi		r16 , 0b00000000
-000070 f411      			brne	enterthebodymatrix	
+00006d 3000      			cpi		r16 , 0b00000000
+00006e f411      			brne	enterthebodymatrix	
                  
-000071 940c 0078 			jmp pastbodyenter
+00006f 940c 0076 			jmp pastbodyenter
                  			enterthebodymatrix:
-000073 8100      				ld		r16 , Z
-000074 2b05      				or		r16 , BODYX
-000075 9301      				st		Z+, r16
+000071 8100      				ld		r16 , Z
+000072 2b05      				or		r16 , BODYX
+000073 9301      				st		Z+, r16
                  
-000076 940c 007a 			jmp pastbodypast
+000074 940c 0078 			jmp pastbodypast
                  			pastbodyenter:
                  			
-000078 8100      				ld		r16 , Z
-000079 9301      				st		Z+, r16
+000076 8100      				ld		r16 , Z
+000077 9301      				st		Z+, r16
                  
                  			pastbodypast:
                  
-00007a 0f77      			lsl		r23
-00007b 3070      			cpi		r23, 0b00000000
-00007c f781      			brne	superdupermega
+000078 0f77      			lsl		r23
+000079 3070      			cpi		r23, 0b00000000
+00007a f781      			brne	superdupermega
                  			
-00007d 940e 0085 			call drawBodyDir
+00007b 940e 0083 			call drawBodyDir
                  
                  
-00007f 5f9f      			subi	r25 , -1
-000080 159a      			cp		r25 , LENGTH
+00007d 5f9f      			subi	r25 , -1
+00007e 159a      			cp		r25 , LENGTH
                  
-000081 f741      			brne	uuu
+00007f f741      			brne	uuu
                  			
-000082 2d56      		mov		BODYX , r6
-000083 2d37      		mov		BODYY , r7
-000084 9508      	ret
+000080 2d56      		mov		BODYX , r6
+000081 2d37      		mov		BODYY , r7
+000082 9508      	ret
                  
                  
                  	drawBodyDir:
                  
-000085 1756      	cp		BODYX , SNAKEX
-000086 f451      	brne	cleared
+000083 1756      	cp		BODYX , SNAKEX
+000084 f421      	brne	cleared
                  
-000087 173b      	cp		BODYY , SNAKEY
-000088 f441      	brne	cleared
+000085 173b      	cp		BODYY , SNAKEY
+000086 f411      	brne	cleared
                  
-000089 940e 0289 	call ded
-                 
-                 	
-00008b 1558      	cp		BODYX , APPLEX
-00008c f421      	brne	cleared
-                 
-00008d 1539      	cp		BODYY , APPLEY
-00008e f411      	brne	cleared
-                 	
-00008f 940e 00c2 		call	getApple
+000087 940e 0284 	call ded
                  
                  	cleared:
+                 	
+                 	aplleloop2:
+                 			
+000089 1558      		cp		BODYX , APPLEX
+00008a f431      		brne	endchek2
+                 		
+00008b 1539      		cp		BODYY , APPLEY
+00008c f421      		brne	endchek2
                  
+00008d 940e 00bc 		call	getApple
+00008f 940c 0089 		jmp		aplleloop2
+                 
+                 		endchek2:
+                 		
 000091 9129      		ld		r18 , Y+
                  		// Check last direction		
 000092 3021      		cpi		r18, 0b00000001
@@ -1251,583 +1257,578 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
                  		// Move snake head
                  		moveBodyRight:
 00009a 9556      			lsr		BODYX
-00009b 940c 00c1 			jmp		moveBodyComplete
+00009b 940c 00a6 			jmp		aplleloop
                  
                  		moveBodyLeft:
 00009d 0f55      			lsl		BODYX
-00009e 940c 00c1 			jmp		moveBodyComplete
+00009e 940c 00a6 			jmp		aplleloop
                  
                  		moveBodyUp:
 0000a0 0f33      			lsl		BODYY
-0000a1 940c 00c1 			jmp		moveBodyComplete
+0000a1 940c 00a6 			jmp		aplleloop
                  
                  		moveBodyDown:
 0000a3 9536      			lsr		BODYY
-0000a4 940c 00c1 			jmp		moveBodyComplete
+0000a4 940c 00a6 			jmp		aplleloop
                  
                  
                  
                  		aplleloop:
-                 			
-0000a6 1558      		cp		BODYX , APPLEX
-0000a7 f421      		brne	endchek
+                 		/*	
+                 		cp		BODYX , APPLEX
+                 		brne	endchek
+                 		
+                 		cp		BODYY , APPLEY
+                 		brne	endchek
                  
-0000a8 1539      		cp		BODYY , APPLEY
-0000a9 f411      		brne	endchek
-                 	
-0000aa 940e 00c2 		call	getApple
-                 		//jmp		aplleloop
-                 
+                 		call	getApple
+                 		jmp		aplleloop
+                 		*/
                  		endchek:
                  
-0000ac 9508      	ret
+0000a6 9508      	ret
                  
                  	moveBodyDir:
-0000ad e0c8      		ldi		YL , low(wormbodydir)
-0000ae e0d1      		ldi		YH , high(wormbodydir)
-0000af 9129      		ld		r18, Y+
-0000b0 9129      		ld		r18, Y+
+0000a7 e0c8      		ldi		YL , low(wormbodydir)
+0000a8 e0d1      		ldi		YH , high(wormbodydir)
+0000a9 9129      		ld		r18, Y+
+0000aa 9129      		ld		r18, Y+
                  
                  		// Check last direction		
-0000b1 3021      		cpi		r18, 0b00000001
-0000b2 f031      		breq	moveBodyRight2
+0000ab 3021      		cpi		r18, 0b00000001
+0000ac f031      		breq	moveBodyRight2
                  
-0000b3 3022      		cpi		r18, 0b00000010
-0000b4 f031      		breq	moveBodyLeft2
+0000ad 3022      		cpi		r18, 0b00000010
+0000ae f031      		breq	moveBodyLeft2
                  
-0000b5 3028      		cpi		r18, 0b00001000
-0000b6 f031      		breq	moveBodyUp2
+0000af 3028      		cpi		r18, 0b00001000
+0000b0 f031      		breq	moveBodyUp2
                  
-0000b7 3024      		cpi		r18, 0b00000100
-0000b8 f031      		breq	moveBodyDown2
+0000b1 3024      		cpi		r18, 0b00000100
+0000b2 f031      		breq	moveBodyDown2
                  
                  		// Move snake head
                  		moveBodyRight2:
-0000b9 0f55      			lsl		BODYX
-0000ba 9508      			ret
+0000b3 0f55      			lsl		BODYX
+0000b4 9508      			ret
                  
                  		moveBodyLeft2:
-0000bb 9556      			lsr		BODYX
-0000bc 9508      			ret
+0000b5 9556      			lsr		BODYX
+0000b6 9508      			ret
                  
                  		moveBodyUp2:
-0000bd 9536      			lsr		BODYY
-0000be 9508      			ret
+0000b7 9536      			lsr		BODYY
+0000b8 9508      			ret
                  
                  		moveBodyDown2:
-0000bf 0f33      			lsl		BODYY
-0000c0 9508      			ret
+0000b9 0f33      			lsl		BODYY
+0000ba 9508      			ret
                  
                  	moveBodyComplete:
-0000c1 9508      	ret
+0000bb 9508      	ret
                  
                  	getApple:
                  
-0000c2 9120 007c 		lds		r18, ADMUX
+0000bc 9120 007c 		lds		r18, ADMUX
                  	
-0000c4 7f20      		cbr		r18 , 0b00001111
-0000c5 6024      		sbr		r18 , 0b00000100
+0000be 7f20      		cbr		r18 , 0b00001111
+0000bf 6024      		sbr		r18 , 0b00000100
                  		//sbr		r18, 1<<5
-0000c6 6820      		sbr		r18, 1<<7
+0000c0 6820      		sbr		r18, 1<<7
                  
-0000c7 9320 007c 		sts		ADMUX, r18
+0000c1 9320 007c 		sts		ADMUX, r18
                  	
                  		// Start conversion
-0000c9 91c0 007a 		lds		r28, ADCSRA
+0000c3 91c0 007a 		lds		r28, ADCSRA
                  
-0000cb 64c0      		sbr		r28, 1<<6
-0000cc 68c0      		sbr		r28, 1<<7
+0000c5 64c0      		sbr		r28, 1<<6
+0000c6 68c0      		sbr		r28, 1<<7
                  
-0000cd 93c0 007a 		sts		ADCSRA, r28
+0000c7 93c0 007a 		sts		ADCSRA, r28
                  
                  		tempY5:
                  		// Wait for convertion
-0000cf 91c0 007a 		lds		r28, ADCSRA
-0000d1 fdc6      		sbrc	r28, 6
-0000d2 940c 00cf 		jmp		tempY5
+0000c9 91c0 007a 		lds		r28, ADCSRA
+0000cb fdc6      		sbrc	r28, 6
+0000cc 940c 00c9 		jmp		tempY5
                  		// Output result
-0000d4 91c0 0078 		lds		r28 , ADCL
-0000d6 9140 0079 		lds		r20, ADCH
+0000ce 91c0 0078 		lds		r28 , ADCL
+0000d0 9140 0079 		lds		r20, ADCH
                  
-0000d8 0ebc      		add		RAND , r28
-0000d9 94b6      		lsr		RAND
+0000d2 0ebc      		add		RAND , r28
+0000d3 94b6      		lsr		RAND
                  
-0000da 2dcb      		mov		r28 , RAND
-0000db 70cf      		andi	r28 , 0b00001111
+0000d4 2dcb      		mov		r28 , RAND
+0000d5 70cf      		andi	r28 , 0b00001111
                  		//or		r28 , r20
-0000dc 2ebc      		mov		RAND , r28
+0000d6 2ebc      		mov		RAND , r28
                  
                  		// gör om till bit
-0000dd e040      		ldi		r20 , 0
-0000de e021      		ldi		r18 , 1
-0000df 2dcb      		mov		r28 , RAND
-0000e0 5fcf      		subi	r28 , -1
-0000e1 30c0      		cpi		r28 , 0
-0000e2 f409      		brne	valuetobit
-0000e3 e0c1      		ldi		r28 , 1
+0000d7 e040      		ldi		r20 , 0
+0000d8 e021      		ldi		r18 , 1
+0000d9 2dcb      		mov		r28 , RAND
+0000da 5fcf      		subi	r28 , -1
+0000db 30c0      		cpi		r28 , 0
+0000dc f409      		brne	valuetobit
+0000dd e0c1      		ldi		r28 , 1
                  
                  		valuetobit:
                  
-0000e4 0f22      			lsl		r18
-0000e5 5f4f      			subi	r20 , -1
-0000e6 174c      			cp		r20 , r28
-0000e7 f7e1      			brne	valuetobit
-0000e8 3020      			cpi		r18 , 0
+0000de 0f22      			lsl		r18
+0000df 5f4f      			subi	r20 , -1
+0000e0 174c      			cp		r20 , r28
+0000e1 f7e1      			brne	valuetobit
+0000e2 3020      			cpi		r18 , 0
                  
-0000e9 f409      		brne	skipnoll
+0000e3 f409      		brne	skipnoll
                  
-0000ea e021      		ldi		r18 , 1
+0000e4 e021      		ldi		r18 , 1
                  
                  		skipnoll:
                  
-0000eb 2e82      		mov		APPLEX , r18
+0000e5 2e82      		mov		APPLEX , r18
                  
+0000e6 940e 0263 		call	swagmaster
                  
                  		starty:
-0000ec 9120 007c 		lds		r18, ADMUX
+0000e8 9120 007c 		lds		r18, ADMUX
                  	
-0000ee 7f20      		cbr		r18 , 0b00001111
-0000ef 6024      		sbr		r18 , 0b00000100
+0000ea 7f20      		cbr		r18 , 0b00001111
+0000eb 6024      		sbr		r18 , 0b00000100
                  		//sbr		r18, 1<<5
-0000f0 6820      		sbr		r18, 1<<7
+0000ec 6420      		sbr		r18, 1<<6
                  
-0000f1 9320 007c 		sts		ADMUX, r18
+0000ed 9320 007c 		sts		ADMUX, r18
                  	
                  		// Start conversion
-0000f3 91c0 007a 		lds		r28, ADCSRA
+0000ef 91c0 007a 		lds		r28, ADCSRA
                  
-0000f5 64c0      		sbr		r28, 1<<6
-0000f6 68c0      		sbr		r28, 1<<7
+0000f1 64c0      		sbr		r28, 1<<6
+0000f2 68c0      		sbr		r28, 1<<7
                  
-0000f7 93c0 007a 		sts		ADCSRA, r28
+0000f3 93c0 007a 		sts		ADCSRA, r28
                  
                  		tempY55:
                  		// Wait for convertion
-0000f9 91c0 007a 		lds		r28, ADCSRA
-0000fb fdc6      		sbrc	r28, 6
-0000fc 940c 00f9 		jmp		tempY55
+0000f5 91c0 007a 		lds		r28, ADCSRA
+0000f7 fdc6      		sbrc	r28, 6
+0000f8 940c 00f5 		jmp		tempY55
                  		// Output result
-0000fe 91c0 0078 		lds		r28 , ADCL
-000100 9140 0079 		lds		r20, ADCH
+0000fa 91c0 0078 		lds		r28 , ADCL
+0000fc 9140 0079 		lds		r20, ADCH
                  
-000102 0ebc      		add		RAND , r28
-000103 95c6      		lsr		r28
+0000fe 0ebc      		add		RAND , r28
+0000ff 95c6      		lsr		r28
                  
-000104 2dcb      		mov		r28 , RAND
-000105 70cf      		andi	r28 , 0b00001111
+000100 2dcb      		mov		r28 , RAND
+000101 70cf      		andi	r28 , 0b00001111
                  		//or		r28 , r20
-000106 2ebc      		mov		RAND , r28
+000102 2ebc      		mov		RAND , r28
                  
-000107 e040      		ldi		r20 , 0
-000108 e021      		ldi		r18 , 1
+000103 e040      		ldi		r20 , 0
+000104 e021      		ldi		r18 , 1
                  
-000109 2dcb      		mov		r28 , RAND
-00010a 5fcf      		subi	r28 , -1
+000105 2dcb      		mov		r28 , RAND
+000106 5fcf      		subi	r28 , -1
+000107 9dcb      		mul		r28 , RAND
+000108 0dc1      		add		r28 , r1
+000109 0dc9      		add		r28 , APPLEY
                  		
-00010b 30c0      		cpi		r28 , 0
-00010c f409      		brne	valuetobit5
-00010d e0c1      		ldi		r28 , 1
+00010a 30c0      		cpi		r28 , 0
+00010b f409      		brne	valuetobit5
+00010c e0c1      		ldi		r28 , 1
                  
                  		valuetobit5:
                  
-00010e 0f22      		lsl		r18
+00010d 0f22      		lsl		r18
                  
-00010f 5f4f      		subi	r20 , -1
-000110 174c      		cp		r20 , r28
-000111 f7e1      		brne	valuetobit5
+00010e 5f4f      		subi	r20 , -1
+00010f 174c      		cp		r20 , r28
+000110 f7e1      		brne	valuetobit5
                  
-000112 3020      		cpi		r18 , 0
-000113 f409      		brne	skipnoll5
+000111 3020      		cpi		r18 , 0
+000112 f409      		brne	skipnoll5
                  
-000114 e021      		ldi		r18 , 1
+000113 e021      		ldi		r18 , 1
                  
                  		skipnoll5:
-000115 2e92      		mov		APPLEY , r18
+000114 2e92      		mov		APPLEY , r18
                  
-000116 9508      	ret
+000115 9508      	ret
                  
                  	moveApple:
                  
-000117 e021      		ldi		r18, 0b00000001
-000118 e0e0      		ldi		ZL , low(matrix)
-000119 e0f1      		ldi		ZH , high(matrix)
+000116 e021      		ldi		r18, 0b00000001
+000117 e0e0      		ldi		ZL , low(matrix)
+000118 e0f1      		ldi		ZH , high(matrix)
                  
                  
                  		moveAppleUpdate:
-00011a 2d09      			mov		r16 , APPLEY
-00011b 2302      			and		r16 , r18
+000119 2d09      			mov		r16 , APPLEY
+00011a 2302      			and		r16 , r18
                  
-00011c 3000      			cpi		r16 , 0b00000000
-00011d f411      			brne	entertheapplematrix	
+00011b 3000      			cpi		r16 , 0b00000000
+00011c f411      			brne	entertheapplematrix	
                  
-00011e 940c 0125 			jmp pastappleenter
+00011d 940c 0124 			jmp pastappleenter
                  			entertheapplematrix:
                  
-000120 8100      				ld		r16 , Z
-000121 2908      				or		r16 , APPLEX
-000122 9301      				st		Z+, r16
+00011f 8100      				ld		r16 , Z
+000120 2908      				or		r16 , APPLEX
+000121 9301      				st		Z+, r16
                  
-000123 940c 0127 			jmp pastapplepast
+000122 940c 0126 			jmp pastapplepast
                  			pastappleenter:
                  			
-000125 8100      				ld		r16, Z
-000126 9301      				st		Z+, r16
+000124 8100      				ld		r16, Z
+000125 9301      				st		Z+, r16
                  				
                  			pastapplepast:
                  
-000127 0f22      			lsl		r18
-000128 3020      			cpi		r18, 0b00000000
-000129 f781      			brne	moveAppleUpdate
-00012a 9508      	ret
+000126 0f22      			lsl		r18
+000127 3020      			cpi		r18, 0b00000000
+000128 f781      			brne	moveAppleUpdate
+000129 9508      	ret
                  
                  	checkApple:
                  		
-00012b 1686      		cp		APPLEX , SNAKEX
-00012c f479      		brne	noapple
-00012d 169b      		cp		APPLEY , SNAKEY
-00012e f469      		brne	noapple
+00012a 1686      		cp		APPLEX , SNAKEX
+00012b f469      		brne	noapple
+00012c 169b      		cp		APPLEY , SNAKEY
+00012d f459      		brne	noapple
                  
-00012f 2d2a      		mov		r18 , LENGTH
-000130 5f2f      		subi	r18 , -1
-000131 2ea2      		mov		LENGTH , r18
+00012e 2d2a      		mov		r18 , LENGTH
+00012f 5f2f      		subi	r18 , -1
+000130 2ea2      		mov		LENGTH , r18
                  		
                  		appleloop:
+000131 940e 0263 		call	swagmaster
                  
-000132 940e 00c2 		call	getApple
-000134 940e 00c2 		call	getApple
-000136 940e 00c2 		call	getApple
+000133 940e 00bc 		call	getApple
                  		
-000138 1686      		cp		APPLEX , SNAKEX
-000139 f411      		brne	noapple
-00013a 169b      		cp		APPLEY , SNAKEY
-00013b f3b1      		breq	appleloop
+000135 1686      		cp		APPLEX , SNAKEX
+000136 f411      		brne	noapple
+000137 169b      		cp		APPLEY , SNAKEY
+000138 f3c1      		breq	appleloop
                  
                  		noapple:
-00013c 9508      	ret
+000139 9508      	ret
                  
                  main:
                  	
-00013d e008      	ldi		r16, HIGH(RAMEND)
-00013e bf0e      	out		SPH, r16
-00013f ef0f      	ldi		r16, LOW(RAMEND)
-000140 bf0d      	out		SPL, r16
+00013a e008      	ldi		r16, HIGH(RAMEND)
+00013b bf0e      	out		SPH, r16
+00013c ef0f      	ldi		r16, LOW(RAMEND)
+00013d bf0d      	out		SPL, r16
                  
                  	timer:
-000141 9100 0025 		lds  r16, TCCR0B     // timer prescaling
-000143 6005      		ori	 r16, 0b00000101
-000144 bd05      		out  TCCR0B, r16
-000145 9478      		sei
-000146 9100 006e 		lds  r16, TIMSK0     // start timer
-000148 e001      		ldi	 r16, 0b00000001
-000149 9300 006e 		sts  TIMSK0, r16
+00013e 9100 0025 		lds  r16, TCCR0B     // timer prescaling
+000140 6005      		ori	 r16, 0b00000101
+000141 bd05      		out  TCCR0B, r16
+000142 9478      		sei
+000143 9100 006e 		lds  r16, TIMSK0     // start timer
+000145 e001      		ldi	 r16, 0b00000001
+000146 9300 006e 		sts  TIMSK0, r16
                  
                  		// så att vi kan använda portarna
-00014b ef0f          ldi		r16,0xFF
-00014c b904          out		DDRB,r16
-00014d b907      	out		DDRC,r16
-00014e b90a      	out		DDRD,r16
+000148 ef0f          ldi		r16,0xFF
+000149 b904          out		DDRB,r16
+00014a b907      	out		DDRC,r16
+00014b b90a      	out		DDRD,r16
                  
-00014f 9100 007c 	lds		r16 , ADMUX
-000151 6400      	sbr		r16 , 1<<6
-000152 6000      	sbr		r16 , 0<<7
-000153 9300 007c 	sts		ADMUX , r16
-000155 9100 007a 	lds		r16 , ADCSRA
-000157 6001      	sbr		r16 , 1<<0
-000158 6002      	sbr		r16 , 1<<1
-000159 6004      	sbr		r16 , 1<<2
-00015a 6800      	sbr		r16 , 1<<7
-00015b 9300 007a 	sts		ADCSRA , r16
+00014c 9100 007c 	lds		r16 , ADMUX
+00014e 6400      	sbr		r16 , 1<<6
+00014f 6000      	sbr		r16 , 0<<7
+000150 9300 007c 	sts		ADMUX , r16
+000152 9100 007a 	lds		r16 , ADCSRA
+000154 6001      	sbr		r16 , 1<<0
+000155 6002      	sbr		r16 , 1<<1
+000156 6004      	sbr		r16 , 1<<2
+000157 6800      	sbr		r16 , 1<<7
+000158 9300 007a 	sts		ADCSRA , r16
                  
-00015d e003      	ldi		r16 , 3
-00015e 2ea0      	mov		LENGTH , r16
+00015a e003      	ldi		r16 , 3
+00015b 2ea0      	mov		LENGTH , r16
                  
                  	// äpple
-00015f e400      	ldi		r16 , 0b01000000
-000160 2e80      	mov		APPLEX , r16
-000161 e400      	ldi		r16 , 0b01000000
-000162 2e90      	mov		APPLEY , r16
-                 
+00015c e400      	ldi		r16 , 0b01000000
+00015d 2e80      	mov		APPLEX , r16
+00015e e400      	ldi		r16 , 0b01000000
+00015f 2e90      	mov		APPLEY , r16
+000160 940e 00bc 	call getapple
                  	
-000163 e068      	ldi		SNAKEX, 0b00001000
-000164 e0b8      	ldi		SNAKEY, 0b00001000
+000162 e068      	ldi		SNAKEX, 0b00001000
+000163 e0b8      	ldi		SNAKEY, 0b00001000
                  	
-000165 e054      	ldi		BODYX, 0b00000100
-000166 e038      	ldi		BODYY, 0b00001000
+000164 e054      	ldi		BODYX, 0b00000100
+000165 e038      	ldi		BODYY, 0b00001000
                  
-000167 e0a2      	ldi		r26 , 2
+000166 e0a2      	ldi		r26 , 2
                  
                  		// matris
-000168 e0e0      	ldi		ZL , low(matrix)
-000169 e0f1      	ldi		ZH , high(matrix)
+000167 e0e0      	ldi		ZL , low(matrix)
+000168 e0f1      	ldi		ZH , high(matrix)
                  
-00016a 2f2a      	mov	    r18, r26
-00016b 9321      	st		Z+, r18
-00016c e020      	ldi		r18, 0b00000000
-00016d 9321      	st		Z+, r18
-00016e e020      	ldi		r18, 0b00000000
-00016f 9321      	st		Z+, r18
-000170 e020      	ldi		r18, 0b00000000
-000171 9321      	st		Z+, r18
-000172 e020      	ldi		r18, 0b00000000
-000173 9321      	st		Z+, r18
-000174 e020      	ldi		r18, 0b00000000
-000175 9321      	st		Z+, r18
-000176 e020      	ldi		r18, 0b00000000
-000177 9321      	st		Z+, r18
-000178 e020      	ldi		r18, 0b00000000
-000179 9321      	st		Z+, r18
-00017a e0e0      	ldi		ZL , low(matrix)
-00017b e0f1      	ldi		ZH , high(matrix)
-00017c 8170      	ld		r23 , Z		// värdet i matris ligger i r23
+000169 2f2a      	mov	    r18, r26
+00016a 9321      	st		Z+, r18
+00016b e020      	ldi		r18, 0b00000000
+00016c 9321      	st		Z+, r18
+00016d e020      	ldi		r18, 0b00000000
+00016e 9321      	st		Z+, r18
+00016f e020      	ldi		r18, 0b00000000
+000170 9321      	st		Z+, r18
+000171 e020      	ldi		r18, 0b00000000
+000172 9321      	st		Z+, r18
+000173 e020      	ldi		r18, 0b00000000
+000174 9321      	st		Z+, r18
+000175 e020      	ldi		r18, 0b00000000
+000176 9321      	st		Z+, r18
+000177 e020      	ldi		r18, 0b00000000
+000178 9321      	st		Z+, r18
+000179 e0e0      	ldi		ZL , low(matrix)
+00017a e0f1      	ldi		ZH , high(matrix)
+00017b 8170      	ld		r23 , Z		// värdet i matris ligger i r23
                  
-00017d e0e8      	ldi		ZL , low(wormbodydir)
-00017e e0f1      	ldi		ZH , high(wormbodydir)
+00017c e0e8      	ldi		ZL , low(wormbodydir)
+00017d e0f1      	ldi		ZH , high(wormbodydir)
                  
-00017f 2f2a      	mov	    r18, r26
-000180 9321      	st		Z+, r18
-000181 e024      	ldi		r18, 0b00000100
-000182 9321      	st		Z+, r18
-000183 e021      	ldi		r18, 0b00000001
-000184 9321      	st		Z+, r18
-000185 e022      	ldi		r18, 0b00000010
-000186 9321      	st		Z+, r18
-000187 e024      	ldi		r18, 0b00000100
-000188 9321      	st		Z+, r18
-000189 e020      	ldi		r18, 0b00000000
-00018a 9321      	st		Z+, r18
-00018b e020      	ldi		r18, 0b00000000
-00018c 9321      	st		Z+, r18
-00018d e020      	ldi		r18, 0b00000000
-00018e 9321      	st		Z+, r18
+00017e 2f2a      	mov	    r18, r26
+00017f 9321      	st		Z+, r18
+000180 e024      	ldi		r18, 0b00000100
+000181 9321      	st		Z+, r18
+000182 e021      	ldi		r18, 0b00000001
+000183 9321      	st		Z+, r18
+000184 e022      	ldi		r18, 0b00000010
+000185 9321      	st		Z+, r18
+000186 e024      	ldi		r18, 0b00000100
+000187 9321      	st		Z+, r18
+000188 e020      	ldi		r18, 0b00000000
+000189 9321      	st		Z+, r18
+00018a e020      	ldi		r18, 0b00000000
+00018b 9321      	st		Z+, r18
+00018c e020      	ldi		r18, 0b00000000
+00018d 9321      	st		Z+, r18
                  
                  
                  		// börjar kolla från första raden
-00018f e001      	ldi		ROW , 0b00000001
-000190 e011      	ldi		COL , 0b00000001
+00018e e001      	ldi		ROW , 0b00000001
+00018f e011      	ldi		COL , 0b00000001
                  	
                  	blank:
-000191 0f00      		lsl		ROW
-000192 940c 019d 	jmp update
+000190 0f00      		lsl		ROW
+000191 940c 019c 	jmp update
                  
                  	reset:
                  			// återställer
-000194 e001      		ldi		ROW , 0b00000001
-000195 e011      		ldi		COL , 0b00000001
-000196 e0e0      		ldi		ZL , low(matrix)
-000197 e0f1      		ldi		ZH , high(matrix)
+000193 e001      		ldi		ROW , 0b00000001
+000194 e011      		ldi		COL , 0b00000001
+000195 e0e0      		ldi		ZL , low(matrix)
+000196 e0f1      		ldi		ZH , high(matrix)
                  
-000198 940c 019d 	jmp update
+000197 940c 019c 	jmp update
                  	
                  	pastD:
                  		// byter rad
-00019a 0f00      	lsl		ROW
-00019b 940c 019d 	jmp	update
+000199 0f00      	lsl		ROW
+00019a 940c 019c 	jmp	update
                  
                  update:
                  
-00019d e011      	ldi		COL , 0b00000001
-00019e 9171      	ld		r23 , Z+	// värdet i matris ligger i r23
+00019c e011      	ldi		COL , 0b00000001
+00019d 9171      	ld		r23 , Z+	// värdet i matris ligger i r23
                  // sista raden
-00019f 3000      	cpi		ROW , 0b00000000
-0001a0 f399      	breq	reset
+00019e 3000      	cpi		ROW , 0b00000000
+00019f f399      	breq	reset
                  // tom rad
-0001a1 3070      	cpi		r23	, 0
-0001a2 f371      	breq	blank
+0001a0 3070      	cpi		r23	, 0
+0001a1 f371      	breq	blank
                  	
                  	// går förbi gränsen för port D
-0001a3 3100      	cpi		ROW , 0b00010000
-0001a4 f584      	brge	printD
+0001a2 3100      	cpi		ROW , 0b00010000
+0001a3 f544      	brge	printD
                  	// fixar bugg, har med signed att göra tror jag
-0001a5 3800      	cpi		ROW , 0b10000000
-0001a6 f171      	breq	printD
+0001a4 3800      	cpi		ROW , 0b10000000
+0001a5 f131      	breq	printD
                  		// print c
                  		updateCol:
-0001a7 3010      			cpi		COL , 0b00000000
-0001a8 f389      			breq	pastD
+0001a6 3010      			cpi		COL , 0b00000000
+0001a7 f389      			breq	pastD
                  
-0001a9 2f21      			mov		r18 , COL
-0001aa 2327      			and		r18 , r23
+0001a8 2f21      			mov		r18 , COL
+0001a9 2327      			and		r18 , r23
                  				// r0 verkar bugga
-0001ab e0d0      			ldi		r29 , 0b00000000
+0001aa e0d0      			ldi		r29 , 0b00000000
                  
-0001ac 3012      			cpi		COL , 0b00000010
-0001ad f049      			breq	printColD
-0001ae 3011      			cpi		COL , 0b00000001
-0001af f039      			breq	printColD
+0001ab 3012      			cpi		COL , 0b00000010
+0001ac f049      			breq	printColD
+0001ad 3011      			cpi		COL , 0b00000001
+0001ae f039      			breq	printColD
                  			// printColB
+0001af 9526      			lsr		r18
 0001b0 9526      			lsr		r18
-0001b1 9526      			lsr		r18
-0001b2 b908      			out		PORTC , ROW
-0001b3 b9db      			out		PORTD , r29
-0001b4 b925      			out		PORTB , r18
-0001b5 940c 01c0 			jmp	pastColD
+0001b1 b908      			out		PORTC , ROW
+0001b2 b9db      			out		PORTD , r29
+0001b3 b925      			out		PORTB , r18
+0001b4 940c 01bf 			jmp	pastColD
                  
                  		printColD:
+0001b6 0f22      				lsl		r18
 0001b7 0f22      				lsl		r18
 0001b8 0f22      				lsl		r18
 0001b9 0f22      				lsl		r18
 0001ba 0f22      				lsl		r18
 0001bb 0f22      				lsl		r18
-0001bc 0f22      				lsl		r18
-0001bd b908      				out		PORTC , ROW
-0001be b92b      				out		PORTD , r18
-0001bf b9d5      				out		PORTB , r29
+0001bc b908      				out		PORTC , ROW
+0001bd b92b      				out		PORTD , r18
+0001be b9d5      				out		PORTB , r29
                  
                  		pastColD:
-0001c0 0f11      				lsl		COL
+0001bf 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-0001c1 940e 0274 				call swagMaster
-0001c3 940e 0274 				call swagMaster
-0001c5 940e 0274 				call swagMaster
-0001c7 940e 0274 				call swagMaster
-0001c9 940e 0274 				call swagMaster
-0001cb 940e 0274 				call swagMaster
-0001cd 940e 0274 				call swagMaster
-0001cf 940e 0274 				call swagMaster
-0001d1 940e 0274 				call swagMaster
+0001c0 940e 0263 				call swagMaster
+0001c2 940e 0263 				call swagMaster
+0001c4 940e 0263 				call swagMaster
+0001c6 940e 0263 				call swagMaster
+0001c8 940e 0263 				call swagMaster
                  
-0001d3 940c 01a7 		jmp updateCol
+0001ca 940c 01a6 		jmp updateCol
                  
                  		printD:
                  
                  		updateColD:
-0001d5 3010      			cpi		COL , 0b00000000
-0001d6 f219      			breq	pastD
+0001cc 3010      			cpi		COL , 0b00000000
+0001cd f259      			breq	pastD
                  
-0001d7 2f21      			mov		r18 , COL
-0001d8 2327      			and		r18 , r23
+0001ce 2f21      			mov		r18 , COL
+0001cf 2327      			and		r18 , r23
                  				// r0 verkar bugga
-0001d9 e0d0      			ldi		r29 , 0b00000000
+0001d0 e0d0      			ldi		r29 , 0b00000000
                  
-0001da 3012      			cpi		COL , 0b00000010
-0001db f069      			breq	printColDD
-0001dc 3011      			cpi		COL , 0b00000001
-0001dd f059      			breq	printColDD
+0001d1 3012      			cpi		COL , 0b00000010
+0001d2 f069      			breq	printColDD
+0001d3 3011      			cpi		COL , 0b00000001
+0001d4 f059      			breq	printColDD
                  			// printColB
-0001de 9526      			lsr		r18
-0001df 9526      			lsr		r18
+0001d5 9526      			lsr		r18
+0001d6 9526      			lsr		r18
                  
-0001e0 9506      			lsr		ROW
-0001e1 9506      			lsr		ROW
-0001e2 b9d8      			out		PORTC , r29
-0001e3 b90b      			out		PORTD , ROW
-0001e4 b925      			out		PORTB , r18
-0001e5 0f00      			lsl		ROW
-0001e6 0f00      			lsl		ROW
+0001d7 9506      			lsr		ROW
+0001d8 9506      			lsr		ROW
+0001d9 b9d8      			out		PORTC , r29
+0001da b90b      			out		PORTD , ROW
+0001db b925      			out		PORTB , r18
+0001dc 0f00      			lsl		ROW
+0001dd 0f00      			lsl		ROW
                  
-0001e7 940c 01f8 			jmp	pastColDD
+0001de 940c 01ef 			jmp	pastColDD
                  
                  		printColDD:
-0001e9 0f22      				lsl		r18
-0001ea 0f22      				lsl		r18
-0001eb 0f22      				lsl		r18
-0001ec 0f22      				lsl		r18
-0001ed 0f22      				lsl		r18
-0001ee 0f22      				lsl		r18
+0001e0 0f22      				lsl		r18
+0001e1 0f22      				lsl		r18
+0001e2 0f22      				lsl		r18
+0001e3 0f22      				lsl		r18
+0001e4 0f22      				lsl		r18
+0001e5 0f22      				lsl		r18
                  
-0001ef 9506      			lsr		ROW
-0001f0 9506      			lsr		ROW
-0001f1 2fc0      			mov		r28 , ROW
-0001f2 2bc2      			or		r28 , r18
-0001f3 b9d8      			out		PORTC , r29
-0001f4 b9cb      			out		PORTD , r28
-0001f5 b9d5      			out		PORTB , r29
-0001f6 0f00      			lsl		ROW
-0001f7 0f00      			lsl		ROW
+0001e6 9506      			lsr		ROW
+0001e7 9506      			lsr		ROW
+0001e8 2fc0      			mov		r28 , ROW
+0001e9 2bc2      			or		r28 , r18
+0001ea b9d8      			out		PORTC , r29
+0001eb b9cb      			out		PORTD , r28
+0001ec b9d5      			out		PORTB , r29
+0001ed 0f00      			lsl		ROW
+0001ee 0f00      			lsl		ROW
                  
                  		pastColDD:
-0001f8 0f11      				lsl		COL
+0001ef 0f11      				lsl		COL
                  				//	ju fler swagmasters, destu ljusare
-0001f9 940e 0274 				call swagMaster
-0001fb 940e 0274 				call swagMaster
-0001fd 940e 0274 				call swagMaster
-0001ff 940e 0274 				call swagMaster
-000201 940e 0274 				call swagMaster
-000203 940e 0274 				call swagMaster
-000205 940e 0274 				call swagMaster
-000207 940e 0274 				call swagMaster
-000209 940e 0274 				call swagMaster
+0001f0 940e 0263 				call swagMaster
+0001f2 940e 0263 				call swagMaster
+0001f4 940e 0263 				call swagMaster
+0001f6 940e 0263 				call swagMaster
+0001f8 940e 0263 				call swagMaster
                  
-00020b 940c 01d5 		jmp updateColD
+0001fa 940c 01cc 		jmp updateColD
                  
                  joyXMovement:
-00020d 2e58      	mov		LASTDIR , DIR
+0001fc 2e58      	mov		LASTDIR , DIR
                  
-00020e e0c8      	ldi		YL , low(wormbodydir)
-00020f e0d1      	ldi		YH , high(wormbodydir)
+0001fd e0c8      	ldi		YL , low(wormbodydir)
+0001fe e0d1      	ldi		YH , high(wormbodydir)
                  	
-000210 8388      	st		Y, DIR
+0001ff 8388      	st		Y, DIR
                  	
-000211 e020      	ldi		r18, 0
+000200 e020      	ldi		r18, 0
                  	iteratePositionLoop:
                  		
-000212 9109      		ld		r16, Y+
+000201 9109      		ld		r16, Y+
                  
-000213 930f      		push	r16
-000214 5f2f      		subi	r18, -1
+000202 930f      		push	r16
+000203 5f2f      		subi	r18, -1
                  
-000215 2d0a      		mov		r16 , LENGTH
-000216 5f0f      		subi	r16 , -1
-000217 1720      		cp		r18, r16
+000204 2d0a      		mov		r16 , LENGTH
+000205 5f0f      		subi	r16 , -1
+000206 1720      		cp		r18, r16
                  
-000218 f7c9      	brne	iteratePositionLoop
+000207 f7c9      	brne	iteratePositionLoop
                  	
-000219 912f      		pop		r18
-00021a e020      		ldi		r18, 0
+000208 912f      		pop		r18
+000209 e020      		ldi		r18, 0
                  
                  	iteratePositionLoop2:
                  		
-00021b 910f      		pop		r16
-00021c 930a      		st		-Y, r16
+00020a 910f      		pop		r16
+00020b 930a      		st		-Y, r16
                  		
                  
-00021d 5f2f      		subi	r18, -1
+00020c 5f2f      		subi	r18, -1
                  		
-00021e 152a      		cp		r18, LENGTH
+00020d 152a      		cp		r18, LENGTH
                  
-00021f f7d9      		brne	iteratePositionLoop2
+00020e f7d9      		brne	iteratePositionLoop2
                  	
-000220 8388      	st		Y, DIR
+00020f 8388      	st		Y, DIR
                  
                  
                  	// Set source
-000221 9120 007c 	lds		r18, ADMUX
+000210 9120 007c 	lds		r18, ADMUX
                  	
-000223 7f20      	cbr		r18 , 0b00001111
-000224 6025      	sbr		r18 , 0b00000101
-000225 6220      	sbr		r18, 1<<5
-000226 6820      	sbr		r18, 1<<7
+000212 7f20      	cbr		r18 , 0b00001111
+000213 6025      	sbr		r18 , 0b00000101
+000214 6220      	sbr		r18, 1<<5
+000215 6820      	sbr		r18, 1<<7
                  
-000227 9320 007c 	sts		ADMUX, r18
+000216 9320 007c 	sts		ADMUX, r18
                  	
                  	// Start conversion
-000229 91c0 007a 	lds		r28, ADCSRA
+000218 91c0 007a 	lds		r28, ADCSRA
                  
-00022b 64c0      	sbr		r28, 1<<6
-00022c 68c0      	sbr		r28, 1<<7
+00021a 64c0      	sbr		r28, 1<<6
+00021b 68c0      	sbr		r28, 1<<7
                  
-00022d 93c0 007a 	sts		ADCSRA, r28
+00021c 93c0 007a 	sts		ADCSRA, r28
                  
                  	tempX:
                  	// Wait for convertion
-00022f 91c0 007a 	lds		r28, ADCSRA
-000231 fdc6      	sbrc	r28, 6
-000232 940c 022f 	jmp		tempX
+00021e 91c0 007a 	lds		r28, ADCSRA
+000220 fdc6      	sbrc	r28, 6
+000221 940c 021e 	jmp		tempX
                  
                  
                  	// Output result
-000234 91c0 0078 	lds		r28 , ADCL
-000236 9140 0079 	lds		r20, ADCH
+000223 91c0 0078 	lds		r28 , ADCL
+000225 9140 0079 	lds		r20, ADCH
                  
-000238 0eb4      	add		RAND , r20
+000227 0eb4      	add		RAND , r20
                  
-000239 3044      	cpi		r20, 0b00000100
-00023a f020      	brlo	right
-00023b 3048      	cpi		r20, 0b00001000
-00023c f438      	brsh	left
+000228 3044      	cpi		r20, 0b00000100
+000229 f020      	brlo	right
+00022a 3048      	cpi		r20, 0b00001000
+00022b f438      	brsh	left
                  
                  	//ldi		DIR, 0b00000000
-00023d 940c 0247 	jmp		pastleft
+00022c 940c 0236 	jmp		pastleft
                  
                  	/*
                  		Comparen innan ldi i dessa subrutiner kollar
@@ -1836,44 +1837,44 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
                  		ormen igen och direkt förlora.
                  	*/
                  	right:
-00023f 3082      	cpi		DIR	, 0b0000010
-000240 f031      	breq	pastleft
-000241 e081      	ldi		DIR , 0b0000001
-000242 940c 0247 	jmp		pastleft
+00022e 3082      	cpi		DIR	, 0b0000010
+00022f f031      	breq	pastleft
+000230 e081      	ldi		DIR , 0b0000001
+000231 940c 0236 	jmp		pastleft
                  
                  	left:
-000244 3081      	cpi		DIR , 0b0000001
-000245 f009      	breq	pastleft
-000246 e082      	ldi		DIR , 0b0000010
+000233 3081      	cpi		DIR , 0b0000001
+000234 f009      	breq	pastleft
+000235 e082      	ldi		DIR , 0b0000010
                  	pastleft:
                  
                  JoyYMovement:
                  	// Set source
-000247 9120 007c 	lds		r18, ADMUX
+000236 9120 007c 	lds		r18, ADMUX
                  	
-000249 7f20      	cbr		r18 , 0b00001111
-00024a 6024      	sbr		r18 , 0b00000100
+000238 7f20      	cbr		r18 , 0b00001111
+000239 6024      	sbr		r18 , 0b00000100
                  	//sbr		r18, 1<<5
-00024b 6420      	sbr		r18, 1<<6
+00023a 6420      	sbr		r18, 1<<6
                  
-00024c 9320 007c 	sts		ADMUX, r18
+00023b 9320 007c 	sts		ADMUX, r18
                  	
                  	// Start conversion
-00024e 91c0 007a 	lds		r28, ADCSRA
+00023d 91c0 007a 	lds		r28, ADCSRA
                  
-000250 64c0      	sbr		r28, 1<<6
-000251 68c0      	sbr		r28, 1<<7
+00023f 64c0      	sbr		r28, 1<<6
+000240 68c0      	sbr		r28, 1<<7
                  
-000252 93c0 007a 	sts		ADCSRA, r28
+000241 93c0 007a 	sts		ADCSRA, r28
                  
                  	tempY:
                  	// Wait for convertion
-000254 91c0 007a 	lds		r28, ADCSRA
-000256 fdc6      	sbrc	r28, 6
-000257 940c 0254 	jmp		tempY
+000243 91c0 007a 	lds		r28, ADCSRA
+000245 fdc6      	sbrc	r28, 6
+000246 940c 0243 	jmp		tempY
                  	// Output result
-000259 91c0 0078 	lds		r28 , ADCL
-00025b 9140 0079 	lds		r20, ADCH
+000248 91c0 0078 	lds		r28 , ADCL
+00024a 9140 0079 	lds		r20, ADCH
                  	/*
                  		Comparen nedan i dessa subrutiner kollar
                  		ifall snakey redan går åt något av dessa håll. 
@@ -1881,68 +1882,70 @@ C:\Users\Henrik\Documents\GitHub\SNAKE\SNAKE.asm(23): warning: Register r27 alre
                  		ormen igen och direkt förlora.
                  	*/
                  	
-00025d 0eb4      	add		RAND , r20
+00024c 0eb4      	add		RAND , r20
                  
-00025e 3044      	cpi		r20, 0b00000100
-00025f f020      	brlo	down
-000260 3140      	cpi		r20, 0b00010000
-000261 f438      	brsh	up
+00024d 3044      	cpi		r20, 0b00000100
+00024e f020      	brlo	down
+00024f 3140      	cpi		r20, 0b00010000
+000250 f438      	brsh	up
                  
-000262 940c 026d 	jmp		pastup
+000251 940c 025c 	jmp		pastup
                  
                  	down:
-000264 3088      	cpi		DIR , 0b00001000
-000265 f039      	breq	pastup
-000266 e084      	ldi		DIR , 0b00000100
-000267 940c 026d 	jmp		pastup
+000253 3088      	cpi		DIR , 0b00001000
+000254 f039      	breq	pastup
+000255 e084      	ldi		DIR , 0b00000100
+000256 940c 025c 	jmp		pastup
                  	up:
-000269 2d85      	mov		DIR , LASTDIR
-00026a 3084      	cpi		DIR , 0b00000100
-00026b f009      	breq	pastup
-00026c e088      	ldi		DIR , 0b00001000
+000258 2d85      	mov		DIR , LASTDIR
+000259 3084      	cpi		DIR , 0b00000100
+00025a f009      	breq	pastup
+00025b e088      	ldi		DIR , 0b00001000
                  	pastup:
                  
-00026d 3080      	cpi		DIR , 0b000000000
-00026e f011      	breq	last
-00026f 940c 0272 	jmp	pastlast
+00025c 3080      	cpi		DIR , 0b000000000
+00025d f011      	breq	last
+00025e 940c 0261 	jmp	pastlast
                  	last:
-000271 2d85      	mov		DIR , LASTDIR
+000260 2d85      	mov		DIR , LASTDIR
                  	pastlast:
                  
-000272 2e58      	mov		LASTDIR , DIR
-                 	
-                 	
-                 	//st		Z , DIR
+000261 2e58      	mov		LASTDIR , DIR
                  
                  return:
-000273 9508      	ret
+000262 9508      	ret
                  	
                  	swagMaster:
                  
-000274 940e 0285 	call swagmaster2
-000276 940e 0285 	call swagmaster2
-000278 940e 0285 	call swagmaster2
-00027a 940e 0285 	call swagmaster2
-00027c 940e 0285 	call swagmaster2
-00027e 940e 0285 	call swagmaster2
-000280 940e 0285 	call swagmaster2
-000282 940e 0285 	call swagmaster2
-000284 9508      	ret
-                 
+000263 940e 0280 	call swagmaster2
+000265 940e 0280 	call swagmaster2
+000267 940e 0280 	call swagmaster2
+000269 940e 0280 	call swagmaster2
+00026b 940e 0280 	call swagmaster2
+00026d 940e 0280 	call swagmaster2
+00026f 940e 0280 	call swagmaster2
+000271 940e 0280 	call swagmaster2
+000273 940e 0280 	call swagmaster2
+000275 940e 0280 	call swagmaster2
+000277 940e 0280 	call swagmaster2
+000279 940e 0280 	call swagmaster2
+00027b 940e 0280 	call swagmaster2
+00027d 940e 0280 	call swagmaster2
+00027f 9508      	ret
                  
                  	swagmaster2:
                  	
-000285 5021      	subi	r18, 1
-000286 3021      	cpi		r18, 1
-000287 f3e9      	breq	swagMaster2
+000280 5021      	subi	r18, 1
+000281 3021      	cpi		r18, 1
+000282 f3e9      	breq	swagMaster2
                  
-000288 9508      	ret
+000283 9508      	ret
                  
                  ded:
-000289 e060      	ldi	SNAKEX , 0
-                 	
-00028a e0b0      	ldi	SNAKEY , 0
-00028b 940c 0289 jmp ded
+000284 e060      	ldi	SNAKEX , 0
+000285 e0b0      	ldi	SNAKEY , 0
+                 
+000286 940c 0284 jmp ded
 
 
 RESOURCE USE INFORMATION
@@ -1960,26 +1963,26 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   4 r6 :   2 r7 :   2 
-r8 :   7 r9 :   7 r10:   6 r11:  12 r12:   0 r13:   0 r14:   0 r15:   0 
-r16:  81 r17:  13 r18: 119 r19:  11 r20:  16 r21:  11 r22:   8 r23:   9 
-r24:  19 r25:   3 r26:   7 r27:   8 r28:  53 r29:  10 r30:   7 r31:   7 
+r0 :   0 r1 :   1 r2 :   0 r3 :   0 r4 :   0 r5 :   4 r6 :   2 r7 :   2 
+r8 :   6 r9 :   7 r10:   6 r11:  13 r12:   0 r13:   0 r14:   0 r15:   0 
+r16:  80 r17:  13 r18: 119 r19:  10 r20:  16 r21:  10 r22:   8 r23:   9 
+r24:  19 r25:   3 r26:   7 r27:   8 r28:  56 r29:  10 r30:   7 r31:   7 
 x  :   0 y  :   8 z  :  28 
-Registers used: 25 out of 35 (71.4%)
+Registers used: 26 out of 35 (74.3%)
 
 "ATmega328P" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   5 adiw  :   0 and   :   5 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   7 adiw  :   0 and   :   5 
 andi  :   2 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :  29 brge  :   1 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
-brne  :  24 brpl  :   0 brsh  :   2 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  40 cbi   :   0 cbr   :   4 
+brne  :  22 brpl  :   0 brsh  :   2 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :  38 cbi   :   0 cbr   :   4 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 
-clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :  15 cpc   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :  13 cpc   :   0 
 cpi   :  43 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :  32 
-ld    :  11 ldd   :   0 ldi   :  77 lds   :  25 lpm   :   0 lsl   :  31 
-lsr   :  16 mov   :  30 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   0 jmp   :  33 
+ld    :  11 ldd   :   0 ldi   :  77 lds   :  24 lpm   :   0 lsl   :  31 
+lsr   :  16 mov   :  30 movw  :   0 mul   :   1 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   1 or    :   3 ori   :   1 out   :  18 pop   :   2 
 push  :   1 rcall :   0 ret   :  15 reti  :   2 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 
@@ -1987,12 +1990,12 @@ sbiw  :   0 sbr   :  23 sbrc  :   4 sbrs  :   0 sec   :   0 seh   :   0
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :  25 std   :   0 sts   :  12 
 sub   :   0 subi  :  11 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 34 out of 113 (30.1%)
+Instructions used: 35 out of 113 (31.0%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00051c   1246      0   1246   32768   3.8%
+[.cseg] 0x000000 0x000512   1236      0   1236   32768   3.8%
 [.dseg] 0x000100 0x000147      0     71     71    2048   3.5%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

@@ -15,47 +15,49 @@
 	wormbodydir:
 		.byte	63
 
-.def	ROW			= r16
-.def	COL			= r17
-.def	DIR			= r24
-.def	LASTDIR		= r5
-.def	SNAKEX		= r22
-.def	SNAKEY		= r27
-.def	BODYX		= r21
-.def	BODYY		= r19
-.def	LENGTH		= r10
-.def	APPLEX		= r8
-.def	APPLEY		= r9
-.def	RAND		= r11
+.def	ROW			= r16	// rad för rita ut matrisen
+.def	COL			= r17	// kollumn för rita ut matrisen
+.def	DIR			= r24	// maskens huvuds riktning
+.def	LASTDIR		= r5	// senaste riktningen
+.def	SNAKEX		= r22	// maskens huvuds x-kordinat
+.def	SNAKEY		= r27	// maskens huvuds y-kordinat
+.def	BODYX		= r21	// kroppens x-kordinat
+.def	BODYY		= r19	// kroppens y-kordinat
+.def	LENGTH		= r10	// maskens längd
+.def	APPLEX		= r8	// äpplets x-kordinat
+.def	APPLEY		= r9	// äpplets y-kordinat
+.def	RAND		= r11	// slump
 
 .CSEG
 	
 	.list
 		rjmp      main
-		
+	// timer 1 avbrottsvektor
 .ORG 0x0020
 	jmp supermegatimer
 	nop
 
 	supermegatimer:
+// räknare för positionsuppdatering
 	subi	r26 , -1
-	add		RAND , r26
+	add		RAND , r26	// ändrar slumpen
 	
-	lds  r16, TIMSK0     // start timer
+// återställer timer
 	ldi	 r16 , 0b00000001
 	sts  TIMSK0, r16
-	
+
+// fyller utritningsmatrisen
 	call	moveDot
 	call	moveApple
 	call	movebody
-	//call getapple
 
+// kollar räknaren
 	cpi		r26 , 0b00011110
-	breq	mklmkl
+	breq	supermove	// uppdaterar position
 
 	reti
 
-	mklmkl:
+	supermove:
 		call	joyXMovement
 		ldi		r26 , 0b00000000
 		ldi		r16 , 0
@@ -195,17 +197,21 @@
 
 	call ded
 
-	
-	cp		BODYX , APPLEX
-	brne	cleared
-
-	cp		BODYY , APPLEY
-	brne	cleared
-	
-		call	getApple
-
 	cleared:
+	
+	aplleloop2:
+			
+		cp		BODYX , APPLEX
+		brne	endchek2
+		
+		cp		BODYY , APPLEY
+		brne	endchek2
 
+		call	getApple
+		jmp		aplleloop2
+
+		endchek2:
+		
 		ld		r18 , Y+
 		// Check last direction		
 		cpi		r18, 0b00000001
@@ -223,33 +229,33 @@
 		// Move snake head
 		moveBodyRight:
 			lsr		BODYX
-			jmp		moveBodyComplete
+			jmp		aplleloop
 
 		moveBodyLeft:
 			lsl		BODYX
-			jmp		moveBodyComplete
+			jmp		aplleloop
 
 		moveBodyUp:
 			lsl		BODYY
-			jmp		moveBodyComplete
+			jmp		aplleloop
 
 		moveBodyDown:
 			lsr		BODYY
-			jmp		moveBodyComplete
+			jmp		aplleloop
 
 
 
 		aplleloop:
-			
+		/*	
 		cp		BODYX , APPLEX
 		brne	endchek
-
+		
 		cp		BODYY , APPLEY
 		brne	endchek
-	
-		call	getApple
-		//jmp		aplleloop
 
+		call	getApple
+		jmp		aplleloop
+		*/
 		endchek:
 
 	ret
@@ -354,6 +360,7 @@
 
 		mov		APPLEX , r18
 
+		call	swagmaster
 
 		starty:
 		lds		r18, ADMUX
@@ -361,7 +368,7 @@
 		cbr		r18 , 0b00001111
 		sbr		r18 , 0b00000100
 		//sbr		r18, 1<<5
-		sbr		r18, 1<<7
+		sbr		r18, 1<<6
 
 		sts		ADMUX, r18
 	
@@ -395,6 +402,9 @@
 
 		mov		r28 , RAND
 		subi	r28 , -1
+		mul		r28 , RAND
+		add		r28 , r1
+		add		r28 , APPLEY
 		
 		cpi		r28 , 0
 		brne	valuetobit5
@@ -464,9 +474,8 @@
 		mov		LENGTH , r18
 		
 		appleloop:
+		call	swagmaster
 
-		call	getApple
-		call	getApple
 		call	getApple
 		
 		cp		APPLEX , SNAKEX
@@ -518,7 +527,7 @@ main:
 	mov		APPLEX , r16
 	ldi		r16 , 0b01000000
 	mov		APPLEY , r16
-
+	call getapple
 	
 	ldi		SNAKEX, 0b00001000
 	ldi		SNAKEY, 0b00001000
@@ -653,10 +662,6 @@ update:
 				call swagMaster
 				call swagMaster
 				call swagMaster
-				call swagMaster
-				call swagMaster
-				call swagMaster
-				call swagMaster
 
 		jmp updateCol
 
@@ -710,10 +715,6 @@ update:
 		pastColDD:
 				lsl		COL
 				//	ju fler swagmasters, destu ljusare
-				call swagMaster
-				call swagMaster
-				call swagMaster
-				call swagMaster
 				call swagMaster
 				call swagMaster
 				call swagMaster
@@ -882,9 +883,6 @@ JoyYMovement:
 	pastlast:
 
 	mov		LASTDIR , DIR
-	
-	
-	//st		Z , DIR
 
 return:
 	ret
@@ -899,8 +897,13 @@ return:
 	call swagmaster2
 	call swagmaster2
 	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
+	call swagmaster2
 	ret
-
 
 	swagmaster2:
 	
@@ -912,7 +915,7 @@ return:
 
 ded:
 	ldi	SNAKEX , 0
-	
 	ldi	SNAKEY , 0
+
 jmp ded
 ret
