@@ -78,18 +78,27 @@
 // flyttar huvudet
 		moveRight:
 			lsl		SNAKEX
+			cpi		SNAKEX , 0
+			brne	moveComplete
+			ldi		SNAKEX , 0b00000001
 			jmp		moveComplete
 
 		moveLeft:
 			lsr		SNAKEX
+			brne	moveComplete
+			ldi		SNAKEX , 0b10000000
 			jmp		moveComplete
 
 		moveUp:
 			lsr		SNAKEY
+			brne	moveComplete
+			ldi		SNAKEY , 0b10000000
 			jmp		moveComplete
 
 		moveDown:
 			lsl		SNAKEY
+			brne	moveComplete
+			ldi		SNAKEY , 0b000000001
 			jmp		moveComplete
 
 		moveComplete:
@@ -234,18 +243,38 @@
 		// Move snake head
 		moveBodyRight:
 			lsr		BODYX
+			cpi		BODYX , 0
+			brne	aplleloop
+			mov		r18 , BODYX
+			ldi		r18 , 0b10000000
+			mov		BODYX , r18
 			jmp		aplleloop
 
 		moveBodyLeft:
 			lsl		BODYX
+			cpi		BODYX , 0
+			brne	aplleloop
+			mov		r18 , BODYX
+			ldi		r18 , 0b00000001
+			mov		BODYX , r18
 			jmp		aplleloop
 
 		moveBodyUp:
 			lsl		BODYY
+			cpi		BODYY , 0
+			brne	aplleloop
+			mov		r18 , BODYY
+			ldi		r18 , 0b00000001
+			mov		BODYY , r18
 			jmp		aplleloop
 
 		moveBodyDown:
 			lsr		BODYY
+			cpi		BODYY , 0
+			brne	aplleloop
+			mov		r18 , BODYY
+			ldi		r18 , 0b10000000
+			mov		BODYY , r18
 			jmp		aplleloop
 
 
@@ -287,18 +316,38 @@
 		// Move snake head
 		moveBodyRight2:
 			lsl		BODYX
+			cpi		BODYX , 0
+			brne	aplleloop
+			mov		r18 , BODYX
+			ldi		r18 , 0b00000001
+			mov		BODYX , r18
 			ret
 
 		moveBodyLeft2:
 			lsr		BODYX
+			cpi		BODYX , 0
+			brne	aplleloop
+			mov		r18 , BODYX
+			ldi		r18 , 0b10000000
+			mov		BODYX , r18
 			ret
 
 		moveBodyUp2:
 			lsr		BODYY
+			cpi		BODYY , 0
+			brne	aplleloop
+			mov		r18 , BODYY
+			ldi		r18 , 0b10000000
+			mov		BODYY , r18
 			ret
 
 		moveBodyDown2:
 			lsl		BODYY
+			cpi		BODYY , 0
+			brne	aplleloop
+			mov		r18 , BODYY
+			ldi		r18 , 0b00000001
+			mov		BODYY , r18
 			ret
 
 	moveBodyComplete:
